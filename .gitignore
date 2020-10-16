@@ -1,0 +1,5 @@
+# Ignore all bazel-* symlinks.
+/bazel-*
+# Ignore generated python artifacts
+*.pyc
+copts/__pycache__/
