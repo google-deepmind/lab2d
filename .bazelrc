@@ -1,0 +1,5 @@
+build --cxxopt=-std=c++17
+build --cxxopt=-Wno-sign-compare --cxxopt=-Wno-attributes
+build:lua5_1 --define lua=lua5_1
+build:lua5_2 --define lua=lua5_2
+build:luajit --define lua=luajit
