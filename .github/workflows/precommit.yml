@@ -1,0 +1,25 @@
+# A workflow to run Bazel builds and tests.
+
+name: precommit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+      - 'beta'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      CC:  gcc-10
+      CXX: g++-10
+    steps:
+      - uses: actions/checkout@v2
+      - name: install infrastructure
+        run: sudo apt-get install python-numpy python3-numpy
+      - name: build
+        run: bazel --bazelrc=.bazelrc build //...
+      - name: run-tests
+        run: bazel --bazelrc=.bazelrc test --test_output=errors //...
