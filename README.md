@@ -17,6 +17,10 @@ APIs, the Python [`dm_env`](https://github.com/deepmind/dm_env) API or a custom
 C API (which is also used by [DeepMind Lab](https://github.com/deepmind/lab)).
 Multiple agents are supported.
 
+If you use *DeepMind Lab2D* in your research and would like to cite it, we
+suggest you cite the
+[accompanying whitepaper](https://arxiv.org/abs/2011.07027).
+
 ## Getting started
 
 We provide an example "random" agent in `python/random_agent`, which performs
