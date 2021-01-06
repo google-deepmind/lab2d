@@ -15,6 +15,7 @@
 #include "dmlab2d/system/generators/pushbox/random_room_generator.h"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <iterator>
 #include <random>
