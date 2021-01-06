@@ -11,15 +11,28 @@ on:
 
 jobs:
   build-and-test:
+    name: Build/test ${{matrix.cfg.name}}
+
     runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        cfg:
+          - { name: 'GCC', cc: gcc-10, cxx: g++-10, config: }
+          - { name: 'LLVM+libstdc++', cc: clang, cxx: clang++, config: }
+          - { name: 'LLVM+libc++', cc: clang, cxx: clang++, config: --config=libc++ }
+
     env:
-      CC:  gcc-10
-      CXX: g++-10
+      CC:  ${{ matrix.cfg.cc }}
+      CXX: ${{ matrix.cfg.cxx }}
+
     steps:
       - uses: actions/checkout@v2
       - name: install infrastructure
-        run: sudo apt-get install python-numpy python3-numpy python2-dev
+        run: |
+          sudo apt-get install python-numpy python3-numpy python2-dev
+          sudo ln -s /usr/lib/llvm-10/include/c++/v1 /usr/include/c++/v1
       - name: build
-        run: bazel --bazelrc=.bazelrc build //...
+        run: bazel --bazelrc=.bazelrc build ${{ matrix.cfg.config }} //...
       - name: run-tests
-        run: bazel --bazelrc=.bazelrc test --test_output=errors //...
+        run: bazel --bazelrc=.bazelrc test ${{ matrix.cfg.config }} --test_output=errors //...
