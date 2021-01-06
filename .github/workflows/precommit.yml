@@ -11,14 +11,14 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       CC:  gcc-10
       CXX: g++-10
     steps:
       - uses: actions/checkout@v2
       - name: install infrastructure
-        run: sudo apt-get install python-numpy python3-numpy
+        run: sudo apt-get install python-numpy python3-numpy python2-dev
       - name: build
         run: bazel --bazelrc=.bazelrc build //...
       - name: run-tests
