@@ -1,6 +1,6 @@
 build --cxxopt=-std=c++17
 build --cxxopt=-Wno-sign-compare --cxxopt=-Wno-attributes
-build:libc++ --cxxopt=-stdlib=libc++ --linkopt=-lc++abi --linkopt=-lc++
+build:libc++ --action_env=CXXFLAGS=-stdlib=libc++ --action_env=LDFLAGS=-stdlib=libc++ --action_env=BAZEL_CXXOPTS=-stdlib=libc++ --action_env=BAZEL_LINKOPTS=-lc++:-lm
 build:lua5_1 --define lua=lua5_1
 build:lua5_2 --define lua=lua5_2
 build:luajit --define lua=luajit
