@@ -222,6 +222,7 @@ return tensor.ByteTensor(100, 100, 2), tensor.ByteTensor(100, 100, 2)
 )";
 
 constexpr absl::string_view kFillByValue = R"(
+local unpack = _G.unpack or table.unpack  -- Handle different versions of Lua.
 local bt1, bt2 = ...
 local ci, cj, ck = unpack(bt1:shape())
 for i = 1, ci do

@@ -23,6 +23,7 @@ local tile_set = require 'common.tile_set'
 local set = require 'common.set'
 local images = require 'images'
 local maps = require 'maps'
+local unpack = _G.unpack or table.unpack  -- Handle different versions of Lua.
 
 local _COMPASS = {'N', 'E', 'S', 'W'}
 local _DIRECTION = {

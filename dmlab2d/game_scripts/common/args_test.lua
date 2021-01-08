@@ -18,6 +18,7 @@ local test_runner = require 'testing.test_runner'
 local args = require 'common.args'
 local tensor = require 'system.tensor'
 local class = require 'common.class'
+local unpack = _G.unpack or table.unpack  -- Handle different versions of Lua.
 
 local tests = {}
 
