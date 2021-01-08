@@ -366,7 +366,7 @@ local whenMt = {
           return _callCallbacks(matcher, callRecord)
         end
       end
-      fail(2, 'No matcher exists for call matcher %q', callRecord)
+      fail(2, 'No matcher exists for call matcher %q', tostring(callRecord))
       table.insert(mockTable.callRecords, callRecord)
       table.insert(when.callRecords, callRecord)
       return nil
@@ -396,7 +396,7 @@ local verifyMt = {
     return function(self2, ...)
       if not counter.check(#when.callRecords) then
         fail(2, 'Expected call %q to be called %s actually called: %d times.',
-             func, counter, #when.callRecords)
+             func, tostring(counter), #when.callRecords)
       end
       local checkArgs = {}
       if self2 ~= nil or select('#', ...) > 0 then
@@ -409,7 +409,7 @@ local verifyMt = {
       local callRecord = when.callRecords[when.verifyCount]
       if not callRecord or not _matches(callRecord, checkArgs) then
         fail(2, 'Expected call: %s(%s) actual call: %s',
-             func, _join(', ', checkArgs), callRecord)
+             func, _join(', ', checkArgs), tostring(callRecord))
       end
       _capture(callRecord, checkArgs)
       return self
