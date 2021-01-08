@@ -11,12 +11,14 @@ on:
 
 jobs:
   build-and-test:
-    name: Build/test ${{matrix.cfg.name}}
+    name: Build+test ${{matrix.cfg.name}} ${{matrix.os.name}}
 
-    runs-on: ubuntu-20.04
+    runs-on: ${{matrix.os.id}}
 
     strategy:
       matrix:
+        os:
+          - { name: 'Linux', id: 'ubuntu-20.04' }
         cfg:
           - { name: 'GCC', cc: gcc-10, cxx: g++-10, config: }
           - { name: 'LLVM+libstdc++', cc: clang, cxx: clang++, config: }
@@ -28,11 +30,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: install infrastructure
+      - name: install infrastructure (Linux)
         run: |
           sudo apt-get install python-numpy python3-numpy python2-dev
           sudo ln -s /usr/lib/llvm-10/include/c++/v1 /usr/include/c++/v1
-      - name: build
-        run: bazel --bazelrc=.bazelrc build ${{ matrix.cfg.config }} //...
-      - name: run-tests
-        run: bazel --bazelrc=.bazelrc test ${{ matrix.cfg.config }} --test_output=errors //...
+        if: matrix.os.id == 'ubuntu-20.04'
+      - name: build-and-test-lua5.1
+        run: |
+          bazel --bazelrc=.bazelrc build --config=lua5_1 ${{ matrix.cfg.config }} //...
+          bazel --bazelrc=.bazelrc test  --config=lua5_1 ${{ matrix.cfg.config }} --test_output=errors //...
+      - name: build-and-test-lua5.2
+        run: |
+          bazel --bazelrc=.bazelrc build --config=lua5_2 ${{ matrix.cfg.config }} //...
+          bazel --bazelrc=.bazelrc test  --config=lua5_2 ${{ matrix.cfg.config }} --test_output=errors //...
+      - name: build-and-test-luajit
+        run: |
+          bazel --bazelrc=.bazelrc build --config=luajit ${{ matrix.cfg.config }} //...
+          bazel --bazelrc=.bazelrc test  --config=luajit ${{ matrix.cfg.config }} --test_output=errors //...
