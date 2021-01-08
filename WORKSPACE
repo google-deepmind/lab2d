@@ -156,5 +156,5 @@ http_archive(
 new_local_repository(
     name = "python_system",
     build_file = "@//bazel:python.BUILD",
-    path = "/usr/include",
+    path = "/",
 )
