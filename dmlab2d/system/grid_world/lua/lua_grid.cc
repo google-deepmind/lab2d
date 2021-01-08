@@ -80,7 +80,7 @@ class LuaStateCallback : public Grid::StateCallback {
     on_blocked_ = CreateCallback(callback_table_, "onBlocked");
     lua::TableRef on_contact;
     if (IsFound(callback_table_.LookUp("onContact", &on_contact))) {
-      for (const auto& [contact, name] : world.contacts()) {
+      for (auto [contact, name] : world.contacts()) {
         lua::TableRef contact_table;
         if (IsFound(on_contact.LookUp(name, &contact_table))) {
           on_leave_[contact] = CreateCallback(contact_table, "leave");
@@ -90,7 +90,7 @@ class LuaStateCallback : public Grid::StateCallback {
     }
     lua::TableRef update_table;
     if (IsFound(callback_table_.LookUp("onUpdate", &update_table))) {
-      for (const auto& [update, name] : world.updates()) {
+      for (auto [update, name] : world.updates()) {
         on_update_[update] =
             CreateCallback(update_table, world.update_functions(update));
       }
@@ -98,7 +98,7 @@ class LuaStateCallback : public Grid::StateCallback {
     lua::TableRef hits;
     if (IsFound(callback_table_.LookUp("onHit", &hits))) {
       auto on_hit_callback_default = CallbackOrValue(false);
-      for (const auto& [hit, name] : world.hits()) {
+      for (auto [hit, name] : world.hits()) {
         on_hit_[hit] =
             CreateCallbackOrValue(hits, name, on_hit_callback_default);
       }
@@ -106,16 +106,16 @@ class LuaStateCallback : public Grid::StateCallback {
   }
 
   void Legacy(const World& world) {
-    for (const auto& [handle, name] : world.contacts()) {
-      on_leave_[handle] =
+    for (auto [contact, name] : world.contacts()) {
+      on_leave_[contact] =
           CreateCallback(callback_table_, absl::StrCat(name, "OnLeave"));
-      on_enter_[handle] =
+      on_enter_[contact] =
           CreateCallback(callback_table_, absl::StrCat(name, "OnEnter"));
     }
-    for (const auto& [handle, name] : world.updates()) {
-      on_update_[handle] = CreateCallback(
+    for (auto [update, name] : world.updates()) {
+      on_update_[update] = CreateCallback(
           callback_table_,
-          absl::StrCat(world.update_functions(handle), "Update"));
+          absl::StrCat(world.update_functions(update), "Update"));
     }
 
     // Modern version of onHit.
@@ -124,15 +124,15 @@ class LuaStateCallback : public Grid::StateCallback {
       auto on_hit_callback_default = CreateCallbackOrValue(
           callback_table_, "onHit", CallbackOrValue(false));
 
-      for (const auto& [hit, hit_name] : world.hits()) {
-        on_hit_[hit] = CreateCallbackOrValue(callback_table_,
-                                             absl::StrCat(hit_name, "OnHit"),
-                                             on_hit_callback_default);
+      for (auto [hit, name] : world.hits()) {
+        on_hit_[hit] =
+            CreateCallbackOrValue(callback_table_, absl::StrCat(name, "OnHit"),
+                                  on_hit_callback_default);
       }
     }
   }
 
-  ~LuaStateCallback() override {}
+  ~LuaStateCallback() override = default;
 
   void OnAdd(Piece piece) override { on_add_.Call("onAdd", grid_ref_, piece); }
 

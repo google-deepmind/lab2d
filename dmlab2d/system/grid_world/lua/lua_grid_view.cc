@@ -161,8 +161,8 @@ lua::NResultsOr LuaGridView::CreateLayerView(lua_State* L, const World& world) {
 
   // Create identity mapping.
   FixedHandleMap<Sprite, Sprite> sprite_map(world.sprites().NumElements());
-  for (const auto& handle_name : world.sprites()) {
-    sprite_map[handle_name.first] = handle_name.first;
+  for (auto [sprite, name] : world.sprites()) {
+    sprite_map[sprite] = sprite;
   }
 
   absl::flat_hash_map<std::string, std::string> custom_sprite_map;
@@ -170,16 +170,14 @@ lua::NResultsOr LuaGridView::CreateLayerView(lua_State* L, const World& world) {
     return "'spriteMap' must be string string table!";
   }
 
-  for (const auto& key_value : custom_sprite_map) {
-    Sprite handle_from = world.sprites().ToHandle(key_value.first);
+  for (const auto& [key, val] : custom_sprite_map) {
+    Sprite handle_from = world.sprites().ToHandle(key);
     if (handle_from.IsEmpty()) {
-      return absl::StrCat("Invalid source sprite in `spriteMap`: '",
-                          key_value.first, "'");
+      return absl::StrCat("Invalid source sprite in `spriteMap`: '", key, "'");
     }
-    Sprite handle_to = world.sprites().ToHandle(key_value.second);
+    Sprite handle_to = world.sprites().ToHandle(val);
     if (handle_to.IsEmpty()) {
-      return absl::StrCat("Invalid target sprite in `spriteMap`: '",
-                          key_value.second, "'");
+      return absl::StrCat("Invalid target sprite in `spriteMap`: '", val, "'");
     }
     sprite_map[handle_from] = handle_to;
   }
