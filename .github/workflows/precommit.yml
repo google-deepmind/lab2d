@@ -37,6 +37,7 @@ jobs:
     env:
       CC:  ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
+      GCP_KEY: ${{ secrets.GCP_KEY }}
 
     steps:
       - uses: actions/checkout@v3
@@ -45,40 +46,43 @@ jobs:
         if: matrix.os == 'ubuntu-22.04'
         run: |
           sudo apt-get install python3-dev python3-numpy python3-packaging
+          echo "${GCP_KEY}" | base64 -d > "${HOME}/gcp_key.json"
           sudo ln -s /usr/lib/llvm-10/include/c++/v1 /usr/include/c++/v1
 
       - name: install infrastructure (MacOS)
         if: matrix.os == 'macos-12' || matrix.os == 'macos-13'
-        run: sudo -H pip3 install numpy packaging
+        run: |
+          sudo -H pip3 install numpy packaging
+          echo "${GCP_KEY}" | base64 -d > "${HOME}/gcp_key.json"
 
       - name: build-lua5.1
         run: |
-          bazel --bazelrc=.bazelrc build --config=lua5_1 ${{ matrix.config }} //...
+          bazel --bazelrc=.bazelrc build --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --config=lua5_1 ${{ matrix.config }} //...
       - name: test-lua5.1
         if: (!contains(matrix.config, 'arm64'))
         run: |
-          bazel --bazelrc=.bazelrc test  --config=lua5_1 ${{ matrix.config }} --test_output=errors //...
+          bazel --bazelrc=.bazelrc test  --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --config=lua5_1 ${{ matrix.config }} --test_output=errors //...
 
       - name: build-lua5.2
         run: |
-          bazel --bazelrc=.bazelrc build --config=lua5_2 ${{ matrix.config }} //...
+          bazel --bazelrc=.bazelrc build --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --config=lua5_2 ${{ matrix.config }} //...
       - name: test-lua5.2
         if: (!contains(matrix.config, 'arm64'))
         run: |
-          bazel --bazelrc=.bazelrc test  --config=lua5_2 ${{ matrix.config }} --test_output=errors //...
+          bazel --bazelrc=.bazelrc test  --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --config=lua5_2 ${{ matrix.config }} --test_output=errors //...
 
       - name: build-luajit
         run: |
-          bazel --bazelrc=.bazelrc build --config=luajit ${{ matrix.config }} //...
+          bazel --bazelrc=.bazelrc build --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --config=luajit ${{ matrix.config }} //...
       - name: test-luajit
         if: (!contains(matrix.config, 'arm64'))
         run: |
-          bazel --bazelrc=.bazelrc test  --config=luajit ${{ matrix.config }} --test_output=errors //...
+          bazel --bazelrc=.bazelrc test  --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --config=luajit ${{ matrix.config }} --test_output=errors //...
 
       - name: build-luajit-internal_unwind
         run: |
-          bazel --bazelrc=.bazelrc build --config=luajit ${{ matrix.config }} --copt=-fno-asynchronous-unwind-tables --luajit_external_unwinder=False //...
+          bazel --bazelrc=.bazelrc build --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --config=luajit ${{ matrix.config }} --copt=-fno-asynchronous-unwind-tables --luajit_external_unwinder=False //...
       - name: test-luajit-internal_unwind
         if: (!contains(matrix.config, 'arm64'))
         run: |
-          bazel --bazelrc=.bazelrc test  --config=luajit ${{ matrix.config }} --copt=-fno-asynchronous-unwind-tables --luajit_external_unwinder=False --test_output=errors //...
+          bazel --bazelrc=.bazelrc test  --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --config=luajit ${{ matrix.config }} --copt=-fno-asynchronous-unwind-tables --luajit_external_unwinder=False --test_output=errors //...

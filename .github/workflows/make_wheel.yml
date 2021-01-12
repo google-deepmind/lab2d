@@ -59,6 +59,7 @@ jobs:
     env:
       CC:  ${{ matrix.cfg.cc }}
       CXX: ${{ matrix.cfg.cxx }}
+      GCP_KEY: ${{ secrets.GCP_KEY }}
       WHEEL_NAME: ''
 
     steps:
@@ -69,10 +70,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Python Dependencies
-        run: pip3 install --upgrade pip packaging check-wheel-contents
+        run: |
+          pip3 install --upgrade pip packaging check-wheel-contents
+          echo "${GCP_KEY}" | base64 -d > "${HOME}/gcp_key.json"
 
       - name: Build for Python ${{ matrix.python-version }}
-        run: bazel --bazelrc=.bazelrc build --compilation_mode=opt --dynamic_mode=off --config=luajit ${{ matrix.cfg.config }} //dmlab2d:dmlab2d_wheel
+        id: build_wheel
+        run: bazel --bazelrc=.bazelrc build --remote_cache="https://storage.googleapis.com/dmlab-travis-cache" --google_credentials="${HOME}/gcp_key.json" --compilation_mode=opt --dynamic_mode=off --config=luajit ${{ matrix.cfg.config }} //dmlab2d:dmlab2d_wheel
 
       - name: Get built wheel name
         working-directory: bazel-bin/dmlab2d
