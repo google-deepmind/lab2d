@@ -164,7 +164,7 @@ class Environment(dm_env.Environment):
     """Delegate calls on this dm_env to its wrapped raw environment.
 
     Args:
-      attr: class attibute.
+      attr: class attribute.
 
     Returns:
       Attribute for wrapped environment.
