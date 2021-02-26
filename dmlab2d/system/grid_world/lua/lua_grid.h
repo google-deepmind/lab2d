@@ -74,6 +74,12 @@ class LuaGrid : public lua::Class<LuaGrid> {
   lua::NResultsOr TeleportToGroup(lua_State* L);
   lua::NResultsOr HitBeam(lua_State* L);
 
+  // Convert.
+  lua::NResultsOr ToRelativeDirection(lua_State* L);
+  lua::NResultsOr ToRelativePosition(lua_State* L);
+  lua::NResultsOr ToAbsoluteDirection(lua_State* L);
+  lua::NResultsOr ToAbsolutePosition(lua_State* L);
+
   // Query Grid.
   lua::NResultsOr RayCast(lua_State* L);
   lua::NResultsOr RayCastDirection(lua_State* L);
@@ -82,14 +88,14 @@ class LuaGrid : public lua::Class<LuaGrid> {
   lua::NResultsOr QueryDiamond(lua_State* L);
   lua::NResultsOr QueryDisc(lua_State* L);
 
-  // Group
+  // Group.
   lua::NResultsOr GroupCount(lua_State* L);
   lua::NResultsOr GroupRandom(lua_State* L);
   lua::NResultsOr GroupShuffled(lua_State* L);
   lua::NResultsOr GroupShuffledWithCount(lua_State* L);
   lua::NResultsOr GroupShuffledWithProbability(lua_State* L);
 
-  // Connect
+  // Connect.
   lua::NResultsOr Connect(lua_State* L);
   lua::NResultsOr Disconnect(lua_State* L);
   lua::NResultsOr DisconnectAll(lua_State* L);

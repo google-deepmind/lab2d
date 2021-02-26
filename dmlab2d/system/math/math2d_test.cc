@@ -350,5 +350,47 @@ TEST(RotateTest, RotateTestSubtract) {
   EXPECT_THAT(Rotate2d::k270 - Rotate2d::k270, Eq(Rotate2d::k0));
 }
 
+TEST(RotateTest, ToWorldToRelativeSpaceNorth) {
+  Transform2d transform{Position2d{5, 3}, Orientation2d::kEast};
+  EXPECT_THAT(transform.ToAbsoluteSpace(Position2d{0, -1}),
+              Eq(Position2d{6, 3}));
+  EXPECT_THAT(transform.ToRelativeSpace(Position2d{6, 3}),
+              Eq(Position2d{0, -1}));
+  EXPECT_THAT(transform.ToAbsoluteSpace(Vector2d{0, -1}), Eq(Vector2d{1, 0}));
+  EXPECT_THAT(transform.ToRelativeSpace(Vector2d{1, 0}), Eq(Vector2d{0, -1}));
+  EXPECT_THAT(transform.ToAbsoluteSpace(Orientation2d::kNorth),
+              Eq(Orientation2d::kEast));
+  EXPECT_THAT(transform.ToRelativeSpace(Orientation2d::kEast),
+              Eq(Orientation2d::kNorth));
+}
+
+TEST(RotateTest, ToAbsoluteSpaceEast) {
+  Transform2d transform{Position2d{5, 3}, Orientation2d::kEast};
+  EXPECT_THAT(transform.ToAbsoluteSpace(Position2d{2, 0}),
+              Eq(Position2d{5, 5}));
+  EXPECT_THAT(transform.ToRelativeSpace(Position2d{5, 5}),
+              Eq(Position2d{2, 0}));
+  EXPECT_THAT(transform.ToAbsoluteSpace(Vector2d{2, 0}), Eq(Vector2d{0, 2}));
+  EXPECT_THAT(transform.ToRelativeSpace(Vector2d{0, 2}), Eq(Vector2d{2, 0}));
+  EXPECT_THAT(transform.ToAbsoluteSpace(Orientation2d::kEast),
+              Eq(Orientation2d::kSouth));
+  EXPECT_THAT(transform.ToRelativeSpace(Orientation2d::kSouth),
+              Eq(Orientation2d::kEast));
+}
+
+TEST(RotateTest, ToAbsoluteSpaceAffset) {
+  Transform2d transform{Position2d{5, 3}, Orientation2d::kWest};
+  EXPECT_THAT(transform.ToAbsoluteSpace(Position2d{2, -3}),
+              Eq(Position2d{2, 1}));
+  EXPECT_THAT(transform.ToRelativeSpace(Position2d{2, 1}),
+              Eq(Position2d{2, -3}));
+  EXPECT_THAT(transform.ToAbsoluteSpace(Vector2d{2, -3}), Eq(Vector2d{-3, -2}));
+  EXPECT_THAT(transform.ToRelativeSpace(Vector2d{-3, -2}), Eq(Vector2d{2, -3}));
+  EXPECT_THAT(transform.ToAbsoluteSpace(Orientation2d::kEast),
+              Eq(Orientation2d::kNorth));
+  EXPECT_THAT(transform.ToRelativeSpace(Orientation2d::kNorth),
+              Eq(Orientation2d::kEast));
+}
+
 }  // namespace
 }  // namespace deepmind::lab2d::math

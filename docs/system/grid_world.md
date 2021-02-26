@@ -436,6 +436,58 @@ Returns `count` random pieces belonging to a certain group in a random order.
 Returns pieces belonging to a certain group in a random order, where each piece
 has the given probability of being returned.
 
+### Converting coordinates
+
+Each piece has a position and an orientation (in absolute space). This
+determines for each piece a relative-space grid in which the piece is at the
+(relative) origin and its orientation is (relative) North.
+
+For example, here is a piece (marked `R`) facing absolute East, and its relative
+grid. A second piece (marked `X`) can be expressed in absolute terms or relative
+to `R`:
+
+```text
+          grid origin
+          A-------------> E
+          |   X-->u
+          |         W
+          |         ^
+          |         |
+          |         |
+          |  S<-----R------->N
+          |         |
+          |         |
+          |         v
+          v         E
+          S
+```
+
+Here:
+
+* `A` is the origin of the absolute-space grid (origin at top-left).
+* `R` is the origin of the relative-space grid whose position and orientation
+   are relative to the given piece.
+* `X` is a test particle with orientation `u`. `X`'s position is in the absolute
+  South-East pointing absolute East. Relative to `R`, it is in `R`'s relative
+  South-West and pointing North.
+
+#### `grid:toAbsolutePosition(piece, position)` &rarr; {x, y}
+
+Converts `position` in `piece` relative-space to a position in absolute-space.
+
+#### `grid:toRelativePosition(piece, position)` &rarr; {x, y}
+
+Converts `position` in absolute-space to `piece` relative-space.
+
+#### `grid:toAbsoluteDirection(piece, direction)` &rarr; {x, y}
+
+Converts `direction` in `piece` relative-space to a direction in absolute-space.
+
+#### `grid:toRelativeDirection(piece, direction)` &rarr; {x, y}
+
+Converts `direction` in absolute-space to `piece` relative-space.
+
+
 ### Updating
 
 All updates are queued when called, then processed during `grid:update(random,

@@ -300,6 +300,44 @@ function tests.userState()
   asserts.EQ(nil, grid:userState(piece1))
 end
 
+function tests.worldPosition()
+  local random = require 'system.random'
+  local grid = TEST_WORLD.world:createGrid{size = {width = 5, height = 5}}
+  local piece = grid:createPiece('type0', {pos = {5, 3}, orientation = 'E'})
+  asserts.tablesEQ(grid:toAbsolutePosition(piece, {0, 0}), {5, 3})
+  asserts.tablesEQ(grid:toAbsolutePosition(piece, {0, -1}), {6, 3})
+  asserts.tablesEQ(grid:toAbsolutePosition(piece, {2, 0}), {5, 5})
+  asserts.tablesEQ(grid:toAbsolutePosition(piece, {2, -3}), {8, 5})
+end
+
+function tests.modelPosition()
+  local random = require 'system.random'
+  local grid = TEST_WORLD.world:createGrid{size = {width = 5, height = 5}}
+  local piece = grid:createPiece('type0', {pos = {5, 3}, orientation = 'E'})
+  asserts.tablesEQ(grid:toRelativePosition(piece, {5, 3}), {0, 0})
+  asserts.tablesEQ(grid:toRelativePosition(piece, {6, 3}), {0, -1})
+  asserts.tablesEQ(grid:toRelativePosition(piece, {5, 5}), {2, 0})
+  asserts.tablesEQ(grid:toRelativePosition(piece, {8, 5}), {2, -3})
+end
+
+function tests.worldDirection()
+  local random = require 'system.random'
+  local grid = TEST_WORLD.world:createGrid{size = {width = 5, height = 5}}
+  local piece = grid:createPiece('type0', {pos = {5, 3}, orientation = 'E'})
+  asserts.tablesEQ(grid:toAbsoluteDirection(piece, {0, -1}), {1, 0})
+  asserts.tablesEQ(grid:toAbsoluteDirection(piece, {2, 0}), {0, 2})
+  asserts.tablesEQ(grid:toAbsoluteDirection(piece, {2, -3}), {3, 2})
+end
+
+function tests.modelDirection()
+  local random = require 'system.random'
+  local grid = TEST_WORLD.world:createGrid{size = {width = 5, height = 5}}
+  local piece = grid:createPiece('type0', {pos = {5, 3}, orientation = 'E'})
+  asserts.tablesEQ(grid:toRelativeDirection(piece, {1, 0}), {0, -1})
+  asserts.tablesEQ(grid:toRelativeDirection(piece, {0, 2}), {2, 0})
+  asserts.tablesEQ(grid:toRelativeDirection(piece, {3, 2}), {2, -3})
+end
+
 function tests.clearUserState()
   local grid = TEST_WORLD.world:createGrid{size = {width = 5, height = 1}}
   local piece0 = grid:createPiece('type0', {pos = {2, 0}, orientation = 'E'})

@@ -115,8 +115,8 @@ constexpr inline Orientation2d FromView(Orientation2d viewer,
 struct Position2d {
   int x;
   int y;
-  Position2d& operator+=(Vector2d rhs);
-  Position2d& operator-=(Vector2d rhs);
+  constexpr Position2d& operator+=(Vector2d rhs);
+  constexpr Position2d& operator-=(Vector2d rhs);
   friend constexpr Position2d operator+(Position2d lhs, Vector2d rhs);
   friend constexpr Position2d operator+(Vector2d lhs, Position2d rhs);
   friend constexpr Position2d operator-(Position2d lhs, Vector2d rhs);
@@ -132,13 +132,13 @@ struct Position2d {
 struct Vector2d {
   int x;
   int y;
-  Vector2d& operator+=(Vector2d rhs);
-  Vector2d& operator-=(Vector2d rhs);
-  Vector2d& operator*=(int);
-  Vector2d& operator/=(int);
-  Vector2d& operator*=(Rotate2d);
+  constexpr Vector2d& operator+=(Vector2d rhs);
+  constexpr Vector2d& operator-=(Vector2d rhs);
+  constexpr Vector2d& operator*=(int);
+  constexpr Vector2d& operator/=(int);
+  constexpr Vector2d& operator*=(Rotate2d);
 
-  Vector2d operator-() { return {-x, -y}; }
+  constexpr Vector2d operator-() { return {-x, -y}; }
 
   friend constexpr Vector2d operator*(Vector2d lhs, int rhs);
   friend constexpr Vector2d operator*(int lhs, Vector2d rhs);
@@ -146,8 +146,8 @@ struct Vector2d {
   friend constexpr Vector2d operator+(Vector2d lhs, Vector2d rhs);
   friend constexpr Vector2d operator-(Vector2d lhs, Vector2d rhs);
 
-  friend Vector2d operator*(Vector2d lhs, Rotate2d rhs);
-  friend Vector2d operator*(Rotate2d lhs, Vector2d rhs);
+  friend constexpr Vector2d operator*(Vector2d lhs, Rotate2d rhs);
+  friend constexpr Vector2d operator*(Rotate2d lhs, Vector2d rhs);
 
   friend constexpr bool operator==(Vector2d lhs, Vector2d rhs) {
     return lhs.x == rhs.x && lhs.y == rhs.y;
@@ -185,20 +185,67 @@ struct Size2d {
 };
 
 struct Transform2d {
-  Position2d position;
-  Orientation2d orientation;
   friend constexpr bool operator==(Transform2d lhs, Transform2d rhs) {
     return lhs.position == rhs.position && lhs.orientation == rhs.orientation;
   }
+
+  // Given a transform ({10, 3}, E):
+  //   +-------------> E
+  //   |   X-->u
+  //   |
+  //   |  S<-----+
+  //   |         |
+  //   |         |
+  //   |         v
+  //   v         E
+  //   S
+  //
+  //   `X` position is (4, 1) in absolute-space.
+  //   `X` position is (6, -2) in relative-space.
+  //   `u` vector is (3, 0) in absolute-space.
+  //   `u` vector is (0, -3) in absolute-space.
+
+  // Returns absolute-space orientation of a relative-space orientation.
+  constexpr Orientation2d ToAbsoluteSpace(Orientation2d orientation_ws) const {
+    return orientation_ws + (orientation - Orientation2d::kNorth);
+  }
+
+  // Returns absolute-space vector of a relative-space vector.
+  constexpr Vector2d ToAbsoluteSpace(const Vector2d& direction_rs) const {
+    return (orientation - Orientation2d::kNorth) * direction_rs;
+  }
+
+  // Returns absolute-space position of a relative-space position.
+  constexpr Position2d ToAbsoluteSpace(const Position2d& position_rs) const {
+    return position + ToAbsoluteSpace(position_rs - Position2d{0, 0});
+  }
+
+  // Returns relative-space orientation of a absolute-space orientation.
+  constexpr Vector2d ToRelativeSpace(const Vector2d& direction_ws) const {
+    return (Orientation2d::kNorth - this->orientation) * direction_ws;
+  }
+
+  // Returns relative-space vector of a absolute-space vector.
+  constexpr Position2d ToRelativeSpace(const Position2d& position_ws) const {
+    return ToRelativeSpace(position_ws - position) + Position2d{0, 0};
+  }
+
+  // Returns relative-space position of a absolute-space position.
+  constexpr Orientation2d ToRelativeSpace(Orientation2d orientation_ws) const {
+    return orientation_ws + (Orientation2d::kNorth - orientation);
+  }
+
+  Position2d position;
+  Orientation2d orientation;
 };
 
-inline Position2d& Position2d::operator+=(Vector2d rhs) {
+inline constexpr Position2d& Position2d::operator+=(Vector2d rhs) {
   x += rhs.x;
   y += rhs.y;
   return *this;
 }
 
-inline Position2d& Position2d::operator-=(Vector2d rhs) {
+inline constexpr Position2d& Position2d::operator-=(Vector2d rhs) {
   x -= rhs.x;
   y -= rhs.y;
   return *this;
@@ -217,22 +264,22 @@ inline constexpr Vector2d operator-(Position2d lhs, Position2d rhs) {
   return {lhs.x - rhs.x, lhs.y - rhs.y};
 }
 
-inline Vector2d& Vector2d::operator+=(Vector2d rhs) {
+inline constexpr Vector2d& Vector2d::operator+=(Vector2d rhs) {
   x += rhs.x;
   y += rhs.y;
   return *this;
 }
-inline Vector2d& Vector2d::operator-=(Vector2d rhs) {
+inline constexpr Vector2d& Vector2d::operator-=(Vector2d rhs) {
   x -= rhs.x;
   y -= rhs.y;
   return *this;
 }
-inline Vector2d& Vector2d::operator*=(int rhs) {
+inline constexpr Vector2d& Vector2d::operator*=(int rhs) {
   x *= rhs;
   y *= rhs;
   return *this;
 }
-inline Vector2d& Vector2d::operator/=(int rhs) {
+inline constexpr Vector2d& Vector2d::operator/=(int rhs) {
   x /= rhs;
   y /= rhs;
   return *this;
@@ -258,7 +305,7 @@ inline constexpr Vector2d operator-(Vector2d lhs, Vector2d rhs) {
   return {lhs.x - rhs.x, lhs.y - rhs.y};
 }
 
-inline Vector2d& Vector2d::operator*=(Rotate2d rhs) {
+inline constexpr Vector2d& Vector2d::operator*=(Rotate2d rhs) {
   switch (rhs) {
     case Rotate2d::k0:
       return *this;
@@ -275,13 +322,13 @@ inline Vector2d& Vector2d::operator*=(Rotate2d rhs) {
   std::abort();
 }
 
-inline Vector2d operator*(Vector2d lhs, Rotate2d rhs) {
+inline constexpr Vector2d operator*(Vector2d lhs, Rotate2d rhs) {
   Vector2d result = lhs;
   result *= rhs;
   return result;
 }
 
-inline Vector2d operator*(Rotate2d lhs, Vector2d rhs) {
+inline constexpr Vector2d operator*(Rotate2d lhs, Vector2d rhs) {
   Vector2d result = rhs;
   result *= lhs;
   return result;

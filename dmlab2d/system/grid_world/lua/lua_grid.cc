@@ -402,6 +402,10 @@ void LuaGrid::Register(lua_State* L) {
       {"__tostring", &Class::Member<&LuaGrid::ToString>},
       {"transform", &Class::Member<&LuaGrid::Transform>},
       {"position", &Class::Member<&LuaGrid::Position>},
+      {"toRelativeDirection", &Class::Member<&LuaGrid::ToRelativeDirection>},
+      {"toRelativePosition", &Class::Member<&LuaGrid::ToRelativePosition>},
+      {"toAbsoluteDirection", &Class::Member<&LuaGrid::ToAbsoluteDirection>},
+      {"toAbsolutePosition", &Class::Member<&LuaGrid::ToAbsolutePosition>},
       {"typeName", &Class::Member<&LuaGrid::GetState>},
       {"state", &Class::Member<&LuaGrid::GetState>},
       {"layer", &Class::Member<&LuaGrid::GetLayer>},
@@ -747,6 +751,66 @@ lua::NResultsOr LuaGrid::PushPiece(lua_State* L,
   }
   grid_->PushPiece(piece, orientation, perspective);
   return 0;
+}
+
+lua::NResultsOr LuaGrid::ToRelativeDirection(lua_State* L) {
+  Piece piece;
+  if (!IsFound(Read(L, 2, &piece))) {
+    return "Arg 1 must be a piece!";
+  }
+  math::Transform2d transform = grid_->GetPieceTransform(piece);
+  math::Vector2d direction;
+
+  if (!IsFound(Read(L, 3, &direction))) {
+    return "Arg 2 must be a valid direction vector.";
+  }
+  Push(L, transform.ToRelativeSpace(direction));
+  return 1;
+}
+
+lua::NResultsOr LuaGrid::ToAbsoluteDirection(lua_State* L) {
+  Piece piece;
+  if (!IsFound(Read(L, 2, &piece))) {
+    return "Arg 1 must be a piece!";
+  }
+  math::Transform2d transform = grid_->GetPieceTransform(piece);
+  math::Vector2d direction;
+
+  if (!IsFound(Read(L, 3, &direction))) {
+    return "Arg 2 must be a valid direction vector.";
+  }
+  Push(L, transform.ToAbsoluteSpace(direction));
+  return 1;
+}
+
+lua::NResultsOr LuaGrid::ToRelativePosition(lua_State* L) {
+  Piece piece;
+  if (!IsFound(Read(L, 2, &piece))) {
+    return "Arg 1 must be a piece!";
+  }
+  math::Transform2d transform = grid_->GetPieceTransform(piece);
+  math::Position2d pos;
+  if (!IsFound(Read(L, 3, &pos))) {
+    return "Arg 2 must be a valid position.";
+  }
+
+  Push(L, transform.ToRelativeSpace(pos));
+  return 1;
+}
+
+lua::NResultsOr LuaGrid::ToAbsolutePosition(lua_State* L) {
+  Piece piece;
+  if (!IsFound(Read(L, 2, &piece))) {
+    return "Arg 1 must be a piece!";
+  }
+  math::Transform2d transform = grid_->GetPieceTransform(piece);
+  math::Position2d pos;
+  if (!IsFound(Read(L, 3, &pos))) {
+    return "Arg 2 must be a valid position.";
+  }
+
+  Push(L, transform.ToAbsoluteSpace(pos));
+  return 1;
 }
 
 // Returns 3 values.
