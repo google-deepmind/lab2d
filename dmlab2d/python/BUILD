@@ -42,7 +42,7 @@ pytype_strict_library(
     ],
 )
 
-py2and3_strict_test(
+py_test(
     name = "dmlab2d_env_test",
     srcs = ["dmlab2d_env_test.py"],
     deps = [
