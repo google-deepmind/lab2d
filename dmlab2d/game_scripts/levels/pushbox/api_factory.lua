@@ -105,38 +105,38 @@ function api_factory.apiFactory(env)
 
   function api:_createWorldConfig()
     return {
-      renderOrder = {'pieces', 'logic'},
-      updateOrder = {'move'},
-      states = {
-        wall = {
-          layer = 'pieces',
-          sprite = '*Wall',
-        },
-        spawnPoint = {
-          groups = {'spawnPoints'},
-          layer = 'invisible',
-        },
-        player = {
-          groups = {'movers'},
-          layer = 'pieces',
-          sprite = 'Player',
-        },
-        box = {
-          layer = 'pieces',
-          sprite = 'Box',
-        },
-        boxGoal = {
-          layer = 'logic',
-          sprite = '&BoxGoal',
-          contact = 'goal',
-        },
-        goal = {
-          groups = {'empty_goal'},
-          layer = 'logic',
-          sprite = 'XGoal',
-          contact = 'goal',
-        },
-      }
+        renderOrder = {'pieces', 'logic'},
+        updateOrder = {'move'},
+        states = {
+            wall = {
+                layer = 'pieces',
+                sprite = '*Wall',
+            },
+            spawnPoint = {
+                groups = {'spawnPoints'},
+                layer = 'invisible',
+            },
+            player = {
+                groups = {'movers'},
+                layer = 'pieces',
+                sprite = 'Player',
+            },
+            box = {
+                layer = 'pieces',
+                sprite = 'Box',
+            },
+            boxGoal = {
+                layer = 'logic',
+                sprite = '&BoxGoal',
+                contact = 'goal',
+            },
+            goal = {
+                groups = {'empty_goal'},
+                layer = 'logic',
+                sprite = 'XGoal',
+                contact = 'goal',
+            },
+        }
     }
   end
 
@@ -181,23 +181,23 @@ function api_factory.apiFactory(env)
     }
 
     states.player = {
-      onUpdate = {
-        move = function(grid, piece)
-          if self._move ~= 0 then
-            local compass = _COMPASS[self._move]
-            local hit, block = grid:rayCastDirection(
-                'pieces', grid:position(piece), _DIRECTION[compass])
-            local connect = hit and grid:state(block) ~= 'wall'
-            if connect then
-              grid:connect(piece, block)
+        onUpdate = {
+            move = function(grid, piece)
+              if self._move ~= 0 then
+                local compass = _COMPASS[self._move]
+                local hit, block = grid:rayCastDirection(
+                    'pieces', grid:position(piece), _DIRECTION[compass])
+                local connect = hit and grid:state(block) ~= 'wall'
+                if connect then
+                  grid:connect(piece, block)
+                end
+                grid:moveAbs(piece, compass)
+                if connect then
+                  grid:disconnect(piece)
+                end
+              end
             end
-            grid:moveAbs(piece, compass)
-            if connect then
-              grid:disconnect(piece)
-            end
-          end
-        end
-      }
+        }
     }
     return states
   end
@@ -218,24 +218,24 @@ function api_factory.apiFactory(env)
 
     self._move = 0
     local grid = self._world:createGrid{
-      stateCallbacks = self:stateCallbacks(),
-      topology = grid_world.TOPOLOGY[settings.topology],
-      size = settings.gridShape,
+        stateCallbacks = self:stateCallbacks(),
+        topology = grid_world.TOPOLOGY[settings.topology],
+        size = settings.gridShape,
     }
     self._grid = grid
     local piecesCreated = grid:createLayout{
-      stateMap = {
-        P = 'spawnPoint',
-        B = 'box',
-        X = 'goal',
-        ['&'] = 'boxGoal',
-        ['*'] = 'wall',
-      },
-      layout = layout,
+        stateMap = {
+            P = 'spawnPoint',
+            B = 'box',
+            X = 'goal',
+            ['&'] = 'boxGoal',
+            ['*'] = 'wall',
+        },
+        layout = layout,
     }
     local piecesCreated = grid:createLayout{
-      stateMap = {['&'] = 'box'},
-      layout = layout,
+        stateMap = {['&'] = 'box'},
+        layout = layout,
     }
     local spawnHere = grid:groupRandom(random, 'spawnPoints')
     self._avatar = grid:createPiece('player', grid:transform(spawnHere))

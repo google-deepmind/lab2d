@@ -36,16 +36,16 @@ end
 
 function tests.anyDoesntRaise()
   local settings = {
-    a = read_settings.any(),
-    b = read_settings.any(),
-    c = read_settings.any(),
+      a = read_settings.any(),
+      b = read_settings.any(),
+      c = read_settings.any(),
   }
   local kwargs = {
-    ['a.1'] = 1,
-    ['b.1'] = 2,
-    ['b.2'] = 3,
-    ['c.cat.m'] = 4,
-    ['c.cat.n'] = 5,
+      ['a.1'] = 1,
+      ['b.1'] = 2,
+      ['b.2'] = 3,
+      ['c.cat.m'] = 4,
+      ['c.cat.n'] = 5,
   }
   read_settings.apply(kwargs, settings)
   asserts.tablesEQ(settings, {a = {1}, b = {2, 3}, c = {cat = {m = 4, n = 5}}})
@@ -101,15 +101,15 @@ end
 
 function tests.applyWorks()
   local settings = {
-    a = 10,
-    b = 20,
-    c = {c1 = 30, c2 = 40}
+      a = 10,
+      b = 20,
+      c = {c1 = 30, c2 = 40}
   }
   local kwargs = {
-    ['a'] = 100,
-    ['b'] = 200,
-    ['c.c1'] = 300,
-    ['c.c2'] = 400,
+      ['a'] = 100,
+      ['b'] = 200,
+      ['c.c1'] = 300,
+      ['c.c2'] = 400,
   }
   read_settings.apply(kwargs, settings)
   asserts.tablesEQ(settings, {
@@ -121,9 +121,9 @@ end
 
 function tests.applyWorksPartial()
   local settings = {
-    a = 10,
-    b = 20,
-    c = {c1 = 30, c2 = 40}
+      a = 10,
+      b = 20,
+      c = {c1 = 30, c2 = 40}
   }
   local kwargs = {['c.c2'] = 400}
   read_settings.apply(kwargs, settings)
@@ -136,8 +136,8 @@ end
 
 function tests.missingKeyRaises()
     local settings = {
-    a = 10,
-    b = 20,
+        a = 10,
+        b = 20,
     c = {c1 = 30, c2 = 40}
   }
   local kwargs = {['badKey'] = 400}

@@ -19,16 +19,16 @@ local paths = require 'common.paths'
 local tables = require 'common.tables'
 
 return {
-  split = strings.split,
-  quoteString = strings.quote,
-  fromString = strings.convertFrom,
-  pathJoin = paths.join,
-  fileExists = paths.fileExists,
-  dirname = paths.dirname,
-  shallowCopy = tables.shallowCopy,
-  deepCopy = tables.deepCopy,
-  ['tostring'] = tables.tostring,
-  tostringOneLine = tables.tostringOneLine,
-  pairsByKeys = tables.pairsByKeys,
-  flatten = tables.flatten,
+    split = strings.split,
+    quoteString = strings.quote,
+    fromString = strings.convertFrom,
+    pathJoin = paths.join,
+    fileExists = paths.fileExists,
+    dirname = paths.dirname,
+    shallowCopy = tables.shallowCopy,
+    deepCopy = tables.deepCopy,
+    ['tostring'] = tables.tostring,
+    tostringOneLine = tables.tostringOneLine,
+    pairsByKeys = tables.pairsByKeys,
+    flatten = tables.flatten,
 }

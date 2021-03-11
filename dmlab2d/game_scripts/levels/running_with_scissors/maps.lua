@@ -101,8 +101,8 @@ local STATE_MAP = {
 local maps = {}
 for key, layout in pairs(LAYOUTS) do
   maps[key] = {
-    layout = layout,
-    stateMap = STATE_MAP
+      layout = layout,
+      stateMap = STATE_MAP
   }
 end
 

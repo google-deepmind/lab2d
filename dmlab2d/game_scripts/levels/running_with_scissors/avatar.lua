@@ -85,13 +85,13 @@ function Avatar.defaultSettings()
       -- To enable it, set it equal to one of {'rock', 'paper', or 'scissors'}.
       rewardOnCollectingSpecificItem = '',
       view = {
-        left = 5,
-        right = 5,
-        forward = 9,
-        backward = 1,
-        centered = false,
-        otherPlayersLookSame = true,
-        thisPlayerLooksBlue = true,
+          left = 5,
+          right = 5,
+          forward = 9,
+          backward = 1,
+          centered = false,
+          otherPlayersLookSame = true,
+          thisPlayerLooksBlue = true,
       },
   }
 end
@@ -359,9 +359,9 @@ function Avatar:addPlayerCallbacks(callbacks)
   }
 
   callbacks[self._waitState] = {
-    respawnUpdate = function(grid, player, frames)
-      grid:teleportToGroup(player, 'spawnPoints', self._type)
-    end
+      respawnUpdate = function(grid, player, frames)
+        grid:teleportToGroup(player, 'spawnPoints', self._type)
+      end
   }
 end
 

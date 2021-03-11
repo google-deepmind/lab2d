@@ -75,9 +75,9 @@ end
 
 function tests.shallowCopyFlatTable()
   assertShallowCopyIsEqual({
-    ['myKey'] = 'hello',
-    [7] = 'there',
-    ['thinking'] = 1
+      ['myKey'] = 'hello',
+      [7] = 'there',
+      ['thinking'] = 1
   })
 end
 
@@ -97,11 +97,11 @@ function tests.shallowCopyBigTable()
   local mid = {midKey = leaf}
 
   assertShallowCopyIsEqual({
-    'try',
-    'something',
-    'here',
-    [key] = leaf,
-    anotherKey = mid
+      'try',
+      'something',
+      'here',
+      [key] = leaf,
+      anotherKey = mid
   })
 end
 
@@ -160,9 +160,9 @@ end
 
 function tests.deepCopyFlatTable()
   assertDeepCopyIsEqual({
-    ['myKey'] = 'hello',
-    [7] = 'there',
-    ['thinking'] = 1
+      ['myKey'] = 'hello',
+      [7] = 'there',
+      ['thinking'] = 1
   })
 end
 
@@ -182,11 +182,11 @@ function tests.deepCopyBigTable()
   local mid = {midKey = leaf}
 
   assertDeepCopyIsEqual({
-    'try',
-    'something',
-    'here',
-    [key] = leaf,
-    anotherKey = mid
+      'try',
+      'something',
+      'here',
+      [key] = leaf,
+      anotherKey = mid
   })
 end
 

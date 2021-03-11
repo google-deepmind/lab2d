@@ -85,25 +85,25 @@ end
 function Simulation:worldConfig()
   local settings = self._settings
   local config = {
-    outOfBoundsSprite = 'OutOfBounds',
-    outOfViewSprite = 'OutOfView',
-    updateOrder = {'fruit'},
-    renderOrder = {'logic', 'pieces'},
-    customSprites = {},
-    hits = {},
-    states = {
-      wall = {
-        layer = 'pieces',
-        sprite = 'Wall',
-      },
-      ['spawn.any'] = {groups = {'spawn.any'}},
-      apple = {
-        layer = 'logic',
-        sprite = 'Apple',
-      },
-      ['apple.wait'] = {layer = 'waitCalc'},
-      ['apple.possible'] = {},
-    }
+      outOfBoundsSprite = 'OutOfBounds',
+      outOfViewSprite = 'OutOfView',
+      updateOrder = {'fruit'},
+      renderOrder = {'logic', 'pieces'},
+      customSprites = {},
+      hits = {},
+      states = {
+          wall = {
+              layer = 'pieces',
+              sprite = 'Wall',
+          },
+          ['spawn.any'] = {groups = {'spawn.any'}},
+          apple = {
+              layer = 'logic',
+              sprite = 'Apple',
+          },
+          ['apple.wait'] = {layer = 'waitCalc'},
+          ['apple.possible'] = {},
+      }
   }
   local waitNames = {}
   for i, prob in ipairs(settings.appleRespawnProbabilities) do
@@ -113,9 +113,9 @@ function Simulation:worldConfig()
     table.insert(config.updateOrder, {name = name, func = 'respawn'})
     local waiters = prob > 0 and 'waiter'
     config.states['apple.wait.' .. i] = {
-      layer = 'wait',
-      groups = {name},
-      sprite = spriteName,
+        layer = 'wait',
+        groups = {name},
+        sprite = spriteName,
     }
   end
   self._waitNames = waitNames

@@ -48,8 +48,8 @@ local _DEFAULT_STATE_MAP = {
 }
 
 return {
-  default = {
-    layout = _DEFAULT_LAYOUT,
-    stateMap = _DEFAULT_STATE_MAP,
-  }
+    default = {
+        layout = _DEFAULT_LAYOUT,
+        stateMap = _DEFAULT_STATE_MAP,
+    }
 }

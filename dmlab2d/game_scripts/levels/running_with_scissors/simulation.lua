@@ -49,39 +49,39 @@ end
 
 function Simulation:worldConfig()
   return {
-    outOfBoundsSprite = 'OutOfBounds',
-    outOfViewSprite = 'OutOfView',
-    updateOrder = {'fruit'},
-    renderOrder = {'logic', 'pieces'},
-    customSprites = {},
-    hits = {},
-    states = {
-      wall = {
-        layer = 'pieces',
-        sprite = 'Wall',
-      },
-      spawnPoint = {
-        groups = {'spawnPoints'},
-        layer = 'invisible',
-        sprite = 'StartPoints',
-      },
-      random = {
-        layer = 'logic',
-      },
-      rock = {
-        layer = 'logic',
-        sprite = 'Rock',
-      },
-      paper = {
-        layer = 'logic',
-        sprite = 'Paper',
-      },
-      scissors = {
-        layer = 'logic',
-        sprite = 'Scissors',
-      },
-      pickedUp = {},
-    }
+      outOfBoundsSprite = 'OutOfBounds',
+      outOfViewSprite = 'OutOfView',
+      updateOrder = {'fruit'},
+      renderOrder = {'logic', 'pieces'},
+      customSprites = {},
+      hits = {},
+      states = {
+          wall = {
+              layer = 'pieces',
+              sprite = 'Wall',
+          },
+          spawnPoint = {
+              groups = {'spawnPoints'},
+              layer = 'invisible',
+              sprite = 'StartPoints',
+          },
+          random = {
+              layer = 'logic',
+          },
+          rock = {
+              layer = 'logic',
+              sprite = 'Rock',
+          },
+          paper = {
+              layer = 'logic',
+              sprite = 'Paper',
+          },
+          scissors = {
+              layer = 'logic',
+              sprite = 'Scissors',
+          },
+          pickedUp = {},
+      }
   }
 end
 

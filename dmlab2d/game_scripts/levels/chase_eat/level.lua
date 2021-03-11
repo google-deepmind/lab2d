@@ -217,7 +217,7 @@ local function apiFactory(env)
     }
     table.insert(specs, textSpec)
     local worldLayerView = world:createView{
-      layout = self:textMap()
+        layout = self:textMap()
     }
     local worldView = tile.Scene{
         shape = worldLayerView:gridSize(),
@@ -245,47 +245,47 @@ local function apiFactory(env)
 
   function api:_createWorldConfig()
     local config = {
-      renderOrder = {'pills', 'pieces', 'foe'},
-      updateOrder = {'move', 'chase'},
-      states = {
-          wall = {
-              layer = 'pieces',
-              sprite = '#Wall',
-          },
-          spawn = {
-              groups = {'spawn'},
-              layer = 'spawn',
-          },
-          player = {
-              layer = 'pieces',
-              groups = {'movers'},
-              sprite = 'Player',
-              contact = 'avatar',
-          },
-          ['player.wait'] = {
-              layer = 'pieces',
-              sprite = 'Player',
-          },
-          food = {
-              layer = 'pills',
-              sprite = '.Food',
-              groups = {'food'},
-          },
-          pill = {
-              layer = 'pills',
-              sprite = '+Pill',
-              groups = {'food'},
-          },
-          foe = {
-              layer = 'foe',
-              sprite = 'Foe',
-              groups = {'foes', 'allFoes'},
-          },
-          ['foe.food'] = {
-              layer = 'foe',
-              sprite = 'FoeFood',
-              groups = {'foes.food', 'allFoes'},
-          },
+        renderOrder = {'pills', 'pieces', 'foe'},
+        updateOrder = {'move', 'chase'},
+        states = {
+            wall = {
+                layer = 'pieces',
+                sprite = '#Wall',
+            },
+            spawn = {
+                groups = {'spawn'},
+                layer = 'spawn',
+            },
+            player = {
+                layer = 'pieces',
+                groups = {'movers'},
+                sprite = 'Player',
+                contact = 'avatar',
+            },
+            ['player.wait'] = {
+                layer = 'pieces',
+                sprite = 'Player',
+            },
+            food = {
+                layer = 'pills',
+                sprite = '.Food',
+                groups = {'food'},
+            },
+            pill = {
+                layer = 'pills',
+                sprite = '+Pill',
+                groups = {'food'},
+            },
+            foe = {
+                layer = 'foe',
+                sprite = 'Foe',
+                groups = {'foes', 'allFoes'},
+            },
+            ['foe.food'] = {
+                layer = 'foe',
+                sprite = 'FoeFood',
+                groups = {'foes.food', 'allFoes'},
+            },
         }
     }
     return config
@@ -322,38 +322,38 @@ local function apiFactory(env)
   function api:stateCallbacks()
     local states = {wall = {onHit = true}}
     states.player = {
-      onUpdate = {
-        move = function(grid, piece)
-          if self._move ~= 0 then
-            local compass = _COMPASS[self._move]
-            grid:setOrientation(piece, compass)
-            grid:moveRel(piece, 'N')
-          end
-        end
-      }
+        onUpdate = {
+            move = function(grid, piece)
+              if self._move ~= 0 then
+                local compass = _COMPASS[self._move]
+                grid:setOrientation(piece, compass)
+                grid:moveRel(piece, 'N')
+              end
+            end
+        }
     }
     states.food = {
-      onContact = {
-        avatar = {
-          enter = function(grid, food, avatar)
-            self._reward = self._reward + self._settings.food.reward
-            grid:removePiece(food)
-          end
+        onContact = {
+            avatar = {
+                enter = function(grid, food, avatar)
+                  self._reward = self._reward + self._settings.food.reward
+                  grid:removePiece(food)
+                end
+            }
         }
-      }
     }
     states.pill = {
-      onContact = {
-        avatar = {
-          enter = function(grid, piece, avatar)
-            local pill = self._settings.pill
-            self._reward = self._reward + pill.reward
-            grid:removePiece(piece)
-            self:_enablePowerUp()
-            self._endPill = self._steps + pill.duration
-          end
+        onContact = {
+            avatar = {
+                enter = function(grid, piece, avatar)
+                  local pill = self._settings.pill
+                  self._reward = self._reward + pill.reward
+                  grid:removePiece(piece)
+                  self:_enablePowerUp()
+                  self._endPill = self._steps + pill.duration
+                end
+            }
         }
-      }
     }
     states.foe = {
         onContact = {
@@ -403,14 +403,14 @@ local function apiFactory(env)
     local settings = self._settings
     self._move = 0
     local grid = self._world:createGrid{
-      stateCallbacks = self:stateCallbacks(),
-      topology = grid_world.TOPOLOGY[settings.topology],
-      layout = self:textMap(),
-      stateMap = {
-        ['*'] = 'wall',
-        ['#'] = 'wall',
-        ['.'] = 'spawn',
-      },
+        stateCallbacks = self:stateCallbacks(),
+        topology = grid_world.TOPOLOGY[settings.topology],
+        layout = self:textMap(),
+        stateMap = {
+            ['*'] = 'wall',
+            ['#'] = 'wall',
+            ['.'] = 'spawn',
+        },
     }
     self._grid = grid
     local spawnPoints = grid:groupShuffled(random, 'spawn')

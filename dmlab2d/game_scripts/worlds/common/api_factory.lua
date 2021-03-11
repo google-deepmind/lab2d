@@ -97,10 +97,10 @@ local function apiFactory(env)
     self.avatars:addPlayerCallbacks(stateCallbacks)
     local textMap = self.simulation:textMap()
     self._grid = self._world:createGrid{
-      layout = textMap.layout,
-      stateMap = textMap.stateMap,
-      stateCallbacks = stateCallbacks,
-      topology = grid_world.TOPOLOGY[self._settings.topology],
+        layout = textMap.layout,
+        stateMap = textMap.stateMap,
+        stateCallbacks = stateCallbacks,
+        topology = grid_world.TOPOLOGY[self._settings.topology],
     }
 
     self.simulation:start(self._grid)

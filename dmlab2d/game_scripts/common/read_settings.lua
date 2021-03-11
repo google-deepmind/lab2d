@@ -129,11 +129,11 @@ Allows any tree of settings without raising an error.
 ```lua
   local settings = read_settings.any()
   local kwargs = {
-    ['a.1'] = 1,
-    ['b.1'] = 2,
-    ['b.2'] = 3,
-    ['c.cat.m'] = 4,
-    ['c.cat.n'] = 5,
+      ['a.1'] = 1,
+      ['b.1'] = 2,
+      ['b.2'] = 3,
+      ['c.cat.m'] = 4,
+      ['c.cat.n'] = 5,
   }
   read_settings.apply(kwargs, settings)
   asserts.tablesEQ(settings, {a = {1}, b = {2, 3}, c = {cat = {m = 4, n = 5}}})
@@ -158,9 +158,9 @@ local function kwargs()
 end
 
 return {
-  any = any,
-  apply = apply,
-  settings = settings,
-  default = default,
-  kwargs = kwargs
+    any = any,
+    apply = apply,
+    settings = settings,
+    default = default,
+    kwargs = kwargs
 }

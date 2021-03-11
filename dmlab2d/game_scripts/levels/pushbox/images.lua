@@ -62,9 +62,9 @@ return {
     player = function()
       return {
           palette = {
-            ['*'] = {0, 0, 255, 255},  -- One pixel
-            ['@'] = {0, 0, 127, 255},
-            ['#'] = {255, 255, 255, 255},
+              ['*'] = {0, 0, 255, 255},  -- One pixel
+              ['@'] = {0, 0, 127, 255},
+              ['#'] = {255, 255, 255, 255},
           },
           text = PLAYER_TEXT,
           noRotate = true,
@@ -84,8 +84,8 @@ return {
     goal = function()
       return {
           palette = {
-            ['#'] = {255, 0, 0, 255},
-            ['*'] = {64, 64, 64, 160}, -- One pixel
+              ['#'] = {255, 0, 0, 255},
+              ['*'] = {64, 64, 64, 160}, -- One pixel
           },
           text = GOAL,
           noRotate = true,

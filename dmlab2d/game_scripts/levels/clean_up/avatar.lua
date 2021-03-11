@@ -77,14 +77,14 @@ function Avatar.defaultSettings()
       -- negative.
       rewardForContribution = 0,
       view = {
-        left = 5,
-        right = 5,
-        forward = 9,
-        backward = 1,
-        centered = false,
-        otherPlayersLookSame = false,
-        followPlayer = true,
-        thisPlayerLooksBlue = true,
+          left = 5,
+          right = 5,
+          forward = 9,
+          backward = 1,
+          centered = false,
+          otherPlayersLookSame = false,
+          followPlayer = true,
+          thisPlayerLooksBlue = true,
       },
   }
 end
@@ -335,9 +335,9 @@ function Avatar:addPlayerCallbacks(callbacks)
   }
 
   callbacks[self._waitState] = {
-    respawnUpdate = function(grid, player, frames)
-      grid:teleportToGroup(player, 'spawnPoints', self._state)
-    end
+      respawnUpdate = function(grid, player, frames)
+        grid:teleportToGroup(player, 'spawnPoints', self._state)
+      end
   }
 end
 

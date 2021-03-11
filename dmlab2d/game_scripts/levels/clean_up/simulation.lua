@@ -55,40 +55,40 @@ end
 
 function Simulation:worldConfig()
   return {
-    outOfBoundsSprite = 'OutOfBounds',
-    outOfViewSprite = 'OutOfView',
-    updateOrder = {'fruit'},
-    renderOrder = {'logic', 'pieces'},
-    customSprites = {},
-    hits = {},
-    states = {
-      wall = {
-        layer = 'pieces',
-        sprite = 'Wall',
-      },
-      spawnPoint = {groups = {'spawnPoints'}},
-      apple = {
-        layer = 'logic',
-        sprite = 'Apple',
-      },
-      ['apple.wait'] = {
-        layer = 'logic',
-        groups = {'apple.wait'},
-      },
-      ['river.water'] = {
-        groups = {'river.water'},
-        layer = 'logic',
-        sprite = 'Water',
-      },
-      ['river.mud'] = {
-        layer = 'logic',
-        sprite = 'Mud',
-      },
-      stream = {
-        layer = 'logic',
-        sprite = 'Water',
-      },
-    }
+      outOfBoundsSprite = 'OutOfBounds',
+      outOfViewSprite = 'OutOfView',
+      updateOrder = {'fruit'},
+      renderOrder = {'logic', 'pieces'},
+      customSprites = {},
+      hits = {},
+      states = {
+          wall = {
+              layer = 'pieces',
+              sprite = 'Wall',
+          },
+          spawnPoint = {groups = {'spawnPoints'}},
+          apple = {
+              layer = 'logic',
+              sprite = 'Apple',
+          },
+          ['apple.wait'] = {
+              layer = 'logic',
+              groups = {'apple.wait'},
+          },
+          ['river.water'] = {
+              groups = {'river.water'},
+              layer = 'logic',
+              sprite = 'Water',
+          },
+          ['river.mud'] = {
+              layer = 'logic',
+              sprite = 'Mud',
+          },
+          stream = {
+              layer = 'logic',
+              sprite = 'Water',
+          },
+      }
   }
 end
 

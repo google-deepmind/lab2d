@@ -19,9 +19,9 @@ local test_runner = require 'testing.test_runner'
 
 local function mockWriter(expectedText)
   local writer = {
-    text = '',
-    expectedText = false,
-    messageWritten = false,
+      text = '',
+      expectedText = false,
+      messageWritten = false,
   }
 
   function writer:write(text)

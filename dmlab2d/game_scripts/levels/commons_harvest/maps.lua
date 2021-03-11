@@ -81,8 +81,8 @@ local _DEFAULT_STATE_MAP = {
 local layouts = {}
 for name, map in pairs(maps) do
   layouts[name] = {
-    layout = map,
-    stateMap = _DEFAULT_STATE_MAP
+      layout = map,
+      stateMap = _DEFAULT_STATE_MAP
   }
 end
 

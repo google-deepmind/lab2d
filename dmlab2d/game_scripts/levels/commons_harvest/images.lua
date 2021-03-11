@@ -36,12 +36,12 @@ local APPLE_TEXT = [[
 ]]
 
 local APPLE_PALETTE = {
-  ['1'] = {23, 168, 23, 255},
-  ['2'] = {20, 167, 20, 255},
-  ['3'] = {32, 190, 32, 255},
-  ['*'] = {26, 203, 26, 255},
-  ['8'] = {19, 213, 19, 255},
-  ['9'] = {21, 209, 21, 255},
+    ['1'] = {23, 168, 23, 255},
+    ['2'] = {20, 167, 20, 255},
+    ['3'] = {32, 190, 32, 255},
+    ['*'] = {26, 203, 26, 255},
+    ['8'] = {19, 213, 19, 255},
+    ['9'] = {21, 209, 21, 255},
 }
 
 
@@ -216,15 +216,15 @@ local PLAYER_TEXT = [[
 return {
     apple = function()
       return {
-        palette = APPLE_PALETTE,
-        text = APPLE_TEXT,
-        noRotate = true
+          palette = APPLE_PALETTE,
+          text = APPLE_TEXT,
+          noRotate = true
       }
     end,
     wall = function()
       return {
-        palette = WALL_PALETTE,
-        text = WALL_TEXT,
+          palette = WALL_PALETTE,
+          text = WALL_TEXT,
       }
     end,
     playerShape = function(name)
