@@ -7,15 +7,15 @@ cc_library(
     name = "python_headers_linux",
     hdrs = select(
         {
-            "@bazel_tools//tools/python:PY2": glob(["usr/include/python2.7/*.h"]),
-            "@bazel_tools//tools/python:PY3": glob(["usr/include/python3.8/**/*.h"]),
+            "@bazel_tools//tools/python:PY2": glob(["usr/include/python2.7/*.h", "opt/hostedtoolcache/Python/2.7.18/x64/include/python2.7/*.h"]),
+            "@bazel_tools//tools/python:PY3": glob(["usr/include/python3.8/**/*.h", "opt/hostedtoolcache/Python/3.8.8/x64/include/python3.8/**/*.h"]),
         },
         no_match_error = "Internal error, Python version should be one of PY2 or PY3",
     ),
     includes = select(
         {
-            "@bazel_tools//tools/python:PY2": ["usr/include/python2.7"],
-            "@bazel_tools//tools/python:PY3": ["usr/include/python3.8"],
+            "@bazel_tools//tools/python:PY2": ["usr/include/python2.7", "opt/hostedtoolcache/Python/2.7.18/x64/include/python2.7"],
+            "@bazel_tools//tools/python:PY3": ["usr/include/python3.8", "opt/hostedtoolcache/Python/3.8.8/x64/include/python3.8"],
         },
         no_match_error = "Internal error, Python version should be one of PY2 or PY3",
     ),

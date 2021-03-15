@@ -30,9 +30,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 2.7
       - name: install infrastructure (Linux)
         run: |
-          sudo apt-get install python-numpy python3-numpy python2-dev
+          sudo apt-get install python-numpy python3-dev python3-numpy
           sudo ln -s /usr/lib/llvm-10/include/c++/v1 /usr/include/c++/v1
         if: matrix.os.id == 'ubuntu-20.04'
       - name: build-and-test-lua5.1

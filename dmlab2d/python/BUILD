@@ -19,7 +19,7 @@ pybind_extension(
     ],
 )
 
-py2and3_strict_test(
+py_test(
     name = "dmlab2d_test",
     srcs = ["dmlab2d_test.py"],
     deps = [
