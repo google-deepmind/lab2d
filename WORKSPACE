@@ -10,8 +10,8 @@ http_archive(
 
 http_archive(
     name = "com_google_benchmark",
-    strip_prefix = "benchmark-master",
-    urls = ["https://github.com/google/benchmark/archive/master.zip"],
+    strip_prefix = "benchmark-main",
+    urls = ["https://github.com/google/benchmark/archive/main.zip"],
 )
 
 http_archive(
