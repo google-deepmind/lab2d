@@ -27,8 +27,8 @@ import dmlab2d.python.dmlab2d as dmlab2d
 class Environment(dm_env.Environment):
   """Environment class for DeepMind Lab2D.
 
-  This environment uses the `dm_env` interface. For details, see
-  https://github.com/deepmind/dm_env
+  This environment extends the `dm_env` interface with an `observation` method.
+  For details, see https://github.com/deepmind/dm_env
   """
 
   def __init__(self, env, observation_names, seed=None):
@@ -67,7 +67,7 @@ class Environment(dm_env.Environment):
                               dtype=np.object)
 
   def reset(self):
-    """Implements dm_env.reset()."""
+    """See base class."""
     self._reset_next_step = False
     self._env.start(self._next_episode, seed=self._rng.randint(0, 2**31))
     self._next_episode += 1
@@ -94,7 +94,7 @@ class Environment(dm_env.Environment):
               action)
 
   def step(self, action):
-    """Step the environment with an action."""
+    """See base class."""
     if self._reset_next_step:
       return self.reset()
 
@@ -110,7 +110,7 @@ class Environment(dm_env.Environment):
       return dm_env.transition(reward=reward, observation=self.observation())
 
   def observation(self):
-    """Implements dm_env.observation()."""
+    """Returns the observation resulting from the last step or reset call."""
     return {
         name: np.asarray(
             self._env.observation(name), self._observation_spec[name].dtype)
@@ -118,7 +118,7 @@ class Environment(dm_env.Environment):
     }
 
   def observation_spec(self):
-    """Implements dm_env.observation_spec()."""
+    """See base class."""
     return self._observation_spec
 
   def _make_observation_spec(self):
@@ -157,11 +157,11 @@ class Environment(dm_env.Environment):
     return action_spec
 
   def action_spec(self):
-    """Implements dm_env.action_spec()."""
+    """See base class."""
     return self._action_spec
 
   def __getattr__(self, attr):
-    """Delegate calls on this dm_env to its wrapped raw environment.
+    """Delegate calls to unknown attributes to the wrapped raw environment.
 
     Args:
       attr: class attribute.
