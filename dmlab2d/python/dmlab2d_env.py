@@ -14,9 +14,7 @@
 
 """DeepMind Lab2D environment."""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import Collection, Sequence, Tuple, Union
 
 import dm_env
 import numpy as np
@@ -27,7 +25,7 @@ import dmlab2d.python.dmlab2d as dmlab2d
 class Environment(dm_env.Environment):
   """Environment class for DeepMind Lab2D.
 
-  This environment extends the `dm_env` interface with an `observation` method.
+  This environment extends the `dm_env` interface with additional methods.
   For details, see https://github.com/deepmind/dm_env
   """
 
@@ -160,13 +158,50 @@ class Environment(dm_env.Environment):
     """See base class."""
     return self._action_spec
 
-  def __getattr__(self, attr):
-    """Delegate calls to unknown attributes to the wrapped raw environment.
-
-    Args:
-      attr: class attribute.
+  def events(self) -> Sequence[Tuple[str, Sequence[Union[np.ndarray, bytes]]]]:
+    """Returns the events generated after last reset or step.
 
     Returns:
-      Attribute for wrapped environment.
+      (name, observations) pairs for all events generated after last step or
+        reset.
     """
-    return getattr(self._env, attr)
+    return self._env.events()
+
+  def list_property(
+      self, key: str) -> Collection[Tuple[str, dmlab2d.PropertyAttribute]]:
+    """Returns a list of the properties under the specified key name.
+
+    Args:
+      key: prefix of property keys to return to search under. The empty string
+        can be used as the root.
+
+    Returns:
+      (key, attribute) pairs of all properties under input key.
+
+    Raises:
+      KeyError: The property does not exist or is not listable.
+    """
+    return self._env.list_property(key)
+
+  def write_property(self, key: str, value: str) -> None:
+    """Writes a property.
+
+    Args:
+      key: the name to write to.
+      value: the value to write.
+
+    Raises:
+      KeyError: The property does not exist or is not readable.
+    """
+    self._env.write_property(key, value)
+
+  def read_property(self, key: str) -> str:
+    """Returns the value of a given property (converted to a string).
+
+    Args:
+      key: The property to read.
+
+    Raises:
+      KeyError: The property does not exist or is not writable.
+    """
+    return self._env.read_property(key)
