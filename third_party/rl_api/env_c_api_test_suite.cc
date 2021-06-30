@@ -18,7 +18,7 @@
 
 #include <vector>
 
-#include "dmlab2d/support/logging.h"
+#include "dmlab2d/lib/support/logging.h"
 #include "gmock/gmock.h"
 
 namespace rl_api {

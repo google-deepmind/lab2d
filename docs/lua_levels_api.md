@@ -27,15 +27,15 @@ Require statements in scripts are processed in the following order.
 *   `game_scripts/levels`.
 
 An example is described here:
-[game_scripts/levels/examples/level_api.lua](../dmlab2d/game_scripts/levels/examples/level_api.lua)
+[game_scripts/levels/examples/level_api.lua](../dmlab2d/lib/game_scripts/levels/examples/level_api.lua)
 
 The calling code that calls into these API functions can be found in:
 
-*   [env_lua_api/env_lua_api.cc](../dmlab2d/env_lua_api/env_lua_api.cc).
-*   [env_lua_api/actions.cc](../dmlab2d/env_lua_api/actions.cc).
-*   [env_lua_api/episodes.cc](../dmlab2d/env_lua_api/episode.cc).
-*   [env_lua_api/observations.cc](../dmlab2d/env_lua_api/observations.cc).
-*   [env_lua_api/properties.cc](../dmlab2d/env_lua_api/properties.cc).
+*   [env_lua_api/env_lua_api.cc](../dmlab2d/lib/env_lua_api/env_lua_api.cc).
+*   [env_lua_api/actions.cc](../dmlab2d/lib/env_lua_api/actions.cc).
+*   [env_lua_api/episodes.cc](../dmlab2d/lib/env_lua_api/episode.cc).
+*   [env_lua_api/observations.cc](../dmlab2d/lib/env_lua_api/observations.cc).
+*   [env_lua_api/properties.cc](../dmlab2d/lib/env_lua_api/properties.cc).
 
 ## Initialisation
 
