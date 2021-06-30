@@ -495,7 +495,7 @@ PYBIND11_MODULE(dmlab2d, m) {
   py::enum_<EnvCApi_EnvironmentStatus>(m, "EnvironmentStatus")
       .value("RUNNING", EnvCApi_EnvironmentStatus_Running)
       .value("TERMINATED", EnvCApi_EnvironmentStatus_Terminated)
-      .value("INTERUPTED", EnvCApi_EnvironmentStatus_Interrupted)
+      .value("INTERRUPTED", EnvCApi_EnvironmentStatus_Interrupted)
       .export_values();
 
   py::enum_<EnvCApi_PropertyAttributes>(m, "PropertyAttribute",
