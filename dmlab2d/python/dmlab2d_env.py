@@ -62,7 +62,7 @@ class Environment(dm_env.Environment):
     self._act_continuous = np.zeros(
         len(action_continuous_names), dtype='float64')
     self._act_text = np.array([b'' for _ in range(len(action_text_names))],
-                              dtype=np.object)
+                              dtype=object)
 
   def reset(self):
     """See base class."""
