@@ -1,5 +1,6 @@
 load("//:build_defs.bzl", "py2and3_strict_test")
 load("//:build_defs.bzl", "pytype_strict_library")
+load("//:wheel_defs.bzl", "py_wheel")
 load("//:build_defs.bzl", "pybind_extension")
 
 licenses(["notice"])
@@ -100,3 +101,16 @@ py_library(name = "expect_pygame_installed")
 py_library(name = "expect_dataclasses_installed")
 
 py_library(name = "expect_typing_installed")
+
+py_wheel(
+    name = "dmlab2d_wheel",
+    distribution = "dmlab2d",
+    python_tag = "py3",
+    version = "1.0",
+    deps = [
+        ":dmlab2d",
+        ":runfiles_helper",
+        ":settings_helper",
+        ":ui_renderer",
+    ],
+)
