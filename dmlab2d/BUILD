@@ -1,4 +1,3 @@
-load("//:build_defs.bzl", "py2and3_strict_test")
 load("//:build_defs.bzl", "pytype_strict_library")
 load("//:wheel_defs.bzl", "py_wheel")
 load("//:build_defs.bzl", "pybind_extension")
@@ -51,7 +50,7 @@ pytype_strict_library(
     visibility = ["//visibility:public"],
 )
 
-py2and3_strict_test(
+py_test(
     name = "settings_helper_test",
     srcs = ["settings_helper_test.py"],
     deps = [

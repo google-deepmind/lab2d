@@ -26,3 +26,8 @@ bzl_library(
     name = "wheel_defs",
     srcs = ["wheel_defs.bzl"],
 )
+
+bzl_library(
+    name = "python_system",
+    srcs = ["python_system.bzl"],
+)

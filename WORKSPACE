@@ -1,6 +1,7 @@
 workspace(name = "org_deepmind_lab2d")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@//:python_system.bzl", "python_repo")
 
 http_archive(
     name = "com_google_googletest",
@@ -159,8 +160,6 @@ http_archive(
     urls = ["https://github.com/pybind/pybind11/archive/master.zip"],
 )
 
-new_local_repository(
-    name = "python_system",
-    build_file = "@//bazel:python.BUILD",
-    path = "/",
+python_repo(
+    name = "python_system"
 )

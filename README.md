@@ -48,9 +48,7 @@ external software libraries, which we ship in several different ways:
  * Several additional libraries are required but are not shipped in any form;
    they must be present on your system:
 
-   * `Python 2.7 or 3.6` or above with `NumPy` and `PyGame`. It is important
-     to update the paths to the Python version you are using by editing
-     [`bazel/python.BUILD`](bazel/python.BUILD).
+   * `Python 3.6` or above with `NumPy` and `PyGame`.
 
 The build rules are using a few compiler settings that are specific to
 GCC/clang. If some flags are not recognized by your compiler (typically those

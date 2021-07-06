@@ -1,7 +1,6 @@
 # Description:
 #  Python bindings for Pushbox level generator.
 
-load("//:build_defs.bzl", "py2and3_strict_test")
 load("//:build_defs.bzl", "pybind_extension")
 
 licenses(["notice"])
@@ -17,7 +16,7 @@ pybind_extension(
     ],
 )
 
-py2and3_strict_test(
+py_test(
     name = "pushbox_test",
     srcs = ["pushbox_test.py"],
     deps = [
