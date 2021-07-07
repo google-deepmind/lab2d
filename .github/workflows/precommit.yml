@@ -29,21 +29,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 2.7
       - name: install infrastructure (Linux)
         if: matrix.cfg.os == 'ubuntu-20.04'
         run: |
-          sudo apt-get install python-numpy python3-dev python3-numpy
+          sudo apt-get install python3-dev python3-numpy
           sudo ln -s /usr/lib/llvm-10/include/c++/v1 /usr/include/c++/v1
       - name: install infrastructure (MacOS)
         if: matrix.cfg.os == 'macos-10.15'
-        run: |
-          sudo -H pip install numpy
-          sudo -H pip3 install numpy
-          # Keep this, so we can keep up with changing versions
-          sudo find -L /Library /usr -type f -name Python.h -o -name arrayobject.h
+        run: sudo -H pip3 install numpy
       - name: build-and-test-lua5.1
         run: |
           bazel --bazelrc=.bazelrc build --config=lua5_1 ${{ matrix.cfg.config }} //...
