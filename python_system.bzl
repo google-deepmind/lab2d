@@ -18,6 +18,8 @@
 _BUILD_FILE = '''# Description:
 #   Build rule for Python
 
+exports_files(["defs.bzl"])
+
 cc_library(
     name = "python_headers",
     hdrs = glob(["python3/**/*.h"]),
@@ -32,10 +34,29 @@ from distutils.sysconfig import get_python_inc
 sys.stdout.write(get_python_inc())
 """.strip()
 
+_GET_PYTHON_SOABI = """
+from packaging import tags
+tag = next(iter(tags.sys_tags()))
+print(f'PY_TAGS = struct(interpreter = "{tag.interpreter}", abi = "{tag.abi}", platform = "{tag.platform}")')
+""".strip()
+
 def _python_repo_impl(repository_ctx):
-    """Writes external/reponame/BUILD"""
+    """Creates external/<reponame>/BUILD, a python3 symlink, and other files."""
+
     repository_ctx.file("BUILD", _BUILD_FILE)
+
     result = repository_ctx.execute(["python3", "-c", _GET_PYTHON_INCLUDE_DIR])
+    if result.return_code:
+        fail("Failed to run local Python interpreter: %s" % result.stderr)
     repository_ctx.symlink(result.stdout, "python3")
 
-python_repo = repository_rule(implementation = _python_repo_impl)
+    result = repository_ctx.execute(["python3", "-c", _GET_PYTHON_SOABI])
+    if result.return_code:
+        fail("Failed to run local Python interpreter: %s" % result.stderr)
+    repository_ctx.file("defs.bzl", result.stdout)
+
+python_repo = repository_rule(
+    implementation = _python_repo_impl,
+    configure = True,
+    local = True,
+)

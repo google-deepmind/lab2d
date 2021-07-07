@@ -60,13 +60,7 @@ py_wheel = rule(
         "abi": attr.string(default = "none"),
         "distribution": attr.string(mandatory = True),
         "platform": attr.string(default = "any"),
-        "python_tag": attr.string(
-            values = [
-                "py2",
-                "py3",
-            ],
-            mandatory = True,
-        ),
+        "python_tag": attr.string(mandatory = True),
         "version": attr.string(mandatory = True),
         "deps": attr.label_list(),
         "_wheelmaker": attr.label(

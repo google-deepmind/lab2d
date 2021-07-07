@@ -48,10 +48,10 @@ external software libraries, which we ship in several different ways:
  * Several additional libraries are required but are not shipped in any form;
    they must be present on your system:
 
-   * `Python 3.6` or above with `NumPy` and `PyGame`.
+   * `Python 3.6` or above with `NumPy`, `PyGame`, and `packaging`.
 
 The build rules are using a few compiler settings that are specific to
-GCC/clang. If some flags are not recognized by your compiler (typically those
+GCC/Clang. If some flags are not recognized by your compiler (typically those
 would be specific warning suppressions), you may have to edit those flags.
 
 ## Disclaimer

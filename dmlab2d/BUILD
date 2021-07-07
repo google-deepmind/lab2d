@@ -1,6 +1,7 @@
 load("//:build_defs.bzl", "pytype_strict_library")
 load("//:wheel_defs.bzl", "py_wheel")
 load("//:build_defs.bzl", "pybind_extension")
+load("@python_system//:defs.bzl", "PY_TAGS")
 
 licenses(["notice"])
 
@@ -103,6 +104,25 @@ py_library(name = "expect_typing_installed")
 
 py_wheel(
     name = "dmlab2d_wheel",
+    abi = PY_TAGS.abi,
+    distribution = "dmlab2d",
+    platform = PY_TAGS.platform,
+    python_tag = PY_TAGS.interpreter,
+    version = "1.0",
+    deps = [
+        ":dmlab2d",
+        ":runfiles_helper",
+        ":settings_helper",
+        ":ui_renderer",
+    ],
+)
+
+# This version of the wheel file does not contain any ABI and platform
+# constraints. It is not meant for deployment, but can be used on the
+# local machine if it is pip-installed on the same environment that
+# was used to build it.
+py_wheel(
+    name = "dmlab2d_wheel_local",
     distribution = "dmlab2d",
     python_tag = "py3",
     version = "1.0",
