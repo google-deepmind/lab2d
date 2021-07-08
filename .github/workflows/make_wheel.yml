@@ -1,0 +1,86 @@
+# A workflow to run Bazel builds and tests.
+
+name: release_wheel
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'release*'
+
+jobs:
+  create-release:
+    name: Create new draft release
+
+    runs-on: 'ubuntu-20.04'
+
+    outputs:
+      upload-url: ${{ steps.create_release.outputs.upload_url }}
+
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: false
+
+  build-wheel:
+    name: Build-wheel ${{ matrix.cfg.name }} for Python ${{ matrix.py.version }}
+
+    runs-on: ${{ matrix.cfg.os }}
+
+    needs: create-release
+
+    strategy:
+      matrix:
+        cfg:
+          - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-20.04', platform: 'manylinux_2_31_x86_64', cc: clang, cxx: clang++, config: }
+          - { name: 'MacOS LLVM+libc++', os: 'macos-10.15', platform: 'macosx_10_15_x86_64', cc: clang, cxx: clang++, config: --config=libc++ --features=-supports_dynamic_linker }
+        py:
+          - { version: '3.6', interp: 'cp36', abi: 'cp36m' }
+          - { version: '3.7', interp: 'cp37', abi: 'cp37m' }
+          - { version: '3.8', interp: 'cp38', abi: 'cp38' }
+          - { version: '3.9', interp: 'cp39', abi: 'cp39' }
+
+    env:
+      CC:  ${{ matrix.cfg.cc }}
+      CXX: ${{ matrix.cfg.cxx }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.py.version }}
+
+      - name: Install Infrastructure (Linux)
+        id: install_infa_linux
+        if: matrix.cfg.os == 'ubuntu-20.04'
+        run: |
+          pip install packaging
+          sudo ln -s /usr/lib/llvm-10/include/c++/v1 /usr/include/c++/v1
+
+      - name: install infrastructure (MacOS)
+        id: install_infa_macos
+        if: matrix.cfg.os == 'macos-10.15'
+        run: sudo -H pip3 install packaging
+
+      - name: Build for Python ${{ matrix.py.version }}
+        id: build_wheel
+        run: bazel --bazelrc=.bazelrc build --config=lua5_1 ${{ matrix.cfg.config }} //dmlab2d:dmlab2d_wheel
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload-url }}
+          asset_path: bazel-bin/dmlab2d/dmlab2d-1.0-${{ matrix.py.interp }}-${{ matrix.py.abi }}-${{ matrix.cfg.platform }}.whl
+          asset_name: dmlab2d-1.0-${{ matrix.py.interp }}-${{ matrix.py.abi }}-${{ matrix.cfg.platform }}.whl
+          asset_content_type: application/zip
