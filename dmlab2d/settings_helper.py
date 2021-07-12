@@ -16,12 +16,8 @@
 
 """Function for flattening dictionary settings."""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-import collections
 import numbers
+from typing import Mapping, Sequence
 
 
 def _flatten_args(pairs_in, args_out, prefix, visited_stack):
@@ -38,10 +34,10 @@ def _flatten_args(pairs_in, args_out, prefix, visited_stack):
       args_out[flat_key] = 'true' if v else 'false'
     elif isinstance(v, numbers.Number):
       args_out[flat_key] = str(v)
-    elif isinstance(v, collections.Mapping):
+    elif isinstance(v, Mapping):
       if not any(v is entry for entry in visited_stack):
         _flatten_args(v.items(), args_out, flat_key, visited_stack + [v])
-    elif isinstance(v, collections.Sequence):
+    elif isinstance(v, Sequence):
       if not any(v is entry for entry in visited_stack):
         _flatten_args(((str(i + 1), vv) for i, vv in enumerate(v)), args_out,
                       flat_key, visited_stack + [v])
