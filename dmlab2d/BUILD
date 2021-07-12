@@ -92,6 +92,7 @@ pytype_strict_library(
     name = "runfiles_helper",
     srcs = ["runfiles_helper.py"],
     visibility = ["//visibility:public"],
+    deps = [":dmlab2d_pybind"],
 )
 
 py_library(name = "expect_numpy_installed")
