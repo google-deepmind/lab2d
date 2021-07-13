@@ -550,8 +550,12 @@ Sets the orientation of a piece (the direction it is facing in grid space):
 
 #### `grid:hitBeam(piece, hitName, width, radius)`
 
-Fires a beam with a given `hitName` with a given `width` and `radius`. Triggers
-`onHit.hitName(pieceHit, hitter)` for all pieces hit by the beam.
+Fires a beam with a given `hitName` with a given `width` and `radius`. Beams are
+produced sideways then forwards and triggers `onHit.hitName(pieceHit, hitter)`
+in order the pieces they hit. The callback may return a true in order for the
+beam to not progress beyond that cell. Otherwise if the function returns false
+or nothing the beam will progress to next cell. The beam will be visualised by
+the given layer and sprite in the `hits` section of the `world`.
 
 #### `grid:setState(piece, state)`
 

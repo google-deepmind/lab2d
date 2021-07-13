@@ -206,7 +206,8 @@ class LuaStateCallback : public Grid::StateCallback {
   class CallbackOrValue {
    public:
     explicit CallbackOrValue() : value_(false) {}
-    explicit CallbackOrValue(lua::Ref ref) : func_ref_(std::move(ref)) {}
+    explicit CallbackOrValue(lua::Ref ref)
+        : func_ref_(std::move(ref)), value_(false) {}
     explicit CallbackOrValue(bool value) : value_(value) {}
     template <typename... Args>
     bool Call(absl::string_view func_name, Args&&... args) {
