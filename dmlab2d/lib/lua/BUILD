@@ -1,23 +1,35 @@
 # Description:
 #   A collection of libraries for interacting with Lua.
 
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+
 package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 
+string_flag(
+    name = "lua_version",
+    build_setting_default = "luajit",
+    values = [
+        "luajit",
+        "lua5_1",
+        "lua5_2",
+    ],
+)
+
 config_setting(
     name = "luajit",
-    define_values = {"lua": "luajit"},
+    flag_values = {"lua_version": "luajit"},
 )
 
 config_setting(
     name = "lua5.1",
-    define_values = {"lua": "lua5_1"},
+    flag_values = {"lua_version": "lua5_1"},
 )
 
 config_setting(
     name = "lua5.2",
-    define_values = {"lua": "lua5_2"},
+    flag_values = {"lua_version": "lua5_2"},
 )
 
 cc_library(
