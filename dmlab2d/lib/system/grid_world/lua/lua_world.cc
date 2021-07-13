@@ -151,6 +151,7 @@ lua::NResultsOr LuaWorld::Create(lua_State* L) {
     World::StateArg type = {};
     state_table.LookUpToStack(key);
     std::string error = ReadStateArg(L, -1, &args.states[key]);
+    lua_pop(L, 1);
     if (!error.empty()) {
       return absl::StrCat("states - Error parsing key: '", key, "' - ", error);
     }
@@ -177,6 +178,7 @@ lua::NResultsOr LuaWorld::Create(lua_State* L) {
       World::HitArg hit = {};
       hit_table.LookUpToStack(key);
       auto error = ReadHitTypeArg(L, -1, &args.hits[key]);
+      lua_pop(L, 1);
       if (!error.empty()) {
         return absl::StrCat("hits - Error parsing key: '", key, "' - ", error);
       }
