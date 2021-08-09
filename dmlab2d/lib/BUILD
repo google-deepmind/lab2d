@@ -51,7 +51,7 @@ cc_test(
 filegroup(
     name = "game_scripts",
     srcs = glob(
-        [
+        include = [
             "game_scripts/**/*.lua",
             "game_scripts/**/*.png",
         ],
@@ -60,7 +60,6 @@ filegroup(
             "game_scripts/**/*_test.lua",
         ],
     ),
-    visibility = ["//dmlab2d/lib/lua_interp:__pkg__"],
 )
 
 TEST_SCRIPTS = [test[:-len(".lua")] for test in glob(["**/*_test.lua"])]
@@ -80,7 +79,7 @@ LEVEL_DIRS = [p[:-len("/init.lua")] for p in glob(["game_scripts/levels/**/init.
 
 # Find single levels not in subdirectorys of LEVEL_DIRS
 SINGLE_LEVEL_SCRIPTS = [test[:-len(".lua")] for test in glob(
-    ["game_scripts/levels/**/*.lua"],
+    include = ["game_scripts/levels/**/*.lua"],
     exclude = ["**/*_test.lua"] + [p + "/**/*.lua" for p in LEVEL_DIRS],
 )]
 

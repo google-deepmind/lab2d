@@ -1,6 +1,5 @@
-load("//:build_defs.bzl", "pytype_strict_library")
+load("//:build_defs.bzl", "pybind_extension", "pytype_strict_library")
 load("//:wheel_defs.bzl", "py_wheel")
-load("//:build_defs.bzl", "pybind_extension")
 load("@python_system//:defs.bzl", "PY_TAGS")
 
 licenses(["notice"])
