@@ -28,7 +28,7 @@ random actions. This can be used as a base for creating your own agents, and as
 a simple tool to preview an environment.
 
 ```sh
-bazel run -c opt dmlab2d/python:random_agent -- --level_name=clean_up
+bazel run -c opt dmlab2d/random_agent --config=lua5_2  -- --level_name=clean_up
 ```
 
 ## External dependencies, prerequisites and porting notes
