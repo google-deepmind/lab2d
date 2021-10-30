@@ -25,19 +25,23 @@ def _py_wheel_impl(ctx):
     runfiles = [s[DefaultInfo].default_runfiles for s in ctx.attr.deps]
     file_inputs = [f for r in runfiles for f in r.files.to_list()]
 
-    outfile = ctx.actions.declare_file("-".join([
+    basename = "-".join([
         ctx.attr.distribution,
         ctx.attr.version,
         ctx.attr.python_tag,
         ctx.attr.abi,
         ctx.attr.platform,
-    ]) + ".whl")
+    ])
+
+    outfile = ctx.actions.declare_file(basename + ".whl")
+    namefile = ctx.actions.declare_file(basename + ".whlname")
 
     ctx.actions.run(
         inputs = file_inputs,
-        outputs = [outfile],
+        outputs = [outfile, namefile],
         arguments = [
             "--name={}".format(ctx.attr.distribution),
+            "--name_file={}".format(namefile.path),
             "--version={}".format(ctx.attr.version),
             "--python_tag={}".format(ctx.attr.python_tag),
             "--abi={}".format(ctx.attr.abi),
@@ -52,7 +56,7 @@ def _py_wheel_impl(ctx):
 
     return [DefaultInfo(
         data_runfiles = ctx.runfiles(files = [outfile]),
-        files = depset([outfile]),
+        files = depset([outfile, namefile]),
     )]
 
 py_wheel = rule(
