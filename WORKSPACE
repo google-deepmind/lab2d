@@ -140,8 +140,8 @@ http_archive(
 http_archive(
     name = "dm_env_archive",
     build_file = "@//bazel:dm_env.BUILD",
-    strip_prefix = "dm_env-master",
-    urls = ["https://github.com/deepmind/dm_env/archive/master.zip"],
+    strip_prefix = "dm_env-3c6844db2aa4ed5994b2c45dbfd9f31ad948fbb8",
+    urls = ["https://github.com/deepmind/dm_env/archive/3c6844db2aa4ed5994b2c45dbfd9f31ad948fbb8.zip"],
 )
 
 http_archive(
