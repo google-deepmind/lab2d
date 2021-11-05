@@ -68,9 +68,7 @@ pytype_strict_library(
         ":expect_dataclasses_installed",
         ":expect_numpy_installed",
         ":expect_pygame_installed",
-        ":expect_typing_installed",
         ":runfiles_helper",
-        "@enum34_archive//:enum",
     ],
 )
 
@@ -99,8 +97,6 @@ py_library(name = "expect_numpy_installed")
 py_library(name = "expect_pygame_installed")
 
 py_library(name = "expect_dataclasses_installed")
-
-py_library(name = "expect_typing_installed")
 
 py_wheel(
     name = "dmlab2d_wheel",

@@ -46,16 +46,6 @@ http_archive(
 )
 
 http_archive(
-    name = "enum34_archive",
-    build_file = "@//bazel:enum34.BUILD",
-    sha256 = "8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1",
-    urls = [
-        "https://mirror.bazel.build/pypi.python.org/packages/bf/3e/31d502c25302814a7c2f1d3959d2a3b3f78e509002ba91aea64993936876/enum34-1.1.6.tar.gz",
-        "https://pypi.python.org/packages/bf/3e/31d502c25302814a7c2f1d3959d2a3b3f78e509002ba91aea64993936876/enum34-1.1.6.tar.gz",
-    ],
-)
-
-http_archive(
     name = "funcsigs_archive",
     build_file = "@//bazel:funcsigs.BUILD",
     strip_prefix = "funcsigs-1.0.2",
