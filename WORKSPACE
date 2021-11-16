@@ -5,8 +5,8 @@ load("@//:python_system.bzl", "python_repo")
 
 http_archive(
     name = "com_google_googletest",
-    strip_prefix = "googletest-master",
-    urls = ["https://github.com/google/googletest/archive/master.zip"],
+    strip_prefix = "googletest-main",
+    urls = ["https://github.com/google/googletest/archive/main.zip"],
 )
 
 http_archive(
@@ -41,8 +41,8 @@ http_archive(
 
 http_archive(
     name = "com_google_absl_py",
-    strip_prefix = "abseil-py-master",
-    urls = ["https://github.com/abseil/abseil-py/archive/master.zip"],
+    strip_prefix = "abseil-py-main",
+    urls = ["https://github.com/abseil/abseil-py/archive/main.zip"],
 )
 
 http_archive(
