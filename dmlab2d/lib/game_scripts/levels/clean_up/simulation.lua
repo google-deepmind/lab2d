@@ -37,6 +37,9 @@ function Simulation.defaultSettings()
       -- Waste density threshold below which apples respawn at their base
       -- probability.
       thresholdRestoration = 0.0,
+
+      -- Number of frames after episode starts before dirt starts to accumulate.
+      dirtGrowthStartTime = 50,
   }
 end
 
@@ -176,9 +179,12 @@ function Simulation:stateCallbacks(avatars)
 end
 
 function Simulation:start(grid)
+  self._stepsSinceStarted = 0
 end
 
 function Simulation:update(grid)
+  local dirtGrowthStartTime = self._settings.dirtGrowthStartTime
+
   local mudFraction = self._mudCount / (self._mudCount + self._riverCount)
   local depl = self._settings.thresholdDepletion
   local rest = self._settings.thresholdRestoration
@@ -188,13 +194,14 @@ function Simulation:update(grid)
 
   if self._riverCount > 0 then
     local addMud = random:uniformReal(0, 1) < self._settings.mudSpawnProbability
-    if addMud then
+    if addMud and self._stepsSinceStarted > dirtGrowthStartTime then
       local randomMud = grid:groupRandom(random, 'river.water')
       if randomMud then
         grid:setState(randomMud, 'river.mud')
       end
     end
   end
+  self._stepsSinceStarted = self._stepsSinceStarted + 1
 end
 
 return {Simulation = Simulation}
