@@ -17,7 +17,6 @@
 #include "dmlab2d/lib/env_lua_api/env_lua_api.h"
 
 #include <cstdint>
-#include <filesystem>
 #include <istream>
 #include <string>
 #include <utility>
