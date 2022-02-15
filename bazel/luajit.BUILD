@@ -152,10 +152,13 @@ cc_library(
         "src/lualib.h",
     ],
     includes = ["src"],
-    linkopts = [
-        "-ldl",
-        "-ulj_err_unwind_dwarf",
-    ],
+    linkopts = ["-ldl"] + select(
+        {
+            "@platforms//os:linux": ["-ulj_err_unwind_dwarf"],
+            "@platforms//os:macos": ["-u_lj_err_unwind_dwarf"],
+        },
+        no_match_error = "Must build for either Linux or MacOS",
+    ),
     visibility = ["//visibility:public"],
 )
 
@@ -224,7 +227,13 @@ cc_binary(
 genrule(
     name = "lj_vm",
     outs = ["lj_vm.S"],
-    cmd = "$(location :buildvm) -m elfasm -o $@",
+    cmd = select(
+        {
+            "@platforms//os:linux": "$(location :buildvm) -m elfasm -o $@",
+            "@platforms//os:macos": "$(location :buildvm) -m machasm -o $@",
+        },
+        no_match_error = "Must build for either Linux or MacOS",
+    ),
     tools = [":buildvm"],
     visibility = ["//visibility:public"],
 )
