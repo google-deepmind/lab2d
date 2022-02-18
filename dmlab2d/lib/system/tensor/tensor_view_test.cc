@@ -215,6 +215,15 @@ TEST(TensorViewTest, ForEachIndexed) {
   });
 }
 
+TEST(TensorViewTest, ForEachIndexedScalar) {
+  int storage = 10;
+  TensorView<int> view(Layout({}), &storage);
+  view.ForEachIndexed([](const ShapeVector& index, int v) {
+    EXPECT_THAT(index, IsEmpty());
+    EXPECT_EQ(v, 10);
+  });
+}
+
 TEST(TensorViewTest, ForEachIndexedMutable) {
   ShapeVector shape = {5, 2};
   std::vector<int> storage = MakeSequence<int>(Layout::num_elements(shape));

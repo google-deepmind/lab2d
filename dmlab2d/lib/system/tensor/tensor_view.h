@@ -182,7 +182,7 @@ class Layout {
     auto it = MakeIterator();
     for (std::size_t i = 0; i < num; ++i) {
       f(it.index, it.offset);
-      Next(&it);
+      if (i + 1 < num) Next(&it);
     }
   }
 
@@ -207,21 +207,26 @@ class Layout {
     } else if (l_contig != 0) {
       std::ptrdiff_t l_offset = offset_;
       auto r_it = rhs.MakeIterator();
-      for (std::size_t i = 0; i < l_num_elements; ++i, rhs.Next(&r_it)) {
+      for (std::size_t i = 0; i < l_num_elements; ++i) {
         f(i * l_contig + l_offset, r_it.offset);
+        if (i + 1 < l_num_elements) rhs.Next(&r_it);
       }
     } else if (r_contig != 0) {
       auto l_it = MakeIterator();
       std::ptrdiff_t r_offset = rhs.offset_;
-      for (std::size_t i = 0; i < l_num_elements; ++i, Next(&l_it)) {
+      for (std::size_t i = 0; i < l_num_elements; ++i) {
         f(l_it.offset, i * r_contig + r_offset);
+        if (i + 1 < l_num_elements) Next(&l_it);
       }
     } else {
       auto l_it = MakeIterator();
       auto r_it = rhs.MakeIterator();
-      for (std::size_t i = 0; i < l_num_elements;
-           ++i, Next(&l_it), rhs.Next(&r_it)) {
+      for (std::size_t i = 0; i < l_num_elements; ++i) {
         f(l_it.offset, r_it.offset);
+        if (i + 1 < l_num_elements) {
+          Next(&l_it);
+          rhs.Next(&r_it);
+        }
       }
     }
     return true;
@@ -251,26 +256,31 @@ class Layout {
     } else if (l_contig != 0) {
       std::ptrdiff_t l_offset = offset_;
       auto r_it = rhs.MakeIterator();
-      for (std::size_t i = 0; i < l_num_elements; ++i, rhs.Next(&r_it)) {
+      for (std::size_t i = 0; i < l_num_elements; ++i) {
         if (!f(i * l_contig + l_offset, r_it.offset)) {
           return false;
         }
+        if (i + 1 < l_num_elements) rhs.Next(&r_it);
       }
     } else if (r_contig != 0) {
       auto l_it = MakeIterator();
       std::ptrdiff_t r_offset = rhs.offset_;
-      for (std::size_t i = 0; i < l_num_elements; ++i, Next(&l_it)) {
+      for (std::size_t i = 0; i < l_num_elements; ++i) {
         if (!f(l_it.offset, i * r_contig + r_offset)) {
           return false;
         }
+        if (i + 1 < l_num_elements) Next(&l_it);
       }
     } else {
       auto l_it = MakeIterator();
       auto r_it = rhs.MakeIterator();
-      for (std::size_t i = 0; i < l_num_elements;
-           ++i, Next(&r_it), rhs.Next(&r_it)) {
+      for (std::size_t i = 0; i < l_num_elements; ++i) {
         if (!f(l_it.offset, r_it.offset)) {
           return false;
+        }
+        if (i + 1 < l_num_elements) {
+          Next(&l_it);
+          rhs.Next(&r_it);
         }
       }
     }
@@ -289,8 +299,9 @@ class Layout {
       }
     } else {
       auto it = MakeIterator();
-      for (std::size_t i = 0; i < num; ++i, Next(&it)) {
+      for (std::size_t i = 0; i < num; ++i) {
         f(it.offset);
+        if (i + 1 < num) Next(&it);
       }
     }
   }
