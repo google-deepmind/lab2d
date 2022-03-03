@@ -23,6 +23,7 @@
 #include <functional>
 #include <memory>
 #include <numeric>
+#include <optional>
 #include <ostream>
 #include <random>
 #include <utility>
@@ -62,6 +63,32 @@ class Layout {
     std::reverse(stride_.begin(), stride_.end());
   }
 
+  // Returns the index corresponding to the `flat_index` in `shape` if visited
+  // in Layout order and `flat_index` is within bounds. Otherwise returns
+  // std::nullopt.
+  //
+  // Examples:
+  //   UnravelIndex(ShapeVector{3, 4}, 0) => {0, 0}
+  //   UnravelIndex(ShapeVector{3, 4}, 2) => {0, 2}
+  //   UnravelIndex(ShapeVector{3, 4}, 4) => {1, 0}
+  //   UnravelIndex(ShapeVector{3, 4}, 9) => {2, 1}
+  //   UnravelIndex(ShapeVector{3, 4}, 12) => std::nullopt
+  static std::optional<ShapeVector> UnravelIndex(const ShapeVector& shape,
+                                                 std::size_t flat_index) {
+    std::optional<ShapeVector> result;
+    if (std::size_t max_index = num_elements(shape); flat_index < max_index) {
+      result.emplace(shape.size());
+      std::transform(shape.begin(), shape.end(), result->begin(),
+                     [&max_index, &flat_index](std::size_t s) {
+                       max_index /= s;
+                       size_t index = flat_index / max_index;
+                       flat_index -= index * max_index;
+                       return index;
+                     });
+    }
+    return result;
+  }
+
   // Transposes dim0 and dim1.
   // This changes the way data is iterated, effectively transposing the tensor
   // this is a layout of.
@@ -80,8 +107,8 @@ class Layout {
   // Selects an index of a dimension in a layout.
   // If dim and index are invalid the routine returns false.
   //
-  // If the shape.size() greater than one, the tensor order is then reduced by
-  // one, hiding entries other than index in that dimension.
+  // If the shape.size() greater than one, the tensor rank is reduced by one,
+  // hiding entries other than index in that dimension.
   //
   // If the shape.size() is 1, the layout is set around that index.
   //
@@ -715,6 +742,74 @@ class TensorView : public Layout {
     }
   }
 
+  // Returns the index of max value in Tensor.
+  std::optional<ShapeVector> ArgMaxElement() const {
+    if (auto result = FlatReduceTopOne(std::greater<T>{}); result.has_value()) {
+      return UnravelIndex(shape(), result->first);
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  // Returns the index of min value in Tensor.
+  std::optional<ShapeVector> ArgMinElement() const {
+    if (auto result = FlatReduceTopOne(std::less<T>{}); result.has_value()) {
+      return UnravelIndex(shape(), result->first);
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  // Returns the max value in of the Tensor.
+  std::optional<T> MaxElement() const {
+    if (auto result = FlatReduceTopOne(std::greater<T>{}); result.has_value()) {
+      return result->second;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  // Returns the min value in of the Tensor.
+  std::optional<T> MinElement() const {
+    if (auto result = FlatReduceTopOne(std::less<T>{}); result.has_value()) {
+      return result->second;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  // Transform reduce `rhs_view` across given `dim` with the operation index of
+  // max element storing the result in *this. Returns whether the operation
+  // shapes are correct and reduce operation was successful.
+  template <typename U>
+  bool ArgMax(const TensorView<U>& rhs_view, int dim) {
+    return ReduceTopOneIndex(rhs_view, dim, std::greater<T>{});
+  }
+
+  // Transform reduce `rhs_view` across given `dim` with the operation: index
+  // of min element storing the result in *this. Returns whether the operation
+  // shapes are correct and reduce operation was successful.
+  template <typename U>
+  bool ArgMin(const TensorView<U>& rhs_view, int dim) {
+    return ReduceTopOneIndex(rhs_view, dim, std::less<T>{});
+  }
+
+  // Transform reduce `rhs_view` across given `dim` with the operation: max
+  // element storing the result in *this. Returns whether the operation shapes
+  // are correct and reduce operation was successful.
+  template <typename U>
+  bool Max(const TensorView<U>& rhs_view, int dim) {
+    return ReduceTopOne(rhs_view, dim, std::greater<T>{});
+  }
+
+  // Transform reduce `rhs_view` across given `dim` with the operation: max
+  // element storing the result in *this. Returns whether the operation shapes
+  // are correct and reduce operation was successful.
+  template <typename U>
+  bool Min(const TensorView<U>& rhs_view, int dim) {
+    return ReduceTopOne(rhs_view, dim, std::less<T>{});
+  }
+
   // Enable streaming of Tensor View.
   friend std::ostream& operator<<(std::ostream& os, const TensorView& view) {
     view.PrintToStream(/*max_num_elements=*/1024, &os);
@@ -735,6 +830,103 @@ class TensorView : public Layout {
   T* mutable_storage() { return storage_; }
 
  private:
+  // Reduces `rhs` with `*this` across axis `dim`. Each row in dimension `dim`
+  // is reduced with the 3 provided callbacks. An accumulator is initialised
+  // with the return value of `init` and the first value of the row. The
+  // accumulator is then reduced with callback `reduce` and each subsequent
+  // value in the row. The accumulated value is then converted for storage on
+  // the corresponding value in `this` with the `finalise` callback.
+  //
+  // Signatures of callbacks:
+  //   Accumulator init(std::size_t first_index, U value);
+  //   Accumulator reduce(std::size_t index, Accumulator accumulator, U value);
+  //   T finalise(std::size_t num_elements, Accumulator acumulator);
+  //
+  // Example:
+  //   `this` shape (3, 5), `rhs` shape (3, 4, 5) and `dim` = 1:
+  //   for all i, j in [0, 3), [0, 5) {
+  //     auto accumulator = init(0, rhs(i, 0, j))
+  //     accumulator = reduce(1, accumulator, rhs(i, 1, j))
+  //     accumulator = reduce(2, accumulator, rhs(i, 2, j))
+  //     accumulator = reduce(3, accumulator, rhs(i, 3, j))
+  //     this->Set(i, j, finalise(4, accumulator))
+  //   }
+  template <typename U, typename InitOp, typename ReduceOp,
+            typename TransformOp>
+  bool ReducePairwise(const TensorView<U>& rhs, int dim, InitOp&& init,
+                      ReduceOp&& reduce, TransformOp&& finalise) {
+    Layout rhs_reduced = rhs;
+    if (!rhs_reduced.Select(dim, 0)) {
+      return false;
+    }
+    T* lhs_storage = mutable_storage();
+    const U* rhs_storage = rhs.storage();
+    std::size_t rhs_shape = rhs.shape()[dim];
+    std::ptrdiff_t rhs_stride = rhs.stride()[dim];
+    return PairwiseForEachOffset(
+        rhs_reduced,
+        [&init, &reduce, &finalise, lhs_storage, rhs_storage, rhs_stride,
+         rhs_shape](std::size_t lhs_offset, std::size_t rhs_offset) {
+          auto accumulator = init(0, rhs_storage[rhs_offset]);
+          for (std::size_t i = 1; i < rhs_shape; ++i) {
+            accumulator = reduce(i, accumulator,
+                                 rhs_storage[rhs_offset + i * rhs_stride]);
+          }
+          lhs_storage[lhs_offset] = finalise(rhs_shape, accumulator);
+        });
+  }
+
+  // Sets top-one value in `this` in each row across axis `dim` in `rhs`.
+  template <typename U, typename Compare>
+  bool ReduceTopOne(const TensorView<U>& rhs, int dim, Compare&& compare) {
+    return ReducePairwise(
+        rhs, dim,
+        /*init=*/[](std::size_t, U value) { return static_cast<T>(value); },
+        /*reduce=*/
+        [&compare](std::size_t, T accumulator, U value) {
+          return compare(value, accumulator) ? static_cast<T>(value)
+                                             : accumulator;
+        },
+        /*finalise=*/[](std::size_t, T accumulator) { return accumulator; });
+  }
+
+  // Sets top-one index in `this` in each row across axis `dim` in `rhs`.
+  template <typename U, typename Compare>
+  bool ReduceTopOneIndex(const TensorView<U>& rhs, int dim, Compare&& compare) {
+    using Accumulator = std::pair<std::size_t, U>;
+    return ReducePairwise(
+        rhs, dim,
+        /*init=*/
+        [](std::size_t first_index, U value) {
+          return Accumulator(first_index, value);
+        },
+        /*reduce=*/
+        [&compare](std::size_t index, Accumulator accumulator, T value) {
+          if (compare(value, accumulator.second)) {
+            accumulator.first = index;
+            accumulator.second = value;
+          }
+          return accumulator;
+        },
+        /*finalise=*/
+        [](std::size_t, Accumulator accumulator) { return accumulator.first; });
+  }
+
+  // Returns flattened index and value of top-one value in `this`.
+  template <typename Compare>
+  std::optional<std::pair<std::size_t, T>> FlatReduceTopOne(
+      Compare&& compare) const {
+    std::optional<std::pair<std::size_t, T>> top;
+    std::size_t index = 0;
+    ForEach([&compare, &top, &index](T value) {
+      if (!top.has_value() || compare(value, (*top).second)) {
+        top = std::make_pair(index, value);
+      }
+      ++index;
+    });
+    return top;
+  }
+
   // Contiguous storage where the values are kept.
   T* storage_;
 };

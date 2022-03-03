@@ -16,6 +16,7 @@
 
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
 
+#include <optional>
 #include <random>
 
 #include "gmock/gmock.h"
@@ -26,8 +27,10 @@ namespace tensor {
 namespace {
 
 using ::testing::ElementsAre;
+using ::testing::Eq;
 using ::testing::HasSubstr;
 using ::testing::IsEmpty;
+using ::testing::Optional;
 using ::testing::UnorderedElementsAre;
 
 template <typename T>
@@ -60,6 +63,37 @@ TEST(TensorViewTest, Layout) {
   EXPECT_FALSE(byte_tensor_view.IsContiguous());
   EXPECT_FALSE(byte_tensor_view.Transpose(1, 2));
   EXPECT_THAT(byte_tensor_view.stride(), ElementsAre(1, 3));
+}
+
+TEST(TensorViewTest, UnravelIndexScaler) {
+  EXPECT_THAT(Layout::UnravelIndex({}, 0), Optional(IsEmpty()));
+  EXPECT_THAT(Layout::UnravelIndex({}, 1), Eq(std::nullopt));
+}
+
+TEST(TensorViewTest, UnravelIndexRank1) {
+  EXPECT_THAT(Layout::UnravelIndex({0}, 0), Eq(std::nullopt));
+  EXPECT_THAT(Layout::UnravelIndex({3}, 0), Optional(ElementsAre(0)));
+  EXPECT_THAT(Layout::UnravelIndex({3}, 2), Optional(ElementsAre(2)));
+  EXPECT_THAT(Layout::UnravelIndex({3}, 3), Eq(std::nullopt));
+}
+
+TEST(TensorViewTest, UnravelIndexRank2) {
+  EXPECT_THAT(Layout::UnravelIndex({3, 0}, 0), Eq(std::nullopt));
+  EXPECT_THAT(Layout::UnravelIndex({3, 4}, 0), Optional(ElementsAre(0, 0)));
+  EXPECT_THAT(Layout::UnravelIndex({3, 4}, 4), Optional(ElementsAre(1, 0)));
+  EXPECT_THAT(Layout::UnravelIndex({3, 4}, 9), Optional(ElementsAre(2, 1)));
+  EXPECT_THAT(Layout::UnravelIndex({3, 4}, 12), Eq(std::nullopt));
+}
+
+TEST(TensorViewTest, UnravelIndexRank3) {
+  EXPECT_THAT(Layout::UnravelIndex({3, 0, 1}, 0), Eq(std::nullopt));
+  EXPECT_THAT(Layout::UnravelIndex({2, 3, 5}, 15),
+              Optional(ElementsAre(1, 0, 0)));
+  EXPECT_THAT(Layout::UnravelIndex({2, 3, 5}, 25),
+              Optional(ElementsAre(1, 2, 0)));
+  EXPECT_THAT(Layout::UnravelIndex({2, 3, 5}, 29),
+              Optional(ElementsAre(1, 2, 4)));
+  EXPECT_THAT(Layout::UnravelIndex({2, 3, 5}, 30), Eq(std::nullopt));
 }
 
 TEST(TensorViewTest, NonContiguous) {
@@ -555,6 +589,75 @@ TEST(TensorViewTest, TestSet) {
   EXPECT_THAT(storage, ElementsAre(0.0f, 1.0f, 33.0f,    //
                                    3.0f, 555.0f, 33.0f,  //
                                    6.0f, 7.0f, 33.0f));
+}
+
+TEST(TensorViewTest, TestMinMax) {
+  std::vector<int> storage = {
+      0,   5,  -5,  3,   //
+      -10, -5, -2,  -3,  //
+      100, 0,  -10, 4,   //
+  };
+  TensorView<int> view(Layout({3, 4}), storage.data());
+
+  {
+    // Rows
+    ShapeVector result_shape = {3};
+    std::vector<int> result_storage(Layout::num_elements(result_shape));
+    TensorView<int> result(Layout(std::move(result_shape)),
+                           result_storage.data());
+    EXPECT_TRUE(result.Max(view, /*axis=*/1));
+    EXPECT_THAT(result_storage, ElementsAre(5, -2, 100));
+
+    EXPECT_TRUE(result.Min(view, /*axis=*/1));
+    EXPECT_THAT(result_storage, ElementsAre(-5, -10, -10));
+
+    EXPECT_TRUE(result.ArgMax(view, /*axis=*/1));
+    EXPECT_THAT(result_storage, ElementsAre(1, 2, 0));
+
+    EXPECT_TRUE(result.ArgMin(view, /*axis=*/1));
+    EXPECT_THAT(result_storage, ElementsAre(2, 0, 2));
+  }
+
+  {
+    // Cols
+    ShapeVector result_shape = {4};
+    std::vector<int> result_storage(Layout::num_elements(result_shape));
+    TensorView<int> result(Layout(std::move(result_shape)),
+                           result_storage.data());
+    EXPECT_TRUE(result.Max(view, /*axis=*/0));
+    EXPECT_THAT(result_storage, ElementsAre(100, 5, -2, 4));
+
+    EXPECT_TRUE(result.Min(view, /*axis=*/0));
+    EXPECT_THAT(result_storage, ElementsAre(-10, -5, -10, -3));
+
+    EXPECT_TRUE(result.ArgMax(view, /*axis=*/0));
+    EXPECT_THAT(result_storage, ElementsAre(2, 0, 1, 2));
+
+    EXPECT_TRUE(result.ArgMin(view, /*axis=*/0));
+    EXPECT_THAT(result_storage, ElementsAre(1, 1, 2, 1));
+  }
+}
+
+TEST(TensorViewTest, TestMinMaxElement) {
+  std::vector<int> storage = {
+      0,   5,  -5,  3,   //
+      -10, -5, -2,  -3,  //
+      100, 0,  -10, 4,   //
+  };
+  TensorView<int> view(Layout({3, 4}), storage.data());
+  EXPECT_THAT(view.MaxElement(), Optional(100));
+  EXPECT_THAT(view.ArgMaxElement(), Optional(ElementsAre(2, 0)));
+  EXPECT_THAT(view.MinElement(), Optional(-10));
+  EXPECT_THAT(view.ArgMinElement(), Optional(ElementsAre(1, 0)));
+}
+
+TEST(TensorViewTest, TestMinMaxElementScalar) {
+  int storage = 10;
+  TensorView<int> view(Layout({}), &storage);
+  EXPECT_THAT(view.MaxElement(), Optional(10));
+  EXPECT_THAT(view.ArgMaxElement(), Optional(IsEmpty()));
+  EXPECT_THAT(view.MinElement(), Optional(10));
+  EXPECT_THAT(view.ArgMinElement(), Optional(IsEmpty()));
 }
 
 TEST(TensorViewTest, TestEqual) {
