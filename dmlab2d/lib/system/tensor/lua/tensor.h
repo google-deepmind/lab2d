@@ -26,6 +26,7 @@
 #include <iterator>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <type_traits>
@@ -150,6 +151,16 @@ class LuaTensor : public lua::Class<LuaTensor<T>> {
         {"ceil", &Class::template Member<&LuaTensor<T>::UnaryOp<&View::Ceil>>},
         {"round",
          &Class::template Member<&LuaTensor<T>::UnaryOp<&View::Round>>},
+        {"argMaxElement",
+         &Class::template Member<&LuaTensor<T>::ArgMaxElement>},
+        {"argMinElement",
+         &Class::template Member<&LuaTensor<T>::ArgMinElement>},
+        {"maxElement", &Class::template Member<&LuaTensor<T>::MaxElement>},
+        {"minElement", &Class::template Member<&LuaTensor<T>::MinElement>},
+        {"argMax", &Class::template Member<&LuaTensor<T>::ArgMax>},
+        {"argMin", &Class::template Member<&LuaTensor<T>::ArgMin>},
+        {"max", &Class::template Member<&LuaTensor<T>::Max>},
+        {"min", &Class::template Member<&LuaTensor<T>::Min>},
         {"shuffle", &Class::template Member<&LuaTensor<T>::Shuffle>},
         {"byte", &Class::template Member<&LuaTensor<T>::Convert<uint8_t>>},
         {"char", &Class::template Member<&LuaTensor<T>::Convert<int8_t>>},
@@ -761,6 +772,127 @@ class LuaTensor : public lua::Class<LuaTensor<T>> {
       CreateObjectSameClass(L, std::move(result), storage_validity_);
       return 1;
     }
+  }
+
+  // Returns index of max element.
+  lua::NResultsOr ArgMaxElement(lua_State* L) {
+    if (auto result = tensor_view().ArgMaxElement(); result.has_value()) {
+      for (std::size_t i : *result) {
+        lua::Push(L, i + 1);  // Move to Lua indexing.
+      }
+      return result->size();
+    } else {
+      return "No elements!";
+    }
+  }
+
+  // Returns index of min element.
+  lua::NResultsOr ArgMinElement(lua_State* L) {
+    if (auto result = tensor_view().ArgMinElement(); result.has_value()) {
+      for (std::size_t i : *result) {
+        lua::Push(L, i + 1);  // Move to Lua indexing.
+      }
+      return result->size();
+    } else {
+      return "No elements!";
+    }
+  }
+
+  // Returns max element.
+  lua::NResultsOr MaxElement(lua_State* L) {
+    if (auto result = tensor_view().MaxElement(); result.has_value()) {
+      lua::Push(L, *result);
+      return 1;
+    } else {
+      return "No elements!";
+    }
+  }
+
+  // Returns min element.
+  lua::NResultsOr MinElement(lua_State* L) {
+    if (auto result = tensor_view().MinElement(); result.has_value()) {
+      lua::Push(L, *result);
+      return 1;
+    } else {
+      return "No elements!";
+    }
+  }
+
+  // Creates a result tensor of type U in LuaStack ready for Reduce operation
+  // on dimension given as second argument.
+  template <typename U = T>
+  std::pair<LuaTensor<U>*, int> PushReduceResult(lua_State* L,
+                                                 std::string* error) {
+    if (tensor_view_.shape().empty()) {
+      *error = "Cannot be called on a scalar.";
+      return std::make_pair(nullptr, 0);
+    }
+    std::size_t dimension;
+    if (!IsFound(lua::Read(L, 2, &dimension)) || dimension < 1 ||
+        dimension > tensor_view_.shape().size()) {
+      *error = absl::StrCat("Must be called on with nil or 0 < dim <= ",
+                            tensor_view_.shape().size(), ".");
+      return std::make_pair(nullptr, 0);
+    }
+    // Move from Lua indexing.
+    --dimension;
+    tensor::ShapeVector shape;
+    shape.reserve(tensor_view_.shape().size() - 1);
+    for (std::size_t a = 0; a < tensor_view_.shape().size(); ++a) {
+      if (a != dimension) {
+        shape.push_back(tensor_view_.shape()[a]);
+      }
+    }
+    std::vector<U> storage(Layout::num_elements(shape));
+    return std::make_pair(
+        LuaTensor<U>::CreateObject(L, std::move(shape), std::move(storage)),
+        dimension);
+  }
+
+  // Returns an Int64Tensor of max value indices for each value on a given
+  // dimension.
+  lua::NResultsOr ArgMax(lua_State* L) {
+    std::string error;
+    if (auto [lhs, dimension] = PushReduceResult<std::int64_t>(L, &error);
+        lhs != nullptr) {
+      lhs->mutable_tensor_view()->ArgMax(tensor_view_, dimension);
+      lhs->mutable_tensor_view()->Add(1);  // Move to Lua indexing.
+      return 1;
+    }
+    return error;
+  }
+
+  // Returns an Int64Tensor of min value indices for each value on a given
+  // dimension.
+  lua::NResultsOr ArgMin(lua_State* L) {
+    std::string error;
+    if (auto [lhs, dimension] = PushReduceResult<std::int64_t>(L, &error);
+        lhs != nullptr) {
+      lhs->mutable_tensor_view()->ArgMin(tensor_view_, dimension);
+      lhs->mutable_tensor_view()->Add(1);  // Move to Lua indexing.
+      return 1;
+    }
+    return error;
+  }
+
+  // Returns a tensor of max values for each value on a given dimension.
+  lua::NResultsOr Max(lua_State* L) {
+    std::string error;
+    if (auto [lhs, dimension] = PushReduceResult(L, &error); lhs != nullptr) {
+      lhs->mutable_tensor_view()->Max(tensor_view_, dimension);
+      return 1;
+    }
+    return error;
+  }
+
+  // Returns a tensor of min values for each value on a given dimension.
+  lua::NResultsOr Min(lua_State* L) {
+    std::string error;
+    if (auto [lhs, dimension] = PushReduceResult(L, &error); lhs != nullptr) {
+      lhs->mutable_tensor_view()->Min(tensor_view_, dimension);
+      return 1;
+    }
+    return error;
   }
 
   lua::NResultsOr Clone(lua_State* L) {

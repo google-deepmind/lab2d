@@ -1096,5 +1096,87 @@ TEST_F(LuaTensorTest, kClampTypeMismatch) {
   ASSERT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("TypeMismatch")));
 }
 
+constexpr absl::string_view kMinMax = R"(
+local tensor = require 'system.tensor'
+local doubles = tensor.DoubleTensor{{1, 2, 3}, {33, 11, 22}, {222, 333, 111}}
+assert(doubles:maxElement() == 333, tostring(doubles:maxElement()))
+assert(doubles:minElement() == 1, tostring(doubles:minElement()))
+
+assert(doubles:max(1) == tensor.DoubleTensor{222, 333, 111},
+       tostring(doubles:maxElement()))
+assert(doubles:min(1) == tensor.DoubleTensor{1, 2, 3},
+       tostring(doubles:minElement()))
+
+assert(doubles:max(2) == tensor.DoubleTensor{3, 33, 333},
+       tostring(doubles:maxElement()))
+assert(doubles:min(2) == tensor.DoubleTensor{1, 11, 111},
+       tostring(doubles:minElement()))
+
+local doubles = tensor.DoubleTensor{1, 2, 3}
+assert(doubles:maxElement() == 3, tostring(doubles:maxElement()))
+assert(doubles:minElement() == 1, tostring(doubles:minElement()))
+)";
+
+TEST_F(LuaTensorTest, kMinMax) {
+  ASSERT_THAT(lua::PushScript(L, kMinMax, "kMinMax"), IsOkAndHolds(1));
+  ASSERT_THAT(lua::Call(L, 0), IsOkAndHolds(0));
+}
+
+constexpr absl::string_view kMinMaxScalarError = R"(
+local tensor = require 'system.tensor'
+local scalar = tensor.DoubleTensor():val(10)
+scalar:maxElement()
+)";
+
+TEST_F(LuaTensorTest, kMinMaxScalarError) {
+  ASSERT_THAT(lua::PushScript(L, kMinMaxScalarError, "kMinMaxScalarError"),
+              IsOkAndHolds(1));
+  ASSERT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("scalar")));
+}
+
+constexpr absl::string_view kMinMaxBadAxis = R"(
+local tensor = require 'system.tensor'
+local scalar = tensor.DoubleTensor{10, 12}
+scalar:max(2)
+)";
+
+TEST_F(LuaTensorTest, kMinMaxBadAxis) {
+  ASSERT_THAT(lua::PushScript(L, kMinMaxBadAxis, "kMinMaxBadAxis"),
+              IsOkAndHolds(1));
+  ASSERT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("0 < dim <= 1")));
+}
+
+constexpr absl::string_view kArgMinMax = R"(
+local tensor = require 'system.tensor'
+local doubles = tensor.DoubleTensor{{1, 2, 3}, {33, 11, 22}, {222, 333, 111}}
+
+argMax = {doubles:argMaxElement()}
+assert(argMax[1] == 3 and argMax[2] == 2,
+       tostring(argMax[1]) .. ', ' .. tostring(argMax[2]))
+
+argMin = {doubles:argMinElement()}
+assert(argMin[1] == 1 and argMin[2] == 1,
+       tostring(argMin[1]) .. ', ' .. tostring(argMin[2]))
+
+assert(doubles:argMax(1) == tensor.Int64Tensor{3, 3, 3},
+       tostring(doubles:argMaxElement()))
+assert(doubles:argMin(1) == tensor.Int64Tensor{1, 1, 1},
+       tostring(doubles:argMinElement()))
+
+assert(doubles:argMax(2) == tensor.Int64Tensor{3, 1, 2},
+       tostring(doubles:argMax(2)))
+assert(doubles:argMin(2) == tensor.Int64Tensor{1, 2, 3},
+       tostring(doubles:argMin(2)))
+
+local doubles = tensor.DoubleTensor{10, 20, 30}
+assert(doubles:argMaxElement() == 3, tostring(doubles:argMaxElement()))
+assert(doubles:argMinElement() == 1, tostring(doubles:argMinElement()))
+)";
+
+TEST_F(LuaTensorTest, kArgMinMax) {
+  ASSERT_THAT(lua::PushScript(L, kArgMinMax, "kArgMinMax"), IsOkAndHolds(1));
+  ASSERT_THAT(lua::Call(L, 0), IsOkAndHolds(0));
+}
+
 }  // namespace
 }  // namespace deepmind::lab2d

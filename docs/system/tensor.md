@@ -7,9 +7,9 @@ functionality is similar to that of tensors in PyTorch. Tensor indices are
 Tensors can share storage. When data is mutated in one tensor, all other tensors
 that share that storage observe the mutation.
 
-Copies of a tensor share storage with the source tensor. All [layout
-operations](#layout-operations) result in tensors that share storage with the
-source tensor.
+Copies of a tensor share storage with the source tensor. All
+[layout operations](#layout-operations) result in tensors that share storage
+with the source tensor.
 
 Tensors with new storage (initially not shared with any other tensor) can only
 be created by one of the explicit [creation](#creation) methods described below.
@@ -617,6 +617,77 @@ Shape: [4, 3]
  [12,  8,  4]]
 ```
 
+## Reduce Operations
+
+In the following operations the tensor is reduced along dimension `dim`, i.e.
+the rank of the resulting tensor is one less than the rank of the operand and
+the tensor returned will have the shape of the original tensor without the
+selected dimension.
+
+### `argMax(*dim*)`
+
+Returns a tensor containing the max value index across given dimension.
+
+```lua
+> doubles = tensor.DoubleTensor{{1, 2}, {33, 11}, {222, 333}}
+> =doubles:argMax(2)  -- Row max indices.
+[tensor.DoubleTensor]
+Shape: [3]
+[2, 1, 2]
+> =doubles:argMax(1)  -- Col max indices.
+[tensor.Int64Tensor]
+Shape: [2]
+[3, 3]
+```
+
+### `argMin(*dim*)`
+
+Returns a tensor containing the min value index across given dimension.
+
+```lua
+> doubles = tensor.DoubleTensor{{1, 2}, {33, 11}, {222, 333}}
+> =doubles:argMin(2)  -- Row min indices.
+[tensor.DoubleTensor]
+Shape: [3]
+[1, 2, 1]
+> =doubles:argMin(1)  -- Col min indices.
+[tensor.Int64Tensor]
+Shape: [2]
+[1, 1]
+```
+
+### `max(*dim*)`
+
+Returns a tensor containing the largest value across given dimension.
+
+```lua
+> doubles = tensor.DoubleTensor{{1, 2}, {33, 11}, {222, 333}}
+> =doubles:max(2)  -- Row min.
+[tensor.DoubleTensor]
+Shape: [3]
+[  3,  33, 333]
+> =doubles:max(1)   -- Col min.
+[tensor.DoubleTensor]
+Shape: [3]
+[111, 222, 333]
+```
+
+### `min([*dim*])`
+
+Returns a tensor containing the smallest value across given dimension.
+
+```lua
+> doubles = tensor.DoubleTensor{{1, 2}, {33, 11}, {222, 333}}
+> =doubles:min(2)  -- Row min.
+[tensor.DoubleTensor]
+Shape: [3]
+[  1,  11, 111]
+> =doubles:min(1)  -- Col min.
+[tensor.DoubleTensor]
+Shape: [3]
+[1, 2, 3]
+```
+
 ## Accumulate Operations
 
 The elements are accumulated under the respective binary operation. Each value
@@ -670,6 +741,46 @@ Elements are converted to double before accumulation:
 ```lua
 > z = tensor.ByteTensor{5, 25, 100}
 > assert(z:lengthSquared() == 5 * 5 + 25 * 25 + 100 * 100)
+```
+
+### `argMaxElement()`
+
+Returns index of largest value.
+
+```lua
+> doubles = tensor.DoubleTensor{{1, 2}, {33, 11}, {222, 333}}
+> =doubles:argMaxElement()
+3 2
+```
+
+### `argMinElement()`
+
+Returns index of smallest value.
+
+```lua
+> doubles = tensor.DoubleTensor{{1, 2}, {33, 11}, {222, 333}}
+> =doubles:argMinElement()
+1   1
+```
+
+### `maxElement()`
+
+Returns the largest value.
+
+```lua
+> doubles = tensor.DoubleTensor{{1, 2, 3}, {33, 11, 22}, {222, 333, 111}}
+> =doubles:maxElement()
+333
+```
+
+### `minElement()`
+
+Returns the smallest value.
+
+```lua
+> doubles = tensor.DoubleTensor{{1, 2, 3}, {33, 11, 22}, {222, 333, 111}}
+> =doubles:minElement()
+1
 ```
 
 ## Scalar Operations
@@ -971,7 +1082,7 @@ Shape: [2, 3]
 
 ### `shuffle`(*gen*)
 
-Shuffles the elements of a rank-1 tensor, using the permuation computed by
+Shuffles the elements of a rank-1 tensor, using the permutation computed by
 random bit generator 'gen'.
 
 ```lua
