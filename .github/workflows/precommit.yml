@@ -11,42 +11,42 @@ on:
 
 jobs:
   build-and-test:
-    name: Build+test ${{ matrix.cfg.name }}
+    name: Build+test ${{ matrix.name }}
 
-    runs-on: ${{ matrix.cfg.os }}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        cfg:
-          - { name: 'Linux GCC', os: 'ubuntu-20.04', cc: gcc-10, cxx: g++-10, config: }
-          - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-20.04', cc: clang, cxx: clang++, config: }
+        include:
+          - { name: 'Linux GCC', os: 'ubuntu-20.04', cc: gcc-10, cxx: g++-10, config: ''}
+          - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-20.04', cc: clang, cxx: clang++, config: ''}
           - { name: 'Linux LLVM+libc++', os: 'ubuntu-20.04', cc: clang, cxx: clang++, config: --config=libc++ }
           - { name: 'MacOS LLVM+libc++', os: 'macos-10.15', cc: clang, cxx: clang++, config: --config=libc++ --features=-supports_dynamic_linker }
 
     env:
-      CC:  ${{ matrix.cfg.cc }}
-      CXX: ${{ matrix.cfg.cxx }}
+      CC:  ${{ matrix.cc }}
+      CXX: ${{ matrix.cxx }}
 
     steps:
       - uses: actions/checkout@v2
       - name: install infrastructure (Linux)
-        if: matrix.cfg.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           sudo apt-get install python3-dev python3-numpy python3-packaging
           sudo ln -s /usr/lib/llvm-10/include/c++/v1 /usr/include/c++/v1
       - name: install infrastructure (MacOS)
-        if: matrix.cfg.os == 'macos-10.15'
+        if: matrix.os == 'macos-10.15'
         run: sudo -H pip3 install numpy packaging
       - name: build-and-test-lua5.1
         run: |
-          bazel --bazelrc=.bazelrc build --config=lua5_1 ${{ matrix.cfg.config }} //...
-          bazel --bazelrc=.bazelrc test  --config=lua5_1 ${{ matrix.cfg.config }} --test_output=errors //...
+          bazel --bazelrc=.bazelrc build --config=lua5_1 ${{ matrix.config }} //...
+          bazel --bazelrc=.bazelrc test  --config=lua5_1 ${{ matrix.config }} --test_output=errors //...
       - name: build-and-test-lua5.2
         run: |
-          bazel --bazelrc=.bazelrc build --config=lua5_2 ${{ matrix.cfg.config }} //...
-          bazel --bazelrc=.bazelrc test  --config=lua5_2 ${{ matrix.cfg.config }} --test_output=errors //...
+          bazel --bazelrc=.bazelrc build --config=lua5_2 ${{ matrix.config }} //...
+          bazel --bazelrc=.bazelrc test  --config=lua5_2 ${{ matrix.config }} --test_output=errors //...
       - name: build-and-test-luajit
-        if: matrix.cfg.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
-          bazel --bazelrc=.bazelrc build --config=luajit ${{ matrix.cfg.config }} //...
-          bazel --bazelrc=.bazelrc test  --config=luajit ${{ matrix.cfg.config }} --test_output=errors //...
+          bazel --bazelrc=.bazelrc build --config=luajit ${{ matrix.config }} //...
+          bazel --bazelrc=.bazelrc test  --config=luajit ${{ matrix.config }} --test_output=errors //...
