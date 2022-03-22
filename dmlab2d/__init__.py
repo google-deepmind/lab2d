@@ -18,7 +18,6 @@ from typing import Collection, Sequence, Tuple, Union
 
 import dm_env
 import numpy as np
-import six
 import dmlab2d.dmlab2d_pybind as dmlab2d_pybind
 
 Lab2d = dmlab2d_pybind.Lab2d
@@ -94,9 +93,12 @@ class Environment(dm_env.Environment):
       elif spec.dtype == np.dtype('S'):
         if isinstance(action, np.ndarray):
           self._act_text[self._act_text_map[spec.name]] = action.tobytes()
+        elif isinstance(action, str):
+          self._act_text[self._act_text_map[spec.name]] = action.encode()
+        elif isinstance(action, bytes):
+          self._act_text[self._act_text_map[spec.name]] = action
         else:
-          self._act_text[self._act_text_map[spec.name]] = six.ensure_binary(
-              action)
+          raise TypeError(f'Unexpected type {type(action)!r}')
 
   def step(self, action):
     """See base class."""

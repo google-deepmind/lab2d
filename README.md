@@ -36,7 +36,7 @@ bazel run -c opt dmlab2d/random_agent -- --level_name=clean_up
 *DeepMind Lab2D* currently ships as source code only. It depends on a few
 external software libraries, which we ship in several different ways:
 
- * The `dm_env`, `eigen`, `luajit`, `lua5.1`, `lua5.2`, `luajit`, `png`, `six`
+ * The `dm_env`, `eigen`, `luajit`, `lua5.1`, `lua5.2`, `luajit`, `png`
    and `zlib` libraries are referenced as external Bazel sources, and Bazel
    BUILD files are provided. The dependent code itself should be fairly
    portable, but the BUILD rules we ship are specific to Linux on x86. To build

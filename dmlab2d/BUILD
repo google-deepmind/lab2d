@@ -26,7 +26,6 @@ pytype_strict_library(
         ":dmlab2d_pybind",
         ":expect_numpy_installed",
         "@dm_env_archive//:dm_env",
-        "@six_archive//:six",
     ],
 )
 
