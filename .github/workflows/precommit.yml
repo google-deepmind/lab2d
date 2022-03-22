@@ -3,6 +3,7 @@
 name: precommit
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -22,6 +23,7 @@ jobs:
     timeout-minutes: 30
 
     strategy:
+      fail-fast: ${{ github.event_name != 'workflow_dispatch' }}
       matrix:
         include:
           - { name: 'Linux GCC', os: 'ubuntu-20.04', cc: gcc-10, cxx: g++-10, config: ''}
