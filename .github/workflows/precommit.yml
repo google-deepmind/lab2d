@@ -29,7 +29,7 @@ jobs:
           - { name: 'Linux GCC', os: 'ubuntu-20.04', cc: gcc-10, cxx: g++-10, config: ''}
           - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-20.04', cc: clang, cxx: clang++, config: ''}
           - { name: 'Linux LLVM+libc++', os: 'ubuntu-20.04', cc: clang, cxx: clang++, config: --config=libc++ }
-          - { name: 'MacOS LLVM+libc++', os: 'macos-10.15', cc: clang, cxx: clang++, config: --config=libc++ }
+          - { name: 'MacOS LLVM+libc++', os: 'macos-11', cc: clang, cxx: clang++, config: --config=libc++ }
 
     env:
       CC:  ${{ matrix.cc }}
