@@ -60,24 +60,13 @@ jobs:
         with:
           python-version: ${{ matrix.py.version }}
 
-      - name: Install Infrastructure (Linux)
-        id: install_infa_linux
-        if: matrix.cfg.os == 'ubuntu-20.04'
-        run: |
-          pip install packaging
-          sudo ln -s /usr/lib/llvm-10/include/c++/v1 /usr/include/c++/v1
-
-      - name: install infrastructure (MacOS)
-        id: install_infa_macos
-        if: matrix.cfg.os == 'macos-10.15'
-        run: sudo -H pip3 install packaging
+      - name: Install Python Dependencies
+        run: pip3 install --upgrade pip packaging
 
       - name: Build for Python ${{ matrix.py.version }}
-        id: build_wheel
         run: bazel --bazelrc=.bazelrc build --config=lua5_1 ${{ matrix.cfg.config }} //dmlab2d:dmlab2d_wheel
 
       - name: Upload Release Asset
-        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
