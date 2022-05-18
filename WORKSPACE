@@ -57,11 +57,11 @@ http_archive(
 http_archive(
     name = "eigen_archive",
     build_file = "@//bazel:eigen.BUILD",
-    sha256 = "9a01fed6311df359f3f9af119fcf298a3353aef7d1b1bc86f6c8ae0ca6a2f842",
-    strip_prefix = "/eigen-eigen-5d5dd50b2eb6",
+    sha256 = "515b3c266d798f3a112efe781dda0cf1aef7bd73f6864d8f4f16129310ae1fdf",
+    strip_prefix = "eigen-b02c384ef4e8eba7b8bdef16f9dc6f8f4d6a6b2b",
     urls = [
-        "https://mirror.bazel.build/bitbucket.org/eigen/eigen/get/5d5dd50b2eb6.zip",
-        "https://bitbucket.org/eigen/eigen/get/5d5dd50b2eb6.zip",
+        "https://gitlab.com/libeigen/eigen/-/archive/b02c384ef4e8eba7b8bdef16f9dc6f8f4d6a6b2b/eigen-b02c384ef4e8eba7b8bdef16f9dc6f8f4d6a6b2b.tar.gz",
+        "https://storage.googleapis.com/mirror.tensorflow.org/gitlab.com/libeigen/eigen/-/archive/b02c384ef4e8eba7b8bdef16f9dc6f8f4d6a6b2b/eigen-b02c384ef4e8eba7b8bdef16f9dc6f8f4d6a6b2b.tar.gz",
     ],
 )
 
@@ -149,5 +149,5 @@ http_archive(
 )
 
 python_repo(
-    name = "python_system"
+    name = "python_system",
 )
