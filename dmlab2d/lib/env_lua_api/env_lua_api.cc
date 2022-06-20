@@ -46,6 +46,7 @@ namespace deepmind::lab2d {
 
 constexpr char kGameScriptPath[] =
     "/org_deepmind_lab2d/dmlab2d/lib/game_scripts";
+constexpr char kLuaJitModulesPath[] = "/luajit_archive/src";
 constexpr char kLevelDirectory[] = "levels";
 constexpr char kScriptFromSetting[] = "<script from setting>";
 
@@ -172,6 +173,8 @@ int EnvLuaApi::Init() {
 
   lua_vm_.AddPathToSearchers(
       absl::StrCat(ExecutableRunfiles(), kGameScriptPath));
+  lua_vm_.AddPathToSearchers(
+      absl::StrCat(ExecutableRunfiles(), kLuaJitModulesPath));
 
   void* readonly_fs = const_cast<DeepMindReadOnlyFileSystem*>(
       GetFileSystem().ReadOnlyFileSystem());

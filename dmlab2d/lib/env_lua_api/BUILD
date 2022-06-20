@@ -6,6 +6,10 @@ cc_library(
     name = "env_lua_api",
     srcs = ["env_lua_api.cc"],
     hdrs = ["env_lua_api.h"],
+    data = select({
+        "//dmlab2d/lib/lua:luajit": ["@luajit_archive//:jit_fs"],
+        "//conditions:default": [],
+    }),
     visibility = ["//visibility:public"],
     deps = [
         ":actions",

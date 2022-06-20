@@ -336,3 +336,21 @@ genrule(
     cmd = "$(location :buildvm) -m vmdef -o $@ $(SRCS)",
     tools = [":buildvm"],
 )
+
+filegroup(
+    name = "jit_fs",
+    srcs = ["src/jit/{}".format(s) for s in [
+        "bc.lua",
+        "bcsave.lua",
+        "dis_arm.lua",
+        "dis_mips.lua",
+        "dis_mipsel.lua",
+        "dis_ppc.lua",
+        "dis_x64.lua",
+        "dis_x86.lua",
+        "dump.lua",
+        "v.lua",
+        "vmdef.lua",
+    ]],
+    visibility = ["//visibility:public"],
+)
