@@ -19,6 +19,8 @@ string_flag(
         "luajit",
         "lua5_1",
         "lua5_2",
+        "lua5_3",
+        "lua5_4",
     ],
 )
 
@@ -37,18 +39,32 @@ config_setting(
     flag_values = {"lua_version": "lua5_2"},
 )
 
+config_setting(
+    name = "lua5.3",
+    flag_values = {"lua_version": "lua5_3"},
+)
+
+config_setting(
+    name = "lua5.4",
+    flag_values = {"lua_version": "lua5_4"},
+)
+
 cc_library(
     name = "lua",
     hdrs = ["lua.h"],
     linkopts = select({
         "lua5.1": ["-ldl"],
         "lua5.2": ["-ldl"],
+        "lua5.3": ["-ldl"],
+        "lua5.4": ["-ldl"],
         "//conditions:default": [],
     }),
     deps = select({
         "//conditions:default": ["@luajit_archive//:luajit"],
         ":lua5.1": ["@lua5_1_archive//:lua5_1"],
         ":lua5.2": ["@lua5_2_archive//:lua5_2"],
+        ":lua5.3": ["@lua5_3_archive//:lua5_3"],
+        ":lua5.4": ["@lua5_4_archive//:lua5_4"],
     }),
 )
 

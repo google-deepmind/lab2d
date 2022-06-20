@@ -11,4 +11,6 @@ build:libc++ --repo_env=BAZEL_LINKOPTS=-lc++:-lm
 
 build:lua5_1 --lua_version=lua5_1
 build:lua5_2 --lua_version=lua5_2
+build:lua5_3 --lua_version=lua5_3
+build:lua5_4 --lua_version=lua5_4
 build:luajit --lua_version=luajit
