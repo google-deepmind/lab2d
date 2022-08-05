@@ -115,6 +115,7 @@ return {
               ['@'] = {64, 200, 64, 255},
               ['#'] = {255, 255, 255, 255},
               ['*'] = {0, 255, 0, 255},  -- One pixel
+              ['.'] = {0, 0, 0, 0},
           },
           text = PLAYER_TEXT,
       }
@@ -132,27 +133,39 @@ return {
     end,
     food = function()
       return {
-          palette = {['*'] = {0, 0, 255, 255}},
+          palette = {
+              ['*'] = {0, 0, 255, 255},
+              ['.'] = {0, 0, 0, 0},
+          },
           text = FOOD,
           noRotate = true,
         }
     end,
     pill = function()
       return {
-          palette = {['*'] = {0, 255, 255, 255}},
+          palette = {
+              ['*'] = {0, 255, 255, 255},
+              ['.'] = {0, 0, 0, 0},
+          },
           text = PILL,
           noRotate = true,
         }
     end,
     foe = function()
       return {
-          palette = {['*'] = {255, 0, 0, 255}},
+          palette = {
+              ['*'] = {255, 0, 0, 255},
+              ['.'] = {0, 0, 0, 0},
+          },
           text = FOE,
       }
     end,
     foeFood = function()
       return {
-          palette = {['*'] = {255, 255, 0, 255}},
+          palette = {
+              ['*'] = {255, 255, 0, 255},
+              ['.'] = {0, 0, 0, 0},
+          },
           text = FOE_FOOD,
       }
     end,

@@ -105,11 +105,13 @@ asserts.EQ(sprite, tensor.ByteTensor{
 ]]
 local function textToSprite(text, palette)
   local colors = 0
-  for _, p in pairs(palette) do
+  for char, p in pairs(palette) do
     if colors == 0 then
       colors = #p
     elseif #p ~= colors then
-        error('invalid palette')
+      error('All colors must have the same number of channels. ' ..
+            'color \'' .. char .. '\' has ' .. #p ..
+            ' channels but expected ' .. colors .. ' channels.')
     end
   end
 
@@ -126,8 +128,10 @@ local function textToSprite(text, palette)
   _visitText(text,
     function(row, col, char)
       local color = palette[char]
-      if color then
+      if color and #color > 0 then
         data(row, col):fill(color)
+      else
+        error('color \'' .. char .. '\' not in palette')
       end
     end
   )

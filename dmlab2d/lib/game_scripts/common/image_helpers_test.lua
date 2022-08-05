@@ -14,6 +14,7 @@ limitations under the License.
 ]]
 
 local image_helpers = require 'common.image_helpers'
+local read_settings = require 'common.read_settings'
 local tensor = require 'system.tensor'
 local asserts = require 'testing.asserts'
 local test_runner = require 'testing.test_runner'
@@ -71,7 +72,9 @@ function tests:textToSpriteWorks()
       ccccc
       .....
   ]]
-  local palette = {a = {1, 0, 0}, b = {0, 0, 2}, c = {0, 3, 0}}
+  local palette = read_settings.any()
+  read_settings.apply({
+      a = {1, 0, 0}, b = {0, 0, 2}, c = {0, 3, 0}, ['.'] = {0, 0, 0}}, palette)
   local sprite, shape = image_helpers.textToSprite(text, palette)
   asserts.tablesEQ(sprite:shape(), {4, 5, 3})
   asserts.tablesEQ(shape, {height = 4, width = 5})
@@ -80,6 +83,24 @@ function tests:textToSpriteWorks()
       {{0, 0, 0}, {0, 0, 0}, {0, 0, 2}, {0, 0, 0}, {0, 0, 0}},
       {{0, 3, 0}, {0, 3, 0}, {0, 3, 0}, {0, 3, 0}, {0, 3, 0}},
       {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}})
+end
+
+function tests:missingColorRaisesError()
+  local text = 'abc'
+  local palette = read_settings.any()
+  read_settings.apply({a = {1, 0, 0}, b = {0, 0, 2}}, palette)
+  asserts.shouldFail(
+    function() image_helpers.textToSprite(text, palette) end,
+    'color \'c\' not in palette')
+end
+
+function tests:mismatchedColorSizeRaisesError()
+  local text = 'ab'
+  local palette = read_settings.any()
+  read_settings.apply({a = {1, 0, 0}, b = {0, 0, 2, 0}}, palette)
+  asserts.shouldFail(
+    function() image_helpers.textToSprite(text, palette) end,
+    'All colors must have the same number of channels.')
 end
 
 return test_runner.run(tests)
