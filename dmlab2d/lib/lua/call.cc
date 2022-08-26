@@ -19,9 +19,9 @@
 #include <string>
 #include <utility>
 
+#include "absl/log/check.h"
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
-#include "dmlab2d/lib/support/logging.h"
 
 namespace deepmind::lab2d::lua {
 

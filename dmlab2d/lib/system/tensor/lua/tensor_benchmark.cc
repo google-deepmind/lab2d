@@ -14,6 +14,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "absl/log/log.h"
 #include "absl/strings/string_view.h"
 #include "benchmark/benchmark.h"
 #include "dmlab2d/lib/lua/call.h"

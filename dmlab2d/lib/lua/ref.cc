@@ -16,9 +16,9 @@
 
 #include "dmlab2d/lib/lua/ref.h"
 
+#include "absl/log/check.h"
 #include "absl/utility/utility.h"
 #include "dmlab2d/lib/lua/lua.h"
-#include "dmlab2d/lib/support/logging.h"
 
 namespace deepmind::lab2d::lua {
 

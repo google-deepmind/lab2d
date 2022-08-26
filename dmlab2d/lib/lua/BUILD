@@ -65,7 +65,7 @@ cc_library(
     deps = [
         ":lua",
         ":vm",
-        "//dmlab2d/lib/support:logging",
+        "@com_google_absl//absl/log:check",
         "@com_google_googletest//:gtest",
     ],
 )
@@ -138,7 +138,7 @@ cc_library(
         ":n_results_or",
         ":push",
         ":read",
-        "//dmlab2d/lib/support:logging",
+        "@com_google_absl//absl/log:check",
     ],
 )
 
@@ -247,7 +247,7 @@ cc_library(
         ":lua",
         ":push",
         ":read",
-        "//dmlab2d/lib/support:logging",
+        "@com_google_absl//absl/log:check",
     ],
 )
 
@@ -279,7 +279,7 @@ cc_library(
         ":n_results_or",
         ":push",
         ":read",
-        "//dmlab2d/lib/support:logging",
+        "@com_google_absl//absl/log:check",
         "@com_google_absl//absl/utility",
     ],
 )
@@ -308,7 +308,7 @@ cc_library(
         ":n_results_or",
         ":push",
         ":read",
-        "//dmlab2d/lib/support:logging",
+        "@com_google_absl//absl/log:check",
         "@com_google_absl//absl/strings",
     ],
 )

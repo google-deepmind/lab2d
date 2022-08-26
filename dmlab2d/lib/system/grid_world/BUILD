@@ -30,6 +30,7 @@ cc_library(
     deps = [
         ":handles",
         "//dmlab2d/lib/system/math:math2d",
+        "@com_google_absl//absl/log",
     ],
 )
 
@@ -66,6 +67,7 @@ cc_library(
         "//dmlab2d/lib/system/grid_world/collections:shuffled_membership",
         "//dmlab2d/lib/system/math:math2d",
         "//dmlab2d/lib/system/math:math2d_algorithms",
+        "@com_google_absl//absl/log",
         "@com_google_absl//absl/types:any",
         "@com_google_absl//absl/types:optional",
         "@com_google_absl//absl/types:span",

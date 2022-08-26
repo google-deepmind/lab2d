@@ -22,6 +22,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/log/check.h"
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/lua/call.h"
@@ -29,7 +30,6 @@
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
 #include "dmlab2d/lib/lua/stack_resetter.h"
-#include "dmlab2d/lib/support/logging.h"
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
 
 namespace deepmind::lab2d {

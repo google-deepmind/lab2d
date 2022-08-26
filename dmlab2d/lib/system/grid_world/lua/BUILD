@@ -61,6 +61,7 @@ cc_library(
         "//dmlab2d/lib/system/math:math2d",
         "//dmlab2d/lib/system/math/lua:math2d",
         "//dmlab2d/lib/system/random/lua:random",
+        "@com_google_absl//absl/log",
         "@com_google_absl//absl/strings",
         "@com_google_absl//absl/strings:str_format",
         "@com_google_absl//absl/types:optional",

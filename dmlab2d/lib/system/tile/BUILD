@@ -6,7 +6,7 @@ cc_library(
     name = "pixel",
     hdrs = ["pixel.h"],
     visibility = [":__subpackages__"],
-    deps = ["//dmlab2d/lib/support:logging"],
+    deps = ["@com_google_absl//absl/log:check"],
 )
 
 cc_test(
@@ -26,8 +26,9 @@ cc_library(
     deps = [
         ":pixel",
         ":tile_set",
-        "//dmlab2d/lib/support:logging",
         "//dmlab2d/lib/system/math:math2d",
+        "@com_google_absl//absl/log",
+        "@com_google_absl//absl/log:check",
         "@com_google_absl//absl/types:span",
     ],
 )

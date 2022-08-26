@@ -18,10 +18,10 @@
 
 #include <utility>
 
+#include "absl/log/log.h"
 #include "dmlab2d/lib/lua/class.h"
 #include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/read.h"
-#include "dmlab2d/lib/support/logging.h"
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
 

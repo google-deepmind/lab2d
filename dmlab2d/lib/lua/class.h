@@ -21,12 +21,12 @@
 #include <string>
 #include <utility>
 
+#include "absl/log/check.h"
 #include "absl/strings/str_cat.h"
 #include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
-#include "dmlab2d/lib/support/logging.h"
 
 namespace deepmind::lab2d::lua {
 

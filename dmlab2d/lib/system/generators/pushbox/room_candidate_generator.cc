@@ -16,7 +16,7 @@
 
 #include <utility>
 
-#include "dmlab2d/lib/support/logging.h"
+#include "absl/log/check.h"
 
 namespace deepmind::lab2d::pushbox {
 

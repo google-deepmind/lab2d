@@ -19,8 +19,9 @@
 #include <memory>
 #include <string>
 
+#include "absl/log/check.h"
+#include "absl/log/log.h"
 #include "absl/strings/str_cat.h"
-#include "dmlab2d/lib/support/logging.h"
 #include "dmlab2d/lib/system/generators/pushbox/constants.h"
 
 namespace deepmind::lab2d::pushbox {

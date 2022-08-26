@@ -22,13 +22,14 @@
 #include <iostream>
 #include <utility>
 
+#include "absl/log/check.h"
+#include "absl/log/log.h"
 #include "absl/strings/string_view.h"
 #include "dmlab2d/lib/lua/call.h"
 #include "dmlab2d/lib/lua/class.h"
 #include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
-#include "dmlab2d/lib/support/logging.h"
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
 

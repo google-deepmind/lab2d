@@ -28,6 +28,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/log/check.h"
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/string_view.h"
@@ -36,7 +37,6 @@
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
 #include "dmlab2d/lib/lua/table_ref.h"
-#include "dmlab2d/lib/support/logging.h"
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
 #include "dmlab2d/lib/util/file_reader.h"

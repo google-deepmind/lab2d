@@ -27,9 +27,9 @@
 #ifndef DMLAB2D_LIB_LUA_VM_TEST_UTIL_H_
 #define DMLAB2D_LIB_LUA_VM_TEST_UTIL_H_
 
+#include "absl/log/check.h"
 #include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/vm.h"
-#include "dmlab2d/lib/support/logging.h"
 #include "gtest/gtest.h"
 
 namespace deepmind::lab2d::lua {

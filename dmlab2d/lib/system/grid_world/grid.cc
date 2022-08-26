@@ -23,6 +23,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/log/log.h"
 #include "absl/types/optional.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/grid_world/collections/shuffled_membership.h"

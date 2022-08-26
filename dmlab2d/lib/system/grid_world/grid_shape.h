@@ -17,6 +17,7 @@
 #ifndef DMLAB2D_LIB_SYSTEM_GRID_WORLD_GRID_SHAPE_H_
 #define DMLAB2D_LIB_SYSTEM_GRID_WORLD_GRID_SHAPE_H_
 
+#include "absl/log/log.h"
 #include "dmlab2d/lib/system/grid_world/handles.h"
 #include "dmlab2d/lib/system/math/math2d.h"
 

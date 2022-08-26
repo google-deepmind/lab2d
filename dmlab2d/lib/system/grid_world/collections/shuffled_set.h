@@ -23,8 +23,8 @@
 #include <utility>
 #include <vector>
 
+#include "absl/log/check.h"
 #include "absl/types/span.h"
-#include "dmlab2d/lib/support/logging.h"
 
 namespace deepmind::lab2d {
 

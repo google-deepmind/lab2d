@@ -23,10 +23,10 @@
 #include <vector>
 
 #include "absl/container/flat_hash_map.h"
+#include "absl/log/check.h"
 #include "absl/strings/str_cat.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/dmlab2d.h"
-#include "dmlab2d/lib/support/logging.h"
 #include "include/pybind11/cast.h"
 #include "include/pybind11/detail/common.h"
 #include "include/pybind11/numpy.h"

@@ -18,8 +18,9 @@
 #include <cstdint>
 #include <iterator>
 
+#include "absl/log/check.h"
+#include "absl/log/log.h"
 #include "absl/types/span.h"
-#include "dmlab2d/lib/support/logging.h"
 #include "dmlab2d/lib/system/tile/pixel.h"
 
 namespace deepmind::lab2d {

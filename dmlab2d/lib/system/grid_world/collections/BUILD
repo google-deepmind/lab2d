@@ -4,7 +4,7 @@ cc_library(
     name = "handle",
     hdrs = ["handle.h"],
     visibility = ["//visibility:public"],
-    deps = ["//dmlab2d/lib/support:logging"],
+    deps = ["@com_google_absl//absl/log:check"],
 )
 
 cc_test(
@@ -59,7 +59,7 @@ cc_library(
     name = "object_pool",
     hdrs = ["object_pool.h"],
     visibility = ["//visibility:public"],
-    deps = ["//dmlab2d/lib/support:logging"],
+    deps = ["@com_google_absl//absl/log:check"],
 )
 
 cc_test(
@@ -76,7 +76,7 @@ cc_library(
     name = "shuffled_set",
     hdrs = ["shuffled_set.h"],
     deps = [
-        "//dmlab2d/lib/support:logging",
+        "@com_google_absl//absl/log:check",
         "@com_google_absl//absl/types:span",
     ],
 )

@@ -17,7 +17,7 @@
 #ifndef DMLAB2D_LIB_SYSTEM_TILE_PIXEL_H_
 #define DMLAB2D_LIB_SYSTEM_TILE_PIXEL_H_
 
-#include "dmlab2d/lib/support/logging.h"
+#include "absl/log/check.h"
 
 namespace deepmind::lab2d {
 

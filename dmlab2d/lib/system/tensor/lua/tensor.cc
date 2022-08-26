@@ -16,9 +16,9 @@
 
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
 
+#include "absl/log/check.h"
 #include "dmlab2d/lib/lua/bind.h"
 #include "dmlab2d/lib/lua/table_ref.h"
-#include "dmlab2d/lib/support/logging.h"
 
 namespace deepmind::lab2d {
 namespace tensor {

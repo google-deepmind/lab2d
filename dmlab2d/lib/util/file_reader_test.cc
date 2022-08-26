@@ -20,7 +20,7 @@
 #include <cstdio>
 #include <string>
 
-#include "dmlab2d/lib/support/logging.h"
+#include "absl/log/check.h"
 #include "dmlab2d/lib/util/default_read_only_file_system.h"
 #include "dmlab2d/lib/util/files.h"
 #include "gmock/gmock.h"

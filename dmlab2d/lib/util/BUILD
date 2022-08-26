@@ -49,7 +49,7 @@ cc_test(
         ":default_read_only_file_system",
         ":file_reader",
         ":files",
-        "//dmlab2d/lib/support:logging",
+        "@com_google_absl//absl/log:check",
         "@com_google_googletest//:gtest_main",
     ],
 )

@@ -18,9 +18,10 @@ cc_library(
     hdrs = ["pushbox.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "//dmlab2d/lib/support:logging",
         "//dmlab2d/lib/system/math:math2d",
         "@com_google_absl//absl/container:flat_hash_set",
+        "@com_google_absl//absl/log",
+        "@com_google_absl//absl/log:check",
         "@com_google_absl//absl/random",
         "@com_google_absl//absl/random:distributions",
         "@com_google_absl//absl/status",

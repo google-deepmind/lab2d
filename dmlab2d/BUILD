@@ -10,9 +10,9 @@ pybind_extension(
     copts = ["-fexceptions"],
     deps = [
         "//dmlab2d/lib:dmlab2d",
-        "//dmlab2d/lib/support:logging",
         "//third_party/rl_api:env_c_api",
         "@com_google_absl//absl/container:flat_hash_map",
+        "@com_google_absl//absl/log:check",
         "@com_google_absl//absl/strings",
         "@com_google_absl//absl/types:span",
     ],

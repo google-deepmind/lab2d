@@ -23,7 +23,7 @@
 
 #ifndef SUPPRESS_COMMANDLINE_FLAGS
 #include "absl/flags/flag.h"
-#include "dmlab2d/lib/support/commandlineflags_declare.h"
+#include "base/commandlineflags_declare.h"
 
 DECLARE_string(test_srcdir);
 #endif
