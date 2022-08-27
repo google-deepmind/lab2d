@@ -88,17 +88,6 @@ http_archive(
 )
 
 http_archive(
-    name = "six_archive",
-    build_file = "@//bazel:six.BUILD",
-    sha256 = "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a",
-    strip_prefix = "six-1.10.0",
-    urls = [
-        "https://mirror.bazel.build/pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz",
-        "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz",
-    ],
-)
-
-http_archive(
     name = "lua5_1_archive",
     build_file = "@//bazel:lua5_1.BUILD",
     sha256 = "2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333",
