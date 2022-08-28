@@ -16,6 +16,7 @@
 
 #include "dmlab2d/lib/system/grid_world/collections/shuffled_set.h"
 
+#include <array>
 #include <cmath>
 #include <limits>
 #include <numeric>
