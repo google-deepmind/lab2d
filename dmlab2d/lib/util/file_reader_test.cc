@@ -129,6 +129,7 @@ extern "C" {
 
 static bool fake_file_system_open(const char* filename,
                                   DeepMindReadOnlyFileHandle* handle) {
+  *handle = nullptr;
   return true;
 }
 
