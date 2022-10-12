@@ -46,15 +46,6 @@ http_archive(
 )
 
 http_archive(
-    name = "funcsigs_archive",
-    build_file = "@//bazel:funcsigs.BUILD",
-    strip_prefix = "funcsigs-1.0.2",
-    urls = [
-        "https://pypi.python.org/packages/94/4a/db842e7a0545de1cdb0439bb80e6e42dfe82aaeaadd4072f2263a4fbed23/funcsigs-1.0.2.tar.gz",
-    ],
-)
-
-http_archive(
     name = "eigen_archive",
     build_file = "@//bazel:eigen.BUILD",
     sha256 = "515b3c266d798f3a112efe781dda0cf1aef7bd73f6864d8f4f16129310ae1fdf",

@@ -23,7 +23,7 @@ py_library(
     name = "tree",
     srcs = ["tree/__init__.py"],
     data = [":tree/_tree.so"],
-    srcs_version = "PY2AND3",
+    srcs_version = "PY3",
     visibility = ["@dm_env_archive//:__pkg__"],
     deps = [":sequence"],
 )
