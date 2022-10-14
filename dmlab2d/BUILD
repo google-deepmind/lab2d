@@ -1,5 +1,5 @@
 load("//:build_defs.bzl", "pybind_extension", "pytype_strict_library")
-load("//:wheel_defs.bzl", "py_wheel")
+load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
 load("@python_system//:defs.bzl", "PY_TAGS")
 
 licenses(["notice"])
@@ -91,6 +91,22 @@ pytype_strict_library(
     deps = [":dmlab2d_pybind"],
 )
 
+py_package(
+    name = "dmlab2d_pkg",
+    packages = [
+        "dmlab2d",
+        "dmlab2d.runfiles_helper",
+        "dmlab2d.settings_helper",
+        "dmlab2d.ui_renderer",
+    ],
+    deps = [
+        ":dmlab2d",
+        ":runfiles_helper",
+        ":settings_helper",
+        ":ui_renderer",
+    ],
+)
+
 py_library(name = "expect_numpy_installed")
 
 py_library(name = "expect_pygame_installed")
@@ -100,16 +116,22 @@ py_library(name = "expect_dataclasses_installed")
 py_wheel(
     name = "dmlab2d_wheel",
     abi = PY_TAGS.abi,
+    author = "DMLab2D authors",
+    author_email = "DeepMind Lab Team <lab@deepmind.com>",
+    description_file = "//:README.md",
     distribution = "dmlab2d",
+    extra_distinfo_files = {"//:LICENSE": "LICENSE.txt"},
+    extra_requires = {"ui_renderer": ["pygame"]},
+    homepage = "https://github.com/deepmind/lab2d",
+    license = "Apache 2.0",
     platform = PY_TAGS.platform,
     python_tag = PY_TAGS.interpreter,
-    version = "1.0",
-    deps = [
-        ":dmlab2d",
-        ":runfiles_helper",
-        ":settings_helper",
-        ":ui_renderer",
+    requires = [
+        "dm_env",
+        "numpy",
     ],
+    version = "1.0",
+    deps = [":dmlab2d_pkg"],
 )
 
 # This version of the wheel file does not contain any ABI and platform
@@ -118,13 +140,19 @@ py_wheel(
 # was used to build it.
 py_wheel(
     name = "dmlab2d_wheel_local",
+    author = "DMLab2D authors",
+    author_email = "DeepMind Lab Team <lab@deepmind.com>",
+    description_file = "//:README.md",
     distribution = "dmlab2d",
+    extra_distinfo_files = {"//:LICENSE": "LICENSE.txt"},
+    extra_requires = {"ui_renderer": ["pygame"]},
+    homepage = "https://github.com/deepmind/lab2d",
+    license = "Apache 2.0",
     python_tag = "py3",
-    version = "1.0",
-    deps = [
-        ":dmlab2d",
-        ":runfiles_helper",
-        ":settings_helper",
-        ":ui_renderer",
+    requires = [
+        "dm_env",
+        "numpy",
     ],
+    version = "1.0",
+    deps = [":dmlab2d_pkg"],
 )
