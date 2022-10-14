@@ -50,8 +50,7 @@ class Test : public ::testing::Test {
   EnvLuaApi env_;
 };
 
-constexpr absl::string_view kDefaultRoot =
-    "org_deepmind_lab2d/dmlab2d/lib/game_scripts/levels";
+constexpr absl::string_view kDefaultRoot = "dmlab2d/lib/game_scripts/levels";
 
 constexpr char kFullApi[] = R"(=
 local events = require 'system.events'

@@ -134,8 +134,8 @@ return mod.hello
 
 TEST(VmTest, TestLuaPath) {
   Vm vm = CreateVm();
-  vm.AddPathToSearchers(absl::StrCat(
-      util::TestSrcDir(), "/org_deepmind_lab2d/dmlab2d/lib/lua/vm_test_data"));
+  vm.AddPathToSearchers(
+      absl::StrCat(util::TestSrcDir(), "/dmlab2d/lib/lua/vm_test_data"));
 
   auto* L = vm.get();
 
@@ -156,8 +156,8 @@ return mod.hello
 
 TEST(VmTest, TestLuaPathInit) {
   Vm vm = CreateVm();
-  vm.AddPathToSearchers(absl::StrCat(
-      util::TestSrcDir(), "/org_deepmind_lab2d/dmlab2d/lib/lua/vm_test_data"));
+  vm.AddPathToSearchers(
+      absl::StrCat(util::TestSrcDir(), "/dmlab2d/lib/lua/vm_test_data"));
 
   auto* L = vm.get();
 

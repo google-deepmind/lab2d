@@ -121,7 +121,7 @@ local function _makeError(msg)
 end
 
 local function _shorten(path)
-  return string.match(path, 'org_deepmind_lab2d/(.*)') or path
+  return string.match(path, 'runfiles/(.*)') or path
 end
 
 local function traceback(msg, level)

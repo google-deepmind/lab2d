@@ -50,12 +50,7 @@ def find():
   Raises:
     FileNotFoundError: The assets could not be found.
   """
-  sub_directory = 'org_deepmind_lab2d/dmlab2d/lib'
-
-  path = find_directory(sub_directory)
-  if path is None:
-    raise FileNotFoundError(sub_directory)
-  return find_directory(sub_directory)[:-len(sub_directory)]
+  return os.path.abspath(os.path.dirname(dmlab2d_pybind.__file__) + '/..')
 
 
 def find_directory(sub_directory):

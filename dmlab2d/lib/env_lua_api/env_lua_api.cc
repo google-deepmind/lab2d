@@ -44,9 +44,8 @@
 
 namespace deepmind::lab2d {
 
-constexpr char kGameScriptPath[] =
-    "/org_deepmind_lab2d/dmlab2d/lib/game_scripts";
-constexpr char kLuaJitModulesPath[] = "/luajit_archive/src";
+constexpr char kGameScriptPath[] = "/dmlab2d/lib/game_scripts";
+constexpr char kLuaJitModulesPath[] = "/../luajit_archive/src";
 constexpr char kLevelDirectory[] = "levels";
 constexpr char kScriptFromSetting[] = "<script from setting>";
 

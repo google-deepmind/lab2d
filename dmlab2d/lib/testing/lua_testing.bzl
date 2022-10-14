@@ -50,7 +50,7 @@ def dmlab2d_lua_test(name, main = None, root = None, data = None, **kwargs):
       **kwargs: Additional arguments to pass on to cc_test .
     """
     extra_data = [] if data == None else data
-    root = "org_deepmind_lab2d/" + native.package_name() if root == None else root
+    root = "" + native.package_name() if root == None else root
     main = name + ".lua" if main == None else main
     level_script = main[:-len(".lua")]
     size = kwargs.pop("size", "small")
@@ -73,7 +73,7 @@ def dmlab2d_lua_level_test(name, main = None, root = None, data = None):
       data: Optional data to include.
     """
     extra_data = [] if data == None else data
-    root = "org_deepmind_lab2d/" + native.package_name() if root == None else root
+    root = "" + native.package_name() if root == None else root
     main = name + ".lua" if main == None else main
     level_script = main[:-len(".lua")]
     native.cc_test(

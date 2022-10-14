@@ -82,7 +82,7 @@ local _verbosity
 local _output
 
 local function _shorten(path)
-  return string.match(path, 'org_deepmind_lab2d/(.*)') or path
+  return string.match(path, 'runfiles/(.*)') or path
 end
 
 local function _logInternal(messageType, ...)

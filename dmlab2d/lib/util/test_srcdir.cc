@@ -19,6 +19,8 @@
 #include <cstdlib>
 #include <string>
 
+#include "absl/strings/str_cat.h"
+
 #ifndef SUPPRESS_COMMANDLINE_FLAGS
 #include "absl/flags/flag.h"
 #include "dmlab2d/lib/support/commandlineflags_declare.h"
@@ -30,7 +32,10 @@ namespace deepmind::lab2d::util {
 
 std::string TestSrcDir() {
   if (const char* e = std::getenv("TEST_SRCDIR")) {
-    return std::string(e);
+    if (const char* workspace = std::getenv("TEST_WORKSPACE")) {
+      return absl::StrCat(e, "/", workspace);
+    }
+    return absl::StrCat(e);
   } else {
 #ifndef SUPPRESS_COMMANDLINE_FLAGS
     return absl::GetFlag(FLAGS_test_srcdir);

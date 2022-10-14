@@ -17,7 +17,7 @@ local file_system = require 'system.file_system'
 local image_helpers = require 'common.image_helpers'
 
 local IMAGES_DIR = file_system:runFiles() ..
-    '/org_deepmind_lab2d/dmlab2d/lib/game_scripts/levels/clean_up/images'
+    '/dmlab2d/lib/game_scripts/levels/clean_up/images'
 
 local PLAYER_PALETTE = {
     grey = {
