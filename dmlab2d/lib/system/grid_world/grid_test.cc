@@ -20,6 +20,7 @@
 #include <array>
 #include <iterator>
 #include <limits>
+#include <memory>
 #include <numeric>
 #include <random>
 #include <type_traits>
@@ -173,7 +174,7 @@ TEST(GridTest, ReleaseInstanceWorks) {
   Grid grid(world, math::Size2d{1, 1}, GridShape::Topology::kBounded);
   math::Transform2d trans = {{0, 0}, math::Orientation2d::kNorth};
 
-  auto mock_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_state_callback.get(), OnAdd(Piece(0)));
   EXPECT_CALL(*mock_state_callback.get(), OnRemove(Piece(0)));
 
@@ -379,7 +380,7 @@ TEST(GridTest, UpdateWorks) {
   Grid grid(world, math::Size2d{1, 4}, GridShape::Topology::kBounded);
   math::Transform2d trans = {{0, 0}, math::Orientation2d::kWest};
 
-  auto mock_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_state_callback.get(),
               OnUpdate(world.updates().ToHandle("one"), _, _))
       .Times(1 + 2 + 3);
@@ -414,13 +415,13 @@ TEST(GridTest, SetStateSameLayerWorks) {
   const World world(CreateWorldArgs());
   Grid grid(world, math::Size2d{1, 4}, GridShape::Topology::kBounded);
 
-  auto mock_player_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_player_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_player_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_player_state_callback.get(), OnRemove(_));
   grid.SetCallback(world.states().ToHandle("Player"),
                    std::move(mock_player_state_callback));
 
-  auto mock_wall_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_wall_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_wall_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_wall_state_callback.get(), OnRemove(_)).Times(0);
   grid.SetCallback(world.states().ToHandle("Wall"),
@@ -462,12 +463,12 @@ TEST(GridTest, SetStateDifferentLayerWorks) {
   State player_state = world.states().ToHandle("Player");
   State apple_state = world.states().ToHandle("Apple");
 
-  auto mock_player_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_player_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_player_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_player_state_callback.get(), OnRemove(_));
   grid.SetCallback(player_state, std::move(mock_player_state_callback));
 
-  auto mock_apple_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_apple_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_apple_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_apple_state_callback.get(), OnRemove(_)).Times(0);
   grid.SetCallback(apple_state, std::move(mock_apple_state_callback));
@@ -588,12 +589,12 @@ TEST(GridTest, EnterLeaveCallbacksCalledCreateOn) {
 
   Grid grid(world, math::Size2d{4, 1}, GridShape::Topology::kBounded);
 
-  auto mock_player_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_player_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_player_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_player_state_callback.get(), OnRemove(_)).Times(0);
   grid.SetCallback(player_state, std::move(mock_player_state_callback));
 
-  auto mock_apple_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_apple_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_apple_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_apple_state_callback.get(), OnEnter(player_contact, _, _));
   EXPECT_CALL(*mock_apple_state_callback.get(), OnLeave(player_contact, _, _));
@@ -624,14 +625,14 @@ TEST(GridTest, EnterLeaveCallbacksCalledStepOver) {
 
   Grid grid(world, math::Size2d{4, 1}, GridShape::Topology::kBounded);
 
-  auto mock_player_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_player_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_player_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_player_state_callback.get(), OnEnter(apple_contact, _, _));
   EXPECT_CALL(*mock_player_state_callback.get(), OnLeave(apple_contact, _, _));
   EXPECT_CALL(*mock_player_state_callback.get(), OnRemove(_)).Times(0);
   grid.SetCallback(player_state, std::move(mock_player_state_callback));
 
-  auto mock_apple_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_apple_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_apple_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_apple_state_callback.get(), OnEnter(player_contact, _, _));
   EXPECT_CALL(*mock_apple_state_callback.get(), OnLeave(player_contact, _, _));
@@ -660,12 +661,12 @@ TEST(GridTest, AddRemoveCallbacksChangeState) {
 
   Grid grid(world, math::Size2d{2, 1}, GridShape::Topology::kBounded);
 
-  auto mock_player_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_player_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_player_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_player_state_callback.get(), OnRemove(_));
   grid.SetCallback(player_state, std::move(mock_player_state_callback));
 
-  auto mock_apple_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_apple_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_apple_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_apple_state_callback.get(), OnRemove(_)).Times(0);
   grid.SetCallback(apple_state, std::move(mock_apple_state_callback));
@@ -693,12 +694,12 @@ TEST(GridTest, CallBackOnTeleportToGroup) {
 
   Grid grid(world, math::Size2d{2, 1}, GridShape::Topology::kBounded);
 
-  auto mock_player_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_player_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_player_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_player_state_callback.get(), OnRemove(_)).Times(0);
   grid.SetCallback(player_state, std::move(mock_player_state_callback));
 
-  auto mock_apple_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_apple_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_apple_state_callback.get(), OnAdd(_));
   EXPECT_CALL(*mock_apple_state_callback.get(), OnEnter(player_contact, _, _));
   EXPECT_CALL(*mock_apple_state_callback.get(), OnLeave(player_contact, _, _));
@@ -1568,7 +1569,7 @@ TEST(GridTest, CanHitBeamCallBack0) {
   PlaceGrid(char_to_state, CanHitBeamCallBack0, math::Orientation2d::kNorth,
             &grid);
 
-  auto mock_wall_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_wall_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_wall_state_callback.get(), OnHit(_, _, _))
       .WillRepeatedly(Return(Grid::HitResponse::kBlocked));
   grid.SetCallback(wall_state, std::move(mock_wall_state_callback));
@@ -1621,7 +1622,7 @@ TEST(GridTest, CanHitBeamCallBack1) {
   PlaceGrid(char_to_state, kCanHitBeamCallBack1, math::Orientation2d::kNorth,
             &grid);
 
-  auto mock_wall_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_wall_state_callback = std::make_unique<MockStateCallback>();
   EXPECT_CALL(*mock_wall_state_callback.get(), OnHit(_, _, _))
       .WillRepeatedly(Return(Grid::HitResponse::kBlocked));
   grid.SetCallback(wall_state, std::move(mock_wall_state_callback));
@@ -1930,7 +1931,7 @@ TEST(GridTest, ConnectedCantMove) {
   const World world(args);
   Grid grid(world, math::Size2d{10, 10}, GridShape::Topology::kBounded);
 
-  auto mock_wall_state_callback = absl::make_unique<MockStateCallback>();
+  auto mock_wall_state_callback = std::make_unique<MockStateCallback>();
   auto* mock = mock_wall_state_callback.get();
 
   testing::Sequence seq;

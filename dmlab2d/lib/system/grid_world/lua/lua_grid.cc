@@ -15,6 +15,7 @@
 #include "dmlab2d/lib/system/grid_world/lua/lua_grid.h"
 
 #include <algorithm>
+#include <memory>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -364,7 +365,7 @@ lua::NResultsOr LuaGrid::CreateGrid(lua_State* L, const World& world,
     State state = grid->GetWorld().states().ToHandle(state_name);
     if (!state.IsEmpty()) {
       grid->SetCallback(
-          state, absl::make_unique<LuaStateCallback>(
+          state, std::make_unique<LuaStateCallback>(
                      std::move(table_ref), grid->GetWorld(), lua_grid_ref));
     }
   }

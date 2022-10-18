@@ -110,7 +110,7 @@ class PyEnvCApi {
     EnvCApi env_c_api;
     void* context = nullptr;
     connect_func(&env_c_api, &context);
-    auto env = absl::make_unique<Env>(env_c_api, context);
+    auto env = std::make_unique<Env>(env_c_api, context);
     for (const auto& [key, value] : settings) {
       if (env->api.setting(env->ctx, key.c_str(), value.c_str()) != 0) {
         throw py::key_error(absl::StrCat("\"", key, "\"=\"", value, " - ",

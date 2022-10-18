@@ -17,6 +17,7 @@
 #include "dmlab2d/lib/system/file_system/lua/file_system.h"
 
 #include <cstddef>
+#include <memory>
 
 #include "absl/memory/memory.h"
 #include "absl/strings/string_view.h"
@@ -67,7 +68,7 @@ class LuaFileSystem : public lua::Class<LuaFileSystem> {
       return file.Error();
     }
 
-    auto buffer = absl::make_unique<char[]>(size);
+    auto buffer = std::make_unique<char[]>(size);
     if (!file.Read(0, size, buffer.get())) {
       return file.Error();
     }

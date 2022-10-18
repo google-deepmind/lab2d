@@ -16,6 +16,7 @@
 
 #include "dmlab2d/lib/dmlab2d.h"
 
+#include <memory>
 #include <utility>
 
 #include "absl/memory/memory.h"
@@ -161,7 +162,7 @@ class Lab2D {
 
 extern "C" int dmlab2d_connect(const DeepMindLab2DLaunchParams* params,
                                EnvCApi* env_c_api, void** context) {
-  auto game = absl::make_unique<deepmind::lab2d::Lab2D>(params);
+  auto game = std::make_unique<deepmind::lab2d::Lab2D>(params);
   deepmind::rl_api::Bind(std::move(game), env_c_api, context);
   return 0;
 }
