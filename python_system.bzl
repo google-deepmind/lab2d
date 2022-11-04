@@ -16,7 +16,9 @@
 """Generates a local repository that points at the system's Python installation."""
 
 _BUILD_FILE = '''# Description:
-#   Build rule for Python
+#   Build rule for Python.
+
+load("@rules_python//python:defs.bzl", "py_runtime_pair")
 
 exports_files(["defs.bzl"])
 
@@ -25,6 +27,23 @@ cc_library(
     hdrs = glob(["python3/**/*.h"]),
     includes = ["python3"],
     visibility = ["//visibility:public"],
+)
+
+py_runtime(
+    name = "py3_runtime",
+    interpreter_path = "{interpreter_path}",
+    python_version = "PY3",
+)
+
+py_runtime_pair(
+    name = "runtime_pair",
+    py3_runtime = ":py3_runtime",
+)
+
+toolchain(
+    name = "python_toolchain",
+    toolchain = ":runtime_pair",
+    toolchain_type = "@rules_python//python:toolchain_type",
 )
 '''
 
@@ -43,7 +62,8 @@ print(f'PY_TAGS = struct(interpreter = "{tag.interpreter}", abi = "{tag.abi}", p
 def _python_repo_impl(repository_ctx):
     """Creates external/<reponame>/BUILD, a python3 symlink, and other files."""
 
-    repository_ctx.file("BUILD", _BUILD_FILE)
+    python3 = repository_ctx.which("python3")
+    repository_ctx.file("BUILD", _BUILD_FILE.format(interpreter_path = python3))
 
     result = repository_ctx.execute(["python3", "-c", _GET_PYTHON_INCLUDE_DIR])
     if result.return_code:

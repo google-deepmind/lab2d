@@ -131,3 +131,5 @@ http_archive(
 python_repo(
     name = "python_system",
 )
+
+register_toolchains("@python_system//:python_toolchain")
