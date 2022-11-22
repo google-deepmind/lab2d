@@ -64,7 +64,6 @@ pytype_strict_library(
     visibility = ["//visibility:public"],
     deps = [
         ":dmlab2d",
-        ":expect_dataclasses_installed",
         ":expect_numpy_installed",
         ":expect_pygame_installed",
         ":runfiles_helper",
@@ -106,12 +105,6 @@ py_package(
         ":ui_renderer",
     ],
 )
-
-py_library(name = "expect_numpy_installed")
-
-py_library(name = "expect_pygame_installed")
-
-py_library(name = "expect_dataclasses_installed")
 
 py_wheel(
     name = "dmlab2d_wheel",
@@ -156,3 +149,7 @@ py_wheel(
     version = "1.0",
     deps = [":dmlab2d_pkg"],
 )
+
+py_library(name = "expect_numpy_installed")
+
+py_library(name = "expect_pygame_installed")
