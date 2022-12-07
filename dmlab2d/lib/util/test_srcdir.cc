@@ -1,4 +1,4 @@
-// Copyright (C) 2019 The DMLab2D Authors.
+// Copyright (C) 2019-2022 The DMLab2D Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,29 +20,16 @@
 #include <string>
 
 #include "absl/strings/str_cat.h"
-
-#ifndef SUPPRESS_COMMANDLINE_FLAGS
-#include "absl/flags/flag.h"
-#include "base/commandlineflags_declare.h"
-
-DECLARE_string(test_srcdir);
-#endif
+#include "gtest/gtest.h"
 
 namespace deepmind::lab2d::util {
 
 std::string TestSrcDir() {
-  if (const char* e = std::getenv("TEST_SRCDIR")) {
-    if (const char* workspace = std::getenv("TEST_WORKSPACE")) {
-      return absl::StrCat(e, "/", workspace);
-    }
-    return absl::StrCat(e);
-  } else {
-#ifndef SUPPRESS_COMMANDLINE_FLAGS
-    return absl::GetFlag(FLAGS_test_srcdir);
-#else
-    return "[undefined TEST_SRCDIR environment variable]";
-#endif
+  std::string src_dir = ::testing::SrcDir();
+  if (const char* workspace = std::getenv("TEST_WORKSPACE")) {
+    absl::StrAppend(&src_dir, "/", workspace);
   }
+  return src_dir;
 }
 
 }  // namespace deepmind::lab2d::util

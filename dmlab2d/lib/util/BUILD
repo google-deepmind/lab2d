@@ -80,7 +80,9 @@ cc_library(
     testonly = True,
     srcs = ["test_srcdir.cc"],
     hdrs = ["test_srcdir.h"],
-    defines = ["SUPPRESS_COMMANDLINE_FLAGS"],
     visibility = ["//visibility:public"],
-    deps = ["@com_google_absl//absl/strings"],
+    deps = [
+        "@com_google_absl//absl/strings",
+        "@com_google_googletest//:gtest",
+    ],
 )
