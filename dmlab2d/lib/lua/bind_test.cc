@@ -43,7 +43,7 @@ NResultsOr NonNegativeOrError(lua_State* L) {
 using BindTest = testing::TestWithVm;
 
 TEST_F(BindTest, Success) {
-  lua_pushcfunction(L, &Bind<NonNegativeOrError>);
+  Push(L, &Bind<NonNegativeOrError>);
   Push(L, 10.0);
   ASSERT_EQ(0, lua_pcall(L, 1, 1, 0)) << ToString(L, -1);
   double value_out;
@@ -52,7 +52,7 @@ TEST_F(BindTest, Success) {
 }
 
 TEST_F(BindTest, FailLessThanZero) {
-  lua_pushcfunction(L, &Bind<NonNegativeOrError>);
+  Push(L, &Bind<NonNegativeOrError>);
   Push(L, -10.0);
   ASSERT_NE(0, lua_pcall(L, 1, 1, 0)) << "No error message!";
   std::string error;
@@ -61,7 +61,7 @@ TEST_F(BindTest, FailLessThanZero) {
 }
 
 TEST_F(BindTest, FailNotADouble) {
-  lua_pushcfunction(L, &Bind<NonNegativeOrError>);
+  Push(L, &Bind<NonNegativeOrError>);
   Push(L, "-10.0");
   ASSERT_NE(0, lua_pcall(L, 1, 1, 0)) << "No error message!";
   std::string error;

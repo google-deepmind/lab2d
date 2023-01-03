@@ -108,7 +108,7 @@ NResultsOr TestCFuntion(lua_State* L) {
 TEST_F(CallTest, FunctionBindErrors) {
   int top = lua_gettop(L);
 
-  lua_pushcfunction(L, &Bind<TestCFuntion>);
+  Push(L, &Bind<TestCFuntion>);
   EXPECT_EQ(lua_gettop(L), top + 1);
   Push(L, false);
 
@@ -121,7 +121,7 @@ TEST_F(CallTest, FunctionBindErrors) {
 TEST_F(CallTest, FunctionBindSuccess) {
   int top = lua_gettop(L);
 
-  lua_pushcfunction(L, &Bind<TestCFuntion>);
+  Push(L, &Bind<TestCFuntion>);
   EXPECT_EQ(lua_gettop(L), top + 1);
   Push(L, true);
 
