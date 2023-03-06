@@ -103,7 +103,7 @@ function TileSet:addShape(name, shape, paletteOverride)
       palette[k] = v
     end
   end
-  if self._size.width == 1 and self._size.height == 1 then
+  if self._size.width == 1 and self._size.height == 1 and palette['*'] then
     return self:addColor(name, palette['*'])
   end
 
