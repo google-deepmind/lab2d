@@ -103,10 +103,12 @@ function TileSet:addShape(name, shape, paletteOverride)
       palette[k] = v
     end
   end
-  if self._size.width == 1 and self._size.height == 1 and palette['*'] then
-    return self:addColor(name, palette['*'])
-  end
 
+  -- Call `rawget` to prevent creating an entry when inspecting it.
+  local star = rawget(palette, '*')
+  if self._size.width == 1 and self._size.height == 1 and star then
+    return self:addColor(name, star)
+  end
   local sprite, size = image_helpers.textToSprite(shape.text, palette)
   self:setSprite(name, sprite, shape.noRotate)
 end
