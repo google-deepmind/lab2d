@@ -37,7 +37,11 @@ cc_binary(
     testonly = 1,
     srcs = ["env_c_api_example.cc"],
     linkopts = select({
-        "@//:is_linux": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
+        "@platforms//os:linux": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
+        "@platforms//os:android": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
+        "@platforms//os:freebsd": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
+        "@platforms//os:netbsd": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
+        "@platforms//os:openbsd": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
         "//conditions:default": [],
     }),
     linkshared = 1,

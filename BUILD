@@ -7,18 +7,6 @@ exports_files([
     "README.md",
 ])
 
-config_setting(
-    name = "is_linux",
-    constraint_values = ["@platforms//os:linux"],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "is_macos",
-    constraint_values = ["@platforms//os:macos"],
-    visibility = ["//visibility:public"],
-)
-
 bzl_library(
     name = "build_defs",
     srcs = ["build_defs.bzl"],
