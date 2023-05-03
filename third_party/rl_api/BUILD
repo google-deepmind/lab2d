@@ -33,7 +33,7 @@ cc_library(
 )
 
 cc_binary(
-    name = "libenv_c_api_example.so",
+    name = "libenv_c_api_example.dylib",
     testonly = 1,
     srcs = ["env_c_api_example.cc"],
     linkopts = select({
@@ -55,7 +55,7 @@ cc_test(
     srcs = [
         "env_c_api_example.h",
         "env_c_api_example_test.cc",
-        "libenv_c_api_example.so",
+        "libenv_c_api_example.dylib",
     ],
     deps = [
         ":env_c_api",
