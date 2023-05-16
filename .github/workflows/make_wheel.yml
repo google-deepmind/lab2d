@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         cfg:
-          - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-22.04', platform: 'manylinux_2_35_x86_64', cc: clang, cxx: clang++, config: }
+          - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-22.04', platform: 'manylinux_2_35_x86_64', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
           - { name: 'MacOS LLVM+libc++', os: 'macos-10.15', platform: 'macosx_10_15_x86_64', cc: clang, cxx: clang++, config: --config=libc++ }
         py:
           - { version: '3.7', interp: 'cp37', abi: 'cp37m' }
