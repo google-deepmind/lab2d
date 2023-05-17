@@ -42,6 +42,7 @@ cc_binary(
         "@platforms//os:freebsd": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
         "@platforms//os:netbsd": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
         "@platforms//os:openbsd": ["-Wl,--version-script=$(location :env_c_api_example.lds)"],
+        "@platforms//os:macos": ["-Wl,-exported_symbols_list,$(location :env_c_api_example.syms.lds)"],
         "//conditions:default": [],
     }),
     linkshared = 1,
@@ -50,6 +51,7 @@ cc_binary(
         ":env_c_api",
         ":env_c_api_bind",
         ":env_c_api_example.lds",
+        ":env_c_api_example.syms.lds",
     ],
 )
 
