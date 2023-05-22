@@ -42,11 +42,14 @@ jobs:
       matrix:
         cfg:
           - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-22.04', platform: 'manylinux_2_35_x86_64', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
-          - { name: 'MacOS LLVM+libc++', os: 'macos-10.15', platform: 'macosx_10_15_x86_64', cc: clang, cxx: clang++, config: --config=libc++ }
+          - { name: 'MacOS 11 LLVM+libc++', os: 'macos-11', platform: 'macosx_11_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ }
+          - { name: 'MacOS 12 LLVM+libc++', os: 'macos-12', platform: 'macosx_12_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ }
+          - { name: 'MacOS 13 LLVM+libc++', os: 'macos-13', platform: 'macosx_13_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ }
         py:
-          - { version: '3.7', interp: 'cp37', abi: 'cp37m' }
           - { version: '3.8', interp: 'cp38', abi: 'cp38' }
           - { version: '3.9', interp: 'cp39', abi: 'cp39' }
+          - { version: '3.10', interp: 'cp310', abi: 'cp310' }
+          - { version: '3.11', interp: 'cp311', abi: 'cp311' }
 
     env:
       CC:  ${{ matrix.cfg.cc }}
