@@ -8,7 +8,14 @@ pybind_extension(
     name = "dmlab2d_pybind",
     srcs = ["dmlab2d_pybind.cc"],
     copts = ["-fexceptions"],
+    linkopts = select({
+        "@platforms//os:linux": ["-Wl,--version-script=$(location :dmlab2d_pybind.lds)"],
+        "@platforms//os:macos": ["-Wl,-exported_symbols_list,$(location :dmlab2d_pybind.syms.lds)"],
+        "//conditions:default": [],
+    }),
     deps = [
+        ":dmlab2d_pybind.lds",
+        ":dmlab2d_pybind.syms.lds",
         "//dmlab2d/lib:dmlab2d",
         "//third_party/rl_api:env_c_api",
         "@com_google_absl//absl/container:flat_hash_map",
