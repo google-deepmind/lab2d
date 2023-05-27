@@ -59,9 +59,11 @@ sys.stdout.write(get_python_inc())
 """.strip()
 
 _GET_PYTHON_SOABI = """
+import os
 from packaging import tags
 tag = next(iter(tags.sys_tags()))
-print(f'PY_TAGS = struct(interpreter = "{tag.interpreter}", abi = "{tag.abi}", platform = "{tag.platform}")')
+env_key = "PY_PLATFORM_OVERRIDE"
+print(f'PY_TAGS = struct(interpreter = "{tag.interpreter}", abi = "{tag.abi}", platform = "{os.environ.get(env_key, tag.platform)}")')
 """.strip()
 
 def _python_repo_impl(repository_ctx):
