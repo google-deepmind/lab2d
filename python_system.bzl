@@ -26,6 +26,11 @@ cc_library(
     name = "python_headers",
     hdrs = glob(["python3/**/*.h"]),
     includes = ["python3"],
+    linkopts = select({{
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": ["-Wl,-undefined,dynamic_lookup"],
+        "//conditions:default": [],
+    }}),
     visibility = ["//visibility:public"],
 )
 

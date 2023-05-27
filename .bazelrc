@@ -1,5 +1,6 @@
 build --cxxopt=-std=c++17
 build --cxxopt=-Wno-sign-compare --cxxopt=-Wno-attributes
+build --enable_platform_specific_config
 build --flag_alias=lua_version=//dmlab2d/lib/lua:lua_version
 
 build:libc++ --repo_env=CXXFLAGS=-stdlib=libc++
@@ -10,3 +11,7 @@ build:libc++ --repo_env=BAZEL_LINKOPTS=-lc++:-lm
 build:lua5_1 --lua_version=lua5_1
 build:lua5_2 --lua_version=lua5_2
 build:luajit --lua_version=luajit
+
+build:macos --crosstool_top=@local_config_apple_cc//:toolchain
+build:macos --host_crosstool_top=@local_config_apple_cc//:toolchain
+build:macos --apple_crosstool_top=@local_config_apple_cc//:toolchain
