@@ -1,7 +1,26 @@
 # Description:
 #   Build rule for LuaJit.
 
-load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag", "string_flag")
+
+string_flag(
+    name = "target_arch",
+    build_setting_default = "x86_64",
+    values = [
+        "arm64",
+        "x86_64",
+    ],
+)
+
+config_setting(
+    name = "target_arch_arm64",
+    flag_values = {"target_arch": "arm64"},
+)
+
+config_setting(
+    name = "target_arch_x86_64",
+    flag_values = {"target_arch": "x86_64"},
+)
 
 bool_flag(
     name = "use_external_unwinder",
@@ -22,8 +41,14 @@ DEFINES = [
     "LJ_ARCH_HASFPU=1",
     "LJ_ABI_SOFTFP=0",
     "LUAJIT_ENABLE_GC64",
-    "LUAJIT_TARGET=LUAJIT_ARCH_x64",
-] + UNWINDER_DEFINES
+] + UNWINDER_DEFINES + select(
+    {
+        ":target_arch_arm64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
+        "@platforms//cpu:x86_64": ["LUAJIT_TARGET=LUAJIT_ARCH_x64"],
+        "@platforms//cpu:aarch64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
+        "@build_bazel_apple_support//configs:darwin_arm64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
+    },
+)
 
 cc_library(
     name = "luajit",
@@ -202,9 +227,23 @@ cc_binary(
     local_defines = DEFINES,
 )
 
+DYNASM_FLAGS_ARM64 = " -D ENDIAN_LE -D P64 -D JIT -D FFI -D DUALNUM -D FPU -D HFABI -D VER=80"
+
 DYNASM_FLAGS_X86_64 = " -D ENDIAN_LE -D P64 -D JIT -D FFI -D FPU -D HFABI -D VER="
 
-DYNASM_SOURCE = "vm_x64.dasc"
+DYNASM_FLAGS_ARCH = select({
+    ":target_arch_arm64": DYNASM_FLAGS_ARM64,
+    "@platforms//cpu:x86_64": DYNASM_FLAGS_X86_64,
+    "@platforms//cpu:aarch64": DYNASM_FLAGS_ARM64,
+    "@build_bazel_apple_support//configs:darwin_arm64": DYNASM_FLAGS_ARM64,
+})
+
+DYNASM_SOURCE = select({
+    ":target_arch_arm64": "vm_arm64.dasc",
+    "@platforms//cpu:x86_64": "vm_x64.dasc",
+    "@platforms//cpu:aarch64": "vm_arm64.dasc",
+    "@build_bazel_apple_support//configs:darwin_arm64": "vm_arm64.dasc",
+})
 
 DYNASM_FLAGS_UNWIND = select({
     ":external_unwinder": "",
@@ -218,7 +257,7 @@ genrule(
         "src/vm_*.dasc",
     ]),
     outs = ["src/host/buildvm_arch.h"],
-    cmd = "$(location :minilua) $(location dynasm/dynasm.lua)" + DYNASM_FLAGS_X86_64 + DYNASM_FLAGS_UNWIND + " -o $@ $(location :src/" + DYNASM_SOURCE + ")",
+    cmd = "$(location :minilua) $(location dynasm/dynasm.lua)" + DYNASM_FLAGS_ARCH + DYNASM_FLAGS_UNWIND + " -o $@ $(location :src/" + DYNASM_SOURCE + ")",
     tools = [":minilua"],
 )
 

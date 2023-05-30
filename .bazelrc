@@ -2,6 +2,7 @@ build --cxxopt=-std=c++17
 build --cxxopt=-Wno-sign-compare --cxxopt=-Wno-attributes
 build --enable_platform_specific_config
 build --flag_alias=lua_version=//dmlab2d/lib/lua:lua_version
+build --flag_alias=macos_target_arch=@luajit_archive//:target_arch
 build --flag_alias=luajit_external_unwinder=@luajit_archive//:use_external_unwinder
 
 build:libc++ --repo_env=CXXFLAGS=-stdlib=libc++
@@ -16,3 +17,7 @@ build:luajit --lua_version=luajit
 build:macos --crosstool_top=@local_config_apple_cc//:toolchain
 build:macos --host_crosstool_top=@local_config_apple_cc//:toolchain
 build:macos --apple_crosstool_top=@local_config_apple_cc//:toolchain
+
+build:macos_arm64 --config=macos
+build:macos_arm64 --cpu=darwin_arm64
+build:macos_arm64 --macos_target_arch=arm64
