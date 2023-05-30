@@ -1,6 +1,15 @@
 # Description:
 #   Build rule for LuaJit.
 
+UNWINDER_DEFINES = ["LUAJIT_UNWIND_EXTERNAL"]
+
+DEFINES = [
+    "LJ_ARCH_HASFPU=1",
+    "LJ_ABI_SOFTFP=0",
+    "LUAJIT_ENABLE_GC64",
+    "LUAJIT_TARGET=LUAJIT_ARCH_x64",
+] + UNWINDER_DEFINES
+
 cc_library(
     name = "luajit",
     srcs = [
@@ -8,6 +17,7 @@ cc_library(
         "src/lib_aux.c",
         "src/lib_base.c",
         "src/lib_bit.c",
+        "src/lib_buffer.c",
         "src/lib_debug.c",
         "src/lib_ffi.c",
         "src/lib_init.c",
@@ -25,8 +35,10 @@ cc_library(
         "src/lj_asm.c",
         "src/lj_asm.h",
         "src/lj_asm_arm.h",
+        "src/lj_asm_arm64.h",
         "src/lj_asm_ppc.h",
         "src/lj_asm_x86.h",
+        "src/lj_assert.c",
         "src/lj_bc.c",
         "src/lj_bc.h",
         "src/lj_bcdump.h",
@@ -60,6 +72,7 @@ cc_library(
         "src/lj_dispatch.c",
         "src/lj_dispatch.h",
         "src/lj_emit_arm.h",
+        "src/lj_emit_arm64.h",
         "src/lj_emit_ppc.h",
         "src/lj_emit_x86.h",
         "src/lj_err.c",
@@ -102,8 +115,12 @@ cc_library(
         "src/lj_parse.h",
         "src/lj_profile.c",
         "src/lj_profile.h",
+        "src/lj_prng.c",
+        "src/lj_prng.h",
         "src/lj_record.c",
         "src/lj_record.h",
+        "src/lj_serialize.c",
+        "src/lj_serialize.h",
         "src/lj_snap.c",
         "src/lj_snap.h",
         "src/lj_state.c",
@@ -119,6 +136,7 @@ cc_library(
         "src/lj_tab.h",
         "src/lj_target.h",
         "src/lj_target_arm.h",
+        "src/lj_target_arm64.h",
         "src/lj_target_ppc.h",
         "src/lj_target_x86.h",
         "src/lj_trace.c",
@@ -134,6 +152,7 @@ cc_library(
         "src/luaconf.h",
         "src/luajit.h",
         "src/lualib.h",
+
         # Generated files.
         "src/lj_bcdef.h",
         "src/lj_ffdef.h",
@@ -151,6 +170,7 @@ cc_library(
         "src/luajit.h",
         "src/lualib.h",
     ],
+    defines = UNWINDER_DEFINES,
     includes = ["src"],
     linkopts = ["-ldl"] + select(
         {
@@ -169,11 +189,8 @@ cc_binary(
         "-O2",
         "-fomit-frame-pointer",
         "-Wall",
-        "-DLUAJIT_TARGET=LUAJIT_ARCH_x64",
-        "-DLJ_ARCH_HASFPU=1",
-        "-DLJ_ABI_SOFTFP=0",
-        "-DLUAJIT_ENABLE_GC64",
     ],
+    local_defines = DEFINES,
 )
 
 genrule(
@@ -183,13 +200,14 @@ genrule(
         "src/vm_*.dasc",
     ]),
     outs = ["src/host/buildvm_arch.h"],
-    cmd = "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D FFI -D FPU -D HFABI -D VER= -o $@ $(location :src/vm_x86.dasc)",
+    cmd = "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D FPU -D HFABI -D VER= -o $@ $(location :src/vm_x64.dasc)",
     tools = [":minilua"],
 )
 
 cc_binary(
     name = "buildvm",
     srcs = [
+        "dynasm/dasm_arm64.h",
         "dynasm/dasm_proto.h",
         "dynasm/dasm_x86.h",
         "src/host/buildvm.c",
@@ -222,6 +240,7 @@ cc_binary(
         "src",
         "src/host",
     ],
+    local_defines = DEFINES,
 )
 
 genrule(
@@ -238,21 +257,24 @@ genrule(
     visibility = ["//visibility:public"],
 )
 
+LJ_LIB_SRCS = [
+    "src/lib_base.c",
+    "src/lib_math.c",
+    "src/lib_bit.c",
+    "src/lib_string.c",
+    "src/lib_table.c",
+    "src/lib_io.c",
+    "src/lib_os.c",
+    "src/lib_package.c",
+    "src/lib_debug.c",
+    "src/lib_jit.c",
+    "src/lib_ffi.c",
+    "src/lib_buffer.c",
+]
+
 genrule(
     name = "lj_ffdef",
-    srcs = [
-        "src/lib_base.c",
-        "src/lib_math.c",
-        "src/lib_bit.c",
-        "src/lib_string.c",
-        "src/lib_table.c",
-        "src/lib_io.c",
-        "src/lib_os.c",
-        "src/lib_package.c",
-        "src/lib_debug.c",
-        "src/lib_jit.c",
-        "src/lib_ffi.c",
-    ],
+    srcs = LJ_LIB_SRCS,
     outs = ["src/lj_ffdef.h"],
     cmd = "$(location :buildvm) -m ffdef -o $@ $(SRCS)",
     tools = [":buildvm"],
@@ -260,19 +282,7 @@ genrule(
 
 genrule(
     name = "lj_bcdef",
-    srcs = [
-        "src/lib_base.c",
-        "src/lib_math.c",
-        "src/lib_bit.c",
-        "src/lib_string.c",
-        "src/lib_table.c",
-        "src/lib_io.c",
-        "src/lib_os.c",
-        "src/lib_package.c",
-        "src/lib_debug.c",
-        "src/lib_jit.c",
-        "src/lib_ffi.c",
-    ],
+    srcs = LJ_LIB_SRCS,
     outs = ["src/lj_bcdef.h"],
     cmd = "$(location :buildvm) -m bcdef -o $@ $(SRCS)",
     tools = [":buildvm"],
@@ -280,19 +290,7 @@ genrule(
 
 genrule(
     name = "lj_recdef",
-    srcs = [
-        "src/lib_base.c",
-        "src/lib_math.c",
-        "src/lib_bit.c",
-        "src/lib_string.c",
-        "src/lib_table.c",
-        "src/lib_io.c",
-        "src/lib_os.c",
-        "src/lib_package.c",
-        "src/lib_debug.c",
-        "src/lib_jit.c",
-        "src/lib_ffi.c",
-    ],
+    srcs = LJ_LIB_SRCS,
     outs = ["src/lj_recdef.h"],
     cmd = "$(location :buildvm) -m recdef -o $@ $(SRCS)",
     tools = [":buildvm"],
@@ -300,19 +298,7 @@ genrule(
 
 genrule(
     name = "lj_libdef",
-    srcs = [
-        "src/lib_base.c",
-        "src/lib_math.c",
-        "src/lib_bit.c",
-        "src/lib_string.c",
-        "src/lib_table.c",
-        "src/lib_io.c",
-        "src/lib_os.c",
-        "src/lib_package.c",
-        "src/lib_debug.c",
-        "src/lib_jit.c",
-        "src/lib_ffi.c",
-    ],
+    srcs = LJ_LIB_SRCS,
     outs = ["src/lj_libdef.h"],
     cmd = "$(location :buildvm) -m libdef -o $@ $(SRCS)",
     tools = [":buildvm"],
@@ -328,19 +314,7 @@ genrule(
 
 genrule(
     name = "vmdef",
-    srcs = [
-        "src/lib_base.c",
-        "src/lib_math.c",
-        "src/lib_bit.c",
-        "src/lib_string.c",
-        "src/lib_table.c",
-        "src/lib_io.c",
-        "src/lib_os.c",
-        "src/lib_package.c",
-        "src/lib_debug.c",
-        "src/lib_jit.c",
-        "src/lib_ffi.c",
-    ],
+    srcs = LJ_LIB_SRCS,
     outs = ["src/jit/vmdef.lua"],
     cmd = "$(location :buildvm) -m vmdef -o $@ $(SRCS)",
     tools = [":buildvm"],
@@ -352,6 +326,7 @@ filegroup(
         "bc.lua",
         "bcsave.lua",
         "dis_arm.lua",
+        "dis_arm64.lua",
         "dis_mips.lua",
         "dis_mipsel.lua",
         "dis_ppc.lua",

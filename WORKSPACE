@@ -102,9 +102,8 @@ http_archive(
 http_archive(
     name = "luajit_archive",
     build_file = "@//bazel:luajit.BUILD",
-    sha256 = "409f7fe570d3c16558e594421c47bdd130238323c9d6fd6c83dedd2aaeb082a8",
-    strip_prefix = "LuaJIT-2.1.0-beta3",
-    urls = ["https://github.com/LuaJIT/LuaJIT/archive/v2.1.0-beta3.tar.gz"],
+    strip_prefix = "LuaJIT-2.1",
+    urls = ["https://github.com/LuaJIT/LuaJIT/archive/v2.1.tar.gz"],
 )
 
 http_archive(
