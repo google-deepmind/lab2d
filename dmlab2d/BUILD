@@ -10,7 +10,7 @@ pybind_extension(
     copts = ["-fexceptions"],
     linkopts = select({
         "@platforms//os:linux": ["-Wl,--version-script=$(location :dmlab2d_pybind.lds)"],
-        "@platforms//os:macos": ["-Wl,-exported_symbols_list,$(location :dmlab2d_pybind.syms.lds)"],
+        "@platforms//os:macos": ["-Wl,-exported_symbols_list,$(location :dmlab2d_pybind.syms.lds),-dead_strip"],
         "//conditions:default": [],
     }),
     deps = [
