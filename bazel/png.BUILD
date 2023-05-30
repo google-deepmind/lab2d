@@ -10,11 +10,6 @@ genrule(
     cmd = "cp $(location scripts/pnglibconf.h.prebuilt) $(location pnglibconf.h)",
 )
 
-config_setting(
-    name = "is_arm64",
-    constraint_values = ["@platforms//cpu:arm64"],
-)
-
 cc_library(
     name = "png",
     srcs = [
@@ -39,7 +34,12 @@ cc_library(
         "pngwtran.c",
         "pngwutil.c",
     ] + select({
-        ":is_arm64": [
+        "@platforms//cpu:arm64": [
+            "arm/arm_init.c",
+            "arm/filter_neon_intrinsics.c",
+            "arm/palette_neon_intrinsics.c",
+        ],
+        "@build_bazel_apple_support//configs:darwin_arm64": [
             "arm/arm_init.c",
             "arm/filter_neon_intrinsics.c",
             "arm/palette_neon_intrinsics.c",

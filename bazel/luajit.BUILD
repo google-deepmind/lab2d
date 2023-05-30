@@ -7,8 +7,13 @@ DEFINES = [
     "LJ_ARCH_HASFPU=1",
     "LJ_ABI_SOFTFP=0",
     "LUAJIT_ENABLE_GC64",
-    "LUAJIT_TARGET=LUAJIT_ARCH_x64",
-] + UNWINDER_DEFINES
+] + UNWINDER_DEFINES + select(
+    {
+        "@platforms//cpu:x86_64": ["LUAJIT_TARGET=LUAJIT_ARCH_x64"],
+        "@platforms//cpu:aarch64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
+        "@build_bazel_apple_support//configs:darwin_arm64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
+    },
+)
 
 cc_library(
     name = "luajit",
@@ -200,7 +205,13 @@ genrule(
         "src/vm_*.dasc",
     ]),
     outs = ["src/host/buildvm_arch.h"],
-    cmd = "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D FPU -D HFABI -D VER= -o $@ $(location :src/vm_x64.dasc)",
+    cmd = select(
+        {
+            "@platforms//cpu:x86_64": "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D FPU -D HFABI -D VER= -o $@ $(location :src/vm_x64.dasc)",
+            "@platforms//cpu:aarch64": "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D DUALNUM -D FPU -D HFABI -D VER=80 -o $@ $(location :src/vm_arm64.dasc)",
+            "@build_bazel_apple_support//configs:darwin_arm64": "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D DUALNUM -D FPU -D HFABI -D VER=80 -o $@ $(location :src/vm_arm64.dasc)",
+        },
+    ),
     tools = [":minilua"],
 )
 
