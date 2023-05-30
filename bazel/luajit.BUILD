@@ -1,6 +1,27 @@
 # Description:
 #   Build rule for LuaJit.
 
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+
+string_flag(
+    name = "target_arch",
+    build_setting_default = "x86_64",
+    values = [
+        "arm64",
+        "x86_64",
+    ],
+)
+
+config_setting(
+    name = "target_arch_arm64",
+    flag_values = {"target_arch": "arm64"},
+)
+
+config_setting(
+    name = "target_arch_x86_64",
+    flag_values = {"target_arch": "x86_64"},
+)
+
 UNWINDER_DEFINES = ["LUAJIT_UNWIND_EXTERNAL"]
 
 DEFINES = [
@@ -9,6 +30,7 @@ DEFINES = [
     "LUAJIT_ENABLE_GC64",
 ] + UNWINDER_DEFINES + select(
     {
+        ":target_arch_arm64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
         "@platforms//cpu:x86_64": ["LUAJIT_TARGET=LUAJIT_ARCH_x64"],
         "@platforms//cpu:aarch64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
         "@build_bazel_apple_support//configs:darwin_arm64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
@@ -207,6 +229,7 @@ genrule(
     outs = ["src/host/buildvm_arch.h"],
     cmd = select(
         {
+            ":target_arch_arm64": "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D DUALNUM -D FPU -D HFABI -D VER=80 -o $@ $(location :src/vm_arm64.dasc)",
             "@platforms//cpu:x86_64": "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D FPU -D HFABI -D VER= -o $@ $(location :src/vm_x64.dasc)",
             "@platforms//cpu:aarch64": "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D DUALNUM -D FPU -D HFABI -D VER=80 -o $@ $(location :src/vm_arm64.dasc)",
             "@build_bazel_apple_support//configs:darwin_arm64": "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D DUALNUM -D FPU -D HFABI -D VER=80 -o $@ $(location :src/vm_arm64.dasc)",
