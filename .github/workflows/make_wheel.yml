@@ -42,9 +42,13 @@ jobs:
       matrix:
         cfg:
           - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-22.04', platform: 'manylinux_2_35_x86_64', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
-          - { name: 'MacOS 11 LLVM+libc++', os: 'macos-11', platform: 'macosx_11_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ }
-          - { name: 'MacOS 12 LLVM+libc++', os: 'macos-12', platform: 'macosx_12_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ }
-          - { name: 'MacOS 13 LLVM+libc++', os: 'macos-13', platform: 'macosx_13_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ }
+          - { name: 'MacOS 11 x86_64 LLVM+libc++', os: 'macos-11', platform: 'macosx_11_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
+          - { name: 'MacOS 12 x86_64 LLVM+libc++', os: 'macos-12', platform: 'macosx_12_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
+          - { name: 'MacOS 13 x86_64 LLVM+libc++', os: 'macos-13', platform: 'macosx_13_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
+          - { name: 'MacOS 12 ARM64 LLVM+libc++', os: 'macos-12', platform: 'macosx_12_0_arm64', cc: clang, cxx: clang++,
+              config: --config=libc++ --config=macos_arm64 --repo_env=PY_PLATFORM_OVERRIDE=macosx_12_0_arm64 }
+          - { name: 'MacOS 13 ARM64 LLVM+libc++', os: 'macos-13', platform: 'macosx_13_0_arm64', cc: clang, cxx: clang++,
+              config: --config=libc++ --config=macos_arm64 --repo_env=PY_PLATFORM_OVERRIDE=macosx_13_0_arm64 }
         py:
           - { version: '3.8', interp: 'cp38', abi: 'cp38' }
           - { version: '3.9', interp: 'cp39', abi: 'cp39' }
@@ -66,7 +70,7 @@ jobs:
         run: pip3 install --upgrade pip packaging
 
       - name: Build for Python ${{ matrix.py.version }}
-        run: bazel --bazelrc=.bazelrc build --compilation_mode=opt --dynamic_mode=off --config=lua5_1 ${{ matrix.cfg.config }} //dmlab2d:dmlab2d_wheel
+        run: bazel --bazelrc=.bazelrc build --compilation_mode=opt --dynamic_mode=off --config=luajit ${{ matrix.cfg.config }} //dmlab2d:dmlab2d_wheel
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
