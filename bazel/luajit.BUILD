@@ -1,7 +1,22 @@
 # Description:
 #   Build rule for LuaJit.
 
-UNWINDER_DEFINES = ["LUAJIT_UNWIND_EXTERNAL"]
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
+
+bool_flag(
+    name = "use_external_unwinder",
+    build_setting_default = True,
+)
+
+config_setting(
+    name = "external_unwinder",
+    flag_values = {"use_external_unwinder": "True"},
+)
+
+UNWINDER_DEFINES = select({
+    ":external_unwinder": ["LUAJIT_UNWIND_EXTERNAL"],
+    "//conditions:default": ["LUAJIT_NO_UNWIND"],
+})
 
 DEFINES = [
     "LJ_ARCH_HASFPU=1",
@@ -172,13 +187,7 @@ cc_library(
     ],
     defines = UNWINDER_DEFINES,
     includes = ["src"],
-    linkopts = ["-ldl"] + select(
-        {
-            "@platforms//os:linux": ["-ulj_err_unwind_dwarf"],
-            "@platforms//os:macos": ["-u_lj_err_unwind_dwarf"],
-        },
-        no_match_error = "Must build for either Linux or MacOS",
-    ),
+    linkopts = ["-ldl"],
     visibility = ["//visibility:public"],
 )
 
@@ -193,6 +202,15 @@ cc_binary(
     local_defines = DEFINES,
 )
 
+DYNASM_FLAGS_X86_64 = " -D ENDIAN_LE -D P64 -D JIT -D FFI -D FPU -D HFABI -D VER="
+
+DYNASM_SOURCE = "vm_x64.dasc"
+
+DYNASM_FLAGS_UNWIND = select({
+    ":external_unwinder": "",
+    "//conditions:default": " -D NO_UNWIND",
+})
+
 genrule(
     name = "buildvm_archconf",
     srcs = glob([
@@ -200,7 +218,7 @@ genrule(
         "src/vm_*.dasc",
     ]),
     outs = ["src/host/buildvm_arch.h"],
-    cmd = "touch $(location :src/host/buildvm_arch.h) && $(location :minilua) $(location dynasm/dynasm.lua) -D ENDIAN_LE -D P64 -D JIT -D FFI -D FPU -D HFABI -D VER= -o $@ $(location :src/vm_x64.dasc)",
+    cmd = "$(location :minilua) $(location dynasm/dynasm.lua)" + DYNASM_FLAGS_X86_64 + DYNASM_FLAGS_UNWIND + " -o $@ $(location :src/" + DYNASM_SOURCE + ")",
     tools = [":minilua"],
 )
 

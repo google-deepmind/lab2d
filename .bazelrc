@@ -2,6 +2,7 @@ build --cxxopt=-std=c++17
 build --cxxopt=-Wno-sign-compare --cxxopt=-Wno-attributes
 build --enable_platform_specific_config
 build --flag_alias=lua_version=//dmlab2d/lib/lua:lua_version
+build --flag_alias=luajit_external_unwinder=@luajit_archive//:use_external_unwinder
 
 build:libc++ --repo_env=CXXFLAGS=-stdlib=libc++
 build:libc++ --repo_env=LDFLAGS=-stdlib=libc++
