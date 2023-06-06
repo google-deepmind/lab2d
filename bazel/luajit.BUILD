@@ -50,6 +50,19 @@ DEFINES = [
     },
 )
 
+# This linker flag is needed only when using the gold linker: that linker does
+# not correctly retain the symbol "lj_err_unwind_dwarf" when --gc-sections is
+# used, and we need to request explicitly that that symbol be retained. Neither
+# LLD nor LD64 have this problem, but the flag also does not hurt those linkers.
+cc_library(
+    name = "personality_linkopts",
+    linkopts = select({
+        "@platforms//os:linux": ["-ulj_err_unwind_dwarf"],
+        "@platforms//os:macos": ["-u_lj_err_unwind_dwarf"],
+        "//conditions:default": [],
+    }),
+)
+
 cc_library(
     name = "luajit",
     srcs = [
@@ -214,6 +227,10 @@ cc_library(
     includes = ["src"],
     linkopts = ["-ldl"],
     visibility = ["//visibility:public"],
+    deps = select({
+        ":external_unwinder": [":personality_linkopts"],
+        "//conditions:default": [],
+    }),
 )
 
 cc_binary(
