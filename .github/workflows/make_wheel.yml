@@ -41,36 +41,59 @@ jobs:
     strategy:
       matrix:
         cfg:
-          - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-22.04', platform: 'manylinux_2_35_x86_64', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
-          - { name: 'MacOS 11 x86_64 LLVM+libc++', os: 'macos-11', platform: 'macosx_11_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
-          - { name: 'MacOS 12 x86_64 LLVM+libc++', os: 'macos-12', platform: 'macosx_12_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
-          - { name: 'MacOS 13 x86_64 LLVM+libc++', os: 'macos-13', platform: 'macosx_13_0_x86_64', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
-          - { name: 'MacOS 12 ARM64 LLVM+libc++', os: 'macos-12', platform: 'macosx_12_0_arm64', cc: clang, cxx: clang++,
+          - { name: 'Linux LLVM+libstdc++', os: 'ubuntu-22.04', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
+          - { name: 'MacOS 11 x86_64 LLVM+libc++', os: 'macos-11', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
+          - { name: 'MacOS 12 x86_64 LLVM+libc++', os: 'macos-12', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
+          - { name: 'MacOS 13 x86_64 LLVM+libc++', os: 'macos-13', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
+          - { name: 'MacOS 12 ARM64 LLVM+libc++', os: 'macos-12', cc: clang, cxx: clang++,
               config: --config=libc++ --config=macos_arm64 --repo_env=PY_PLATFORM_OVERRIDE=macosx_12_0_arm64 }
-          - { name: 'MacOS 13 ARM64 LLVM+libc++', os: 'macos-13', platform: 'macosx_13_0_arm64', cc: clang, cxx: clang++,
+          - { name: 'MacOS 13 ARM64 LLVM+libc++', os: 'macos-13', cc: clang, cxx: clang++,
               config: --config=libc++ --config=macos_arm64 --repo_env=PY_PLATFORM_OVERRIDE=macosx_13_0_arm64 }
-        py:
-          - { version: '3.8', interp: 'cp38', abi: 'cp38' }
-          - { version: '3.9', interp: 'cp39', abi: 'cp39' }
-          - { version: '3.10', interp: 'cp310', abi: 'cp310' }
-          - { version: '3.11', interp: 'cp311', abi: 'cp311' }
+        python-version:
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
 
     env:
       CC:  ${{ matrix.cfg.cc }}
       CXX: ${{ matrix.cfg.cxx }}
+      WHEEL_NAME: ''
 
     steps:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-python@v3
         with:
-          python-version: ${{ matrix.py.version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Install Python Dependencies
-        run: pip3 install --upgrade pip packaging
+        run: pip3 install --upgrade pip packaging check-wheel-contents
 
-      - name: Build for Python ${{ matrix.py.version }}
+      - name: Build for Python ${{ matrix.python-version }}
         run: bazel --bazelrc=.bazelrc build --compilation_mode=opt --dynamic_mode=off --config=luajit ${{ matrix.cfg.config }} //dmlab2d:dmlab2d_wheel
+
+      - name: Get built wheel name
+        working-directory: bazel-bin/dmlab2d
+        run: |
+          WHEEL_NAME="$(ls *.whl)"
+          echo WHEEL_NAME="${WHEEL_NAME}" >> "${GITHUB_ENV}"
+
+      - name: Check wheel contents
+        run: check-wheel-contents bazel-bin/dmlab2d/${{ env.WHEEL_NAME }}
+
+      - name: Test wheel
+        if: (!contains(env.WHEEL_NAME, 'arm64'))
+        run: |
+          pip install bazel-bin/dmlab2d/${{ env.WHEEL_NAME }}
+          python -I - <<'____HERE'
+          import dmlab2d
+          import dmlab2d.runfiles_helper
+
+          lab = dmlab2d.Lab2d(dmlab2d.runfiles_helper.find(), {"levelName": "chase_eat"})
+          env = dmlab2d.Environment(lab, ["WORLD.RGB"])
+          env.step({})
+          ____HERE
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
@@ -78,6 +101,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload-url }}
-          asset_path: bazel-bin/dmlab2d/dmlab2d-1.0-${{ matrix.py.interp }}-${{ matrix.py.abi }}-${{ matrix.cfg.platform }}.whl
-          asset_name: dmlab2d-1.0-${{ matrix.py.interp }}-${{ matrix.py.abi }}-${{ matrix.cfg.platform }}.whl
+          asset_path: bazel-bin/dmlab2d/${{ env.WHEEL_NAME }}
+          asset_name: ${{ env.WHEEL_NAME }}
           asset_content_type: application/zip
