@@ -1,0 +1,33 @@
+# A workflow to upload releases to PyPi and TestPyPi.
+
+name: pypi_upload
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload_to_pypi:
+        description: 'Whether to upload to PyPi'
+        required: false
+        default: false
+  release:
+    types: [published]
+
+jobs:
+  upload-wheels-to-pypi:
+    name: Upload wheels to PyPI
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Download all wheels
+        uses: actions/download-artifact@
+        with:
+          name: wheels-${{ github.ref_name }}
+
+      - name: List contents
+        run: |
+          gh release download ${{ github.ref }} -D dist -R ${{ github.repository }}
+          ls -la dist

@@ -1,4 +1,4 @@
-# A workflow to run Bazel builds and tests.
+# A workflow to build wheel packages and create a draft release.
 
 name: release_wheel
 
