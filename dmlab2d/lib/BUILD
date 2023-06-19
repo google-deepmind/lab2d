@@ -4,6 +4,11 @@
 
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_level_test", "dmlab2d_lua_test")
 
+package(
+    default_applicable_licenses = ["//:license"],
+    default_visibility = ["//visibility:private"],
+)
+
 licenses(["notice"])
 
 exports_files(["LICENSE"])

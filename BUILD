@@ -1,4 +1,16 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_license//rules:license.bzl", "license")
+
+package(
+    default_applicable_licenses = [":license"],
+    default_visibility = ["//visibility:private"],
+)
+
+license(
+    name = "license",
+    package_name = "dmlab2d",
+    license_kinds = [],
+)
 
 licenses(["notice"])
 
