@@ -113,6 +113,8 @@ py_package(
     ],
 )
 
+VERSION = '1.0.0'  # https://semver.org
+
 py_wheel(
     name = "dmlab2d_wheel",
     abi = PY_TAGS.abi,
@@ -130,7 +132,7 @@ py_wheel(
         "dm_env",
         "numpy",
     ],
-    version = "1.0",
+    version = VERSION,
     deps = [":dmlab2d_pkg"],
 )
 
@@ -153,7 +155,7 @@ py_wheel(
         "dm_env",
         "numpy",
     ],
-    version = "1.0",
+    version = VERSION,
     deps = [":dmlab2d_pkg"],
 )
 

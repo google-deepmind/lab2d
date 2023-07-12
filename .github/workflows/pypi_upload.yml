@@ -5,9 +5,17 @@ name: pypi_upload
 on:
   workflow_dispatch:
     inputs:
+      release:
+        description: 'Release to upload'
+        type: string
+        default: ''
+      upload_to_test_pypi:
+        description: 'Upload to Test PyPi'
+        type: boolean
+        default: true
       upload_to_pypi:
-        description: 'Whether to upload to PyPi'
-        required: false
+        description: 'Upload to PyPi'
+        type: boolean
         default: false
   release:
     types: [published]
@@ -16,18 +24,29 @@ jobs:
   upload-wheels-to-pypi:
     name: Upload wheels to PyPI
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/dmlab2d
+    permissions:
+      id-token: write
     timeout-minutes: 30
 
     env:
       GH_TOKEN: ${{ github.token }}
 
     steps:
-      - name: Download all wheels
-        uses: actions/download-artifact@
-        with:
-          name: wheels-${{ github.ref_name }}
+      - name: Download release assets
+        run: gh release download ${{ inputs.release || github.ref }} -D dist -R ${{ github.repository }}
 
-      - name: List contents
-        run: |
-          gh release download ${{ github.ref }} -D dist -R ${{ github.repository }}
-          ls -la dist
+      - name: Publish to TestPyPI
+        if: github.event_name == 'release' || inputs.upload_to_test_pypi
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          verbose: true
+
+      - name: Publish to PyPI
+        if: github.event_name == 'release' || inputs.upload_to_pypi
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
