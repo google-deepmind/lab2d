@@ -113,7 +113,7 @@ py_package(
     ],
 )
 
-VERSION = '1.0.0'  # https://semver.org
+VERSION = '1.0.0-dev.10'  # https://semver.org
 
 py_wheel(
     name = "dmlab2d_wheel",
