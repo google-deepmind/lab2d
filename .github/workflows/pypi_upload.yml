@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Download release assets
-        run: gh release download ${{ inputs.release || github.ref }} -D dist -R ${{ github.repository }}
+        run: gh release download ${{ inputs.release || github.ref_name }} -D dist -R ${{ github.repository }}
 
       - name: Publish to TestPyPI
         if: github.event_name == 'release' || inputs.upload_to_test_pypi
