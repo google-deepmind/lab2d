@@ -82,6 +82,7 @@ cc_library(
         "//dmlab2d/lib/lua:stack_resetter",
         "//dmlab2d/lib/lua:table_ref",
         "//third_party/rl_api:env_c_api",
+        "@com_google_absl//absl/strings",
     ],
 )
 

@@ -16,6 +16,7 @@
 
 #include "dmlab2d/lib/env_lua_api/episode.h"
 
+#include "absl/strings/str_cat.h"
 #include "dmlab2d/lib/lua/call.h"
 #include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/n_results_or.h"
