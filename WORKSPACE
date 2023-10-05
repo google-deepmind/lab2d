@@ -99,11 +99,13 @@ http_archive(
     ],
 )
 
+LJ_VER="f0ff869bc2fffa17bb765c4c773457578da125a9"
+
 http_archive(
     name = "luajit_archive",
     build_file = "@//bazel:luajit.BUILD",
-    strip_prefix = "LuaJIT-2.1",
-    urls = ["https://github.com/LuaJIT/LuaJIT/archive/v2.1.tar.gz"],
+    strip_prefix = "LuaJIT-{}".format(LJ_VER),
+    urls = ["https://github.com/LuaJIT/LuaJIT/archive/{}.tar.gz".format(LJ_VER)],
 )
 
 http_archive(
