@@ -2,6 +2,7 @@
 #   Build rule for LuaJit.
 
 load("@bazel_skylib//rules:common_settings.bzl", "bool_flag", "string_flag")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
 string_flag(
     name = "target_arch",

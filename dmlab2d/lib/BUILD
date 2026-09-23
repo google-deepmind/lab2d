@@ -2,6 +2,7 @@
 #   Lab2D ("dmlab2d") is a 2D multiplayer grid-world
 #   environment for machine learning.
 
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_level_test", "dmlab2d_lua_test")
 
 package(
@@ -60,6 +61,7 @@ filegroup(
             "game_scripts/**/*.lua",
             "game_scripts/**/*.png",
         ],
+        allow_empty = True,
         exclude = [
             "game_scripts/**/*_test_data/*",
             "game_scripts/**/*_test.lua",
@@ -80,7 +82,10 @@ test_suite(
 ]
 
 # Find all directories containing file 'init.lua'.
-LEVEL_DIRS = [p[:-len("/init.lua")] for p in glob(["game_scripts/levels/**/init.lua"])]
+LEVEL_DIRS = [p[:-len("/init.lua")] for p in glob(
+    ["game_scripts/levels/**/init.lua"],
+    allow_empty = True,
+)]
 
 # Find single levels not in subdirectorys of LEVEL_DIRS
 SINGLE_LEVEL_SCRIPTS = [test[:-len(".lua")] for test in glob(

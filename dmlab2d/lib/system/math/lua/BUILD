@@ -1,6 +1,8 @@
 # Description:
 #   Lua bindings to 2D Math.
 
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
 licenses(["notice"])
 
 cc_library(

@@ -1,6 +1,7 @@
 # Description:
 #   DeepMind reinforcement learning APIs.
 
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
 load("@rules_license//rules:license.bzl", "license")
 
 package(default_applicable_licenses = ["//third_party/rl_api:license"])

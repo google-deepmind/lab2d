@@ -1,6 +1,8 @@
 # Description:
 #   2D Math library.
 
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
 licenses(["notice"])
 
 cc_library(

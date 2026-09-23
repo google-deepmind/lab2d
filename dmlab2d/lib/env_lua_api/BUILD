@@ -1,5 +1,7 @@
 # EnvCApi - Lua bindings.
 
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
 licenses(["notice"])
 
 cc_library(

@@ -2,6 +2,8 @@
 #   Bazel BUILD rules for "dm_env" (https://github.com/deepmind/dm_env),
 #   a Python API for reinforcement learning environments.
 
+load("@rules_python//python:py_library.bzl", "py_library")
+
 py_library(
     name = "dm_env",
     srcs = [

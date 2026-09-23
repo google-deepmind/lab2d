@@ -1,4 +1,7 @@
-# Lua bindings for file_system.
+# Description:
+#   Lua bindings for file_system.
+
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_test")
 
 licenses(["notice"])

@@ -1,6 +1,8 @@
 # Description:
 #   Build rule for Lua 5.2.
 
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 cc_library(
     name = "lua5_2",
     srcs = glob(

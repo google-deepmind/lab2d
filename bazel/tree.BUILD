@@ -3,6 +3,9 @@
 #   The tree package used to support Bazel, but no longer does so.
 #   This BUILD file is adapted from the last official version.
 
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+load("@rules_python//python:py_library.bzl", "py_library")
+
 cc_binary(
     name = "tree/_tree.so",
     srcs = [
@@ -11,11 +14,16 @@ cc_binary(
     ],
     linkshared = 1,
     linkstatic = 1,
+    linkopts = select({
+        "@platforms//os:macos": ["-Wl,-undefined,dynamic_lookup"],
+        "//conditions:default": [],
+    }),
     deps = [
         "@com_google_absl//absl/memory",
         "@com_google_absl//absl/strings",
-        "@pybind11_archive//:pybind11",
-        "@python_system//:python_headers",
+        "@com_google_absl//absl/synchronization",
+        "@pybind11//:pybind11",
+        "@rules_python//python/cc:current_py_cc_headers",
     ],
 )
 

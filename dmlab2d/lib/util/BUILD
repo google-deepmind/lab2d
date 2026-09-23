@@ -1,6 +1,8 @@
 # Description:
 #   General utilities.
 
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
 licenses(["notice"])
 
 # Library for platform-specific file operations.

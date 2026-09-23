@@ -1,6 +1,7 @@
 # Description:
-#  Lua bindings for Pushbox level generator.
+#   Lua bindings for Pushbox level generator.
 
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_test")
 
 licenses(["notice"])

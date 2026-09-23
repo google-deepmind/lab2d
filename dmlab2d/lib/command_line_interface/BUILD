@@ -1,6 +1,8 @@
 # Description:
 #   Command line interface for profiling and inspecting different Lab2D environments.
 
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
 licenses(["notice"])
 
 cc_binary(

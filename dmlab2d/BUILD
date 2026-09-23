@@ -1,6 +1,11 @@
-load("//:build_defs.bzl", "pybind_extension", "pytype_strict_library")
-load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 load("@python_system//:defs.bzl", "PY_TAGS")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
+load("@rules_python//python:py_binary.bzl", "py_binary")
+load("@rules_python//python:py_library.bzl", "py_library")
+load("@rules_python//python:py_test.bzl", "py_test")
+load("//:build_defs.bzl", "pytype_strict_library")
 
 licenses(["notice"])
 
@@ -113,7 +118,7 @@ py_package(
     ],
 )
 
-VERSION = '1.0.0'  # https://semver.org
+VERSION = "1.0.0"  # https://semver.org
 
 py_wheel(
     name = "dmlab2d_wheel",

@@ -39,6 +39,8 @@ end
 return test_runner.run(tests)
 """
 
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
 def dmlab2d_lua_test(name, main = None, root = None, data = None, **kwargs):
     """Creates rule that will run tests including DM Lab2D built-in libraries.
 
@@ -54,10 +56,10 @@ def dmlab2d_lua_test(name, main = None, root = None, data = None, **kwargs):
     main = name + ".lua" if main == None else main
     level_script = main[:-len(".lua")]
     size = kwargs.pop("size", "small")
-    native.cc_test(
+    cc_test(
         name = name,
         args = [level_script, root],
-        data = [main] + native.glob([level_script + "_data/**/*"]) + extra_data,
+        data = [main] + native.glob([level_script + "_data/**/*"], allow_empty = True) + extra_data,
         deps = ["//dmlab2d/lib/testing:lua_unit_test_lib"],
         size = size,
         **kwargs
@@ -76,7 +78,7 @@ def dmlab2d_lua_level_test(name, main = None, root = None, data = None):
     root = "" + native.package_name() if root == None else root
     main = name + ".lua" if main == None else main
     level_script = main[:-len(".lua")]
-    native.cc_test(
+    cc_test(
         name = name,
         args = [level_script, root],
         data = [main] + extra_data,

@@ -1,5 +1,7 @@
 # Description:
-#  Pushbox level generator.
+#   Pushbox level generator.
+
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
 licenses(["notice"])
 

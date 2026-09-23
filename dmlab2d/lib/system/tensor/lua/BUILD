@@ -1,5 +1,7 @@
 # Description:
-#  Bindings to tensor library.
+#   Bindings to tensor library.
+
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 
 licenses(["notice"])
 

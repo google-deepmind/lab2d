@@ -13,50 +13,7 @@
 # limitations under the License.
 # ============================================================================
 
-"""Generates a local repository that points at the system's Python installation."""
-
-_BUILD_FILE = '''# Description:
-#   Build rule for Python.
-
-load("@rules_python//python:defs.bzl", "py_runtime_pair")
-
-exports_files(["defs.bzl"])
-
-cc_library(
-    name = "python_headers",
-    hdrs = glob(["python3/**/*.h"]),
-    includes = ["python3"],
-    linkopts = select({{
-        "@platforms//os:linux": [],
-        "@platforms//os:macos": ["-Wl,-undefined,dynamic_lookup"],
-        "//conditions:default": [],
-    }}),
-    visibility = ["//visibility:public"],
-)
-
-py_runtime(
-    name = "py3_runtime",
-    interpreter_path = "{interpreter_path}",
-    python_version = "PY3",
-)
-
-py_runtime_pair(
-    name = "runtime_pair",
-    py3_runtime = ":py3_runtime",
-)
-
-toolchain(
-    name = "python_toolchain",
-    toolchain = ":runtime_pair",
-    toolchain_type = "@rules_python//python:toolchain_type",
-)
-'''
-
-_GET_PYTHON_INCLUDE_DIR = """
-import sys
-from distutils.sysconfig import get_python_inc
-sys.stdout.write(get_python_inc())
-""".strip()
+"""Generates a local repository that exposes Python SOABI tags."""
 
 _GET_PYTHON_SOABI = """
 import os
@@ -67,19 +24,13 @@ print(f'PY_TAGS = struct(interpreter = "{tag.interpreter}", abi = "{tag.abi}", p
 """.strip()
 
 def _python_repo_impl(repository_ctx):
-    """Creates external/<reponame>/BUILD, a python3 symlink, and other files."""
+    """Creates a package containing defs.bzl."""
 
     python3 = repository_ctx.which("python3")
-    repository_ctx.file("BUILD", _BUILD_FILE.format(interpreter_path = python3))
-
-    result = repository_ctx.execute(["python3", "-c", _GET_PYTHON_INCLUDE_DIR])
+    result = repository_ctx.execute([python3, "-c", _GET_PYTHON_SOABI])
     if result.return_code:
         fail("Failed to run local Python interpreter: %s" % result.stderr)
-    repository_ctx.symlink(result.stdout, "python3")
-
-    result = repository_ctx.execute(["python3", "-c", _GET_PYTHON_SOABI])
-    if result.return_code:
-        fail("Failed to run local Python interpreter: %s" % result.stderr)
+    repository_ctx.file("BUILD", "")
     repository_ctx.file("defs.bzl", result.stdout)
 
 python_repo = repository_rule(
