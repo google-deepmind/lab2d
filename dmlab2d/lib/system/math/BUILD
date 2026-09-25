@@ -16,7 +16,7 @@ cc_test(
     srcs = ["math2d_test.cc"],
     deps = [
         ":math2d",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -33,6 +33,6 @@ cc_test(
     deps = [
         ":math2d",
         ":math2d_algorithms",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )

@@ -20,7 +20,7 @@ cc_library(
         "//dmlab2d/lib/lua:table_ref",
         "//dmlab2d/lib/system/grid_world:handles",
         "//dmlab2d/lib/system/grid_world:world",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -36,7 +36,7 @@ cc_test(
         "//dmlab2d/lib/lua:push_script",
         "//dmlab2d/lib/lua:vm",
         "//dmlab2d/lib/lua:vm_test_util",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -62,10 +62,10 @@ cc_library(
         "//dmlab2d/lib/system/math:math2d",
         "//dmlab2d/lib/system/math/lua:math2d",
         "//dmlab2d/lib/system/random/lua:random",
-        "@com_google_absl//absl/log",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/strings:str_format",
-        "@com_google_absl//absl/types:optional",
+        "@abseil-cpp//absl/log",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/strings:str_format",
+        "@abseil-cpp//absl/types:optional",
     ],
 )
 
@@ -93,9 +93,9 @@ cc_library(
         "//dmlab2d/lib/system/math/lua:math2d",
         "//dmlab2d/lib/system/tensor:tensor_view",
         "//dmlab2d/lib/system/tensor/lua:tensor",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_absl//absl/types:variant",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@abseil-cpp//absl/types:variant",
     ],
 )
 
@@ -115,8 +115,8 @@ cc_test(
         "//dmlab2d/lib/system/math:math2d",
         "//dmlab2d/lib/system/math/lua:math2d",
         "//dmlab2d/lib/system/tensor/lua:tensor",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )
 

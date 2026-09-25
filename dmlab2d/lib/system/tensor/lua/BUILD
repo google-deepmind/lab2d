@@ -23,8 +23,8 @@ cc_library(
         "//dmlab2d/lib/system/tensor:tensor_view",
         "//dmlab2d/lib/util:file_reader",
         "//dmlab2d/lib/util:file_reader_types",
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -44,8 +44,8 @@ cc_test(
         "//dmlab2d/lib/lua:vm",
         "//dmlab2d/lib/lua:vm_test_util",
         "//dmlab2d/lib/util:default_read_only_file_system",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -63,9 +63,9 @@ cc_test(
         "//dmlab2d/lib/lua:vm",
         "//dmlab2d/lib/util:default_read_only_file_system",
         "//dmlab2d/lib/util:file_reader_types",
-        "@com_google_absl//absl/log",
-        "@com_google_absl//absl/strings",
-        "@com_google_benchmark//:benchmark",
-        "@com_google_benchmark//:benchmark_main",
+        "@abseil-cpp//absl/log",
+        "@abseil-cpp//absl/strings",
+        "@google_benchmark//:benchmark",
+        "@google_benchmark//:benchmark_main",
     ],
 )

@@ -24,7 +24,7 @@ py_library(
     visibility = ["//visibility:public"],
     deps = [
         ":dm_env",
-        "@com_google_absl_py//absl/testing:absltest",
+        "@abseil-py//absl/testing:absltest",
         "@tree_archive//:tree",
     ],
 )

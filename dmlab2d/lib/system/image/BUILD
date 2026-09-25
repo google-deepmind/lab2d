@@ -20,9 +20,9 @@ cc_library(
         "//dmlab2d/lib/system/tensor/lua:tensor",
         "//dmlab2d/lib/util:file_reader",
         "//dmlab2d/lib/util:file_reader_types",
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/strings",
-        "@png_archive//:png",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
+        "@libpng//:png",
     ],
 )
 
@@ -42,8 +42,8 @@ cc_test(
         "//dmlab2d/lib/system/tensor/lua:tensor",
         "//dmlab2d/lib/util:default_read_only_file_system",
         "//dmlab2d/lib/util:file_reader_types",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )
 

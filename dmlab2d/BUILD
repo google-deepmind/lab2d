@@ -23,10 +23,10 @@ pybind_extension(
         ":dmlab2d_pybind.syms.lds",
         "//dmlab2d/lib:dmlab2d",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
     ],
 )
 
@@ -50,7 +50,7 @@ py_test(
         ":dmlab2d",
         ":expect_numpy_installed",
         ":runfiles_helper",
-        "@com_google_absl_py//absl/testing:absltest",
+        "@abseil-py//absl/testing:absltest",
         "@dm_env_archive//:test_utils",
     ],
 )
@@ -66,7 +66,7 @@ py_test(
     srcs = ["settings_helper_test.py"],
     deps = [
         ":settings_helper",
-        "@com_google_absl_py//absl/testing:absltest",
+        "@abseil-py//absl/testing:absltest",
     ],
 )
 

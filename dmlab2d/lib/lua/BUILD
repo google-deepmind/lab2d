@@ -54,8 +54,8 @@ cc_library(
     hdrs = ["vm.h"],
     deps = [
         ":lua",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -66,8 +66,8 @@ cc_library(
     deps = [
         ":lua",
         ":vm",
-        "@com_google_absl//absl/log:check",
-        "@com_google_googletest//:gtest",
+        "@abseil-cpp//absl/log:check",
+        "@googletest//:gtest",
     ],
 )
 
@@ -88,8 +88,8 @@ cc_test(
         ":table_ref",
         ":vm",
         "//dmlab2d/lib/util:test_srcdir",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -104,7 +104,7 @@ cc_library(
     hdrs = ["n_results_or_test_util.h"],
     deps = [
         ":n_results_or",
-        "@com_google_googletest//:gtest",
+        "@googletest//:gtest",
     ],
 )
 
@@ -126,7 +126,7 @@ cc_test(
         ":push",
         ":read",
         ":vm_test_util",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -139,7 +139,7 @@ cc_library(
         ":n_results_or",
         ":push",
         ":read",
-        "@com_google_absl//absl/log:check",
+        "@abseil-cpp//absl/log:check",
     ],
 )
 
@@ -155,7 +155,7 @@ cc_test(
         ":push_script",
         ":read",
         ":vm_test_util",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -169,8 +169,8 @@ cc_test(
         ":push",
         ":push_script",
         ":vm_test_util",
-        "@com_google_absl//absl/flags:flag",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/flags:flag",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -179,10 +179,10 @@ cc_library(
     hdrs = ["push.h"],
     deps = [
         ":lua",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_absl//absl/types:variant",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@abseil-cpp//absl/types:variant",
     ],
 )
 
@@ -193,10 +193,10 @@ cc_test(
     deps = [
         ":push",
         ":vm_test_util",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -208,7 +208,7 @@ cc_library(
         ":lua",
         ":n_results_or",
         ":read",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -217,10 +217,10 @@ cc_library(
     hdrs = ["read.h"],
     deps = [
         ":lua",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_absl//absl/types:variant",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@abseil-cpp//absl/types:variant",
     ],
 )
 
@@ -232,11 +232,11 @@ cc_test(
         ":push",
         ":read",
         ":vm_test_util",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_absl//absl/types:variant",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@abseil-cpp//absl/types:variant",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -248,7 +248,7 @@ cc_library(
         ":lua",
         ":push",
         ":read",
-        "@com_google_absl//absl/log:check",
+        "@abseil-cpp//absl/log:check",
     ],
 )
 
@@ -265,8 +265,8 @@ cc_test(
         ":read",
         ":table_ref",
         ":vm_test_util",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -280,8 +280,8 @@ cc_library(
         ":n_results_or",
         ":push",
         ":read",
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/utility",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/utility",
     ],
 )
 
@@ -296,8 +296,8 @@ cc_test(
         ":read",
         ":ref",
         ":vm_test_util",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -309,8 +309,8 @@ cc_library(
         ":n_results_or",
         ":push",
         ":read",
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -328,7 +328,7 @@ cc_test(
         ":table_ref",
         ":vm",
         ":vm_test_util",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -351,6 +351,6 @@ cc_test(
         ":read",
         ":stack_resetter",
         ":vm_test_util",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )

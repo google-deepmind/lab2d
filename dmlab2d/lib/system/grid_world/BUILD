@@ -11,8 +11,8 @@ cc_library(
         ":handles",
         "//dmlab2d/lib/system/grid_world/collections:fixed_handle_map",
         "//dmlab2d/lib/system/grid_world/collections:handle_names",
-        "@com_google_absl//absl/container:btree",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/container:btree",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -22,7 +22,7 @@ cc_test(
     deps = [
         ":handles",
         ":world",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -32,7 +32,7 @@ cc_library(
     deps = [
         ":handles",
         "//dmlab2d/lib/system/math:math2d",
-        "@com_google_absl//absl/log",
+        "@abseil-cpp//absl/log",
     ],
 )
 
@@ -42,7 +42,7 @@ cc_test(
     deps = [
         ":grid_shape",
         "//dmlab2d/lib/system/math:math2d",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -69,10 +69,10 @@ cc_library(
         "//dmlab2d/lib/system/grid_world/collections:shuffled_membership",
         "//dmlab2d/lib/system/math:math2d",
         "//dmlab2d/lib/system/math:math2d_algorithms",
-        "@com_google_absl//absl/log",
-        "@com_google_absl//absl/types:any",
-        "@com_google_absl//absl/types:optional",
-        "@com_google_absl//absl/types:span",
+        "@abseil-cpp//absl/log",
+        "@abseil-cpp//absl/types:any",
+        "@abseil-cpp//absl/types:optional",
+        "@abseil-cpp//absl/types:span",
     ],
 )
 
@@ -91,9 +91,9 @@ cc_test(
         ":world",
         "//dmlab2d/lib/system/grid_world/collections:fixed_handle_map",
         "//dmlab2d/lib/system/math:math2d",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -118,7 +118,7 @@ cc_library(
         ":sprite_instance",
         "//dmlab2d/lib/system/grid_world/collections:fixed_handle_map",
         "//dmlab2d/lib/system/math:math2d",
-        "@com_google_absl//absl/types:span",
+        "@abseil-cpp//absl/types:span",
     ],
 )
 
@@ -131,8 +131,8 @@ cc_test(
         ":handles",
         ":sprite_instance",
         "//dmlab2d/lib/system/grid_world/collections:fixed_handle_map",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -150,7 +150,7 @@ cc_library(
     deps = [
         ":handles",
         "//dmlab2d/lib/system/math:math2d",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -159,6 +159,6 @@ cc_test(
     srcs = ["text_tools_test.cc"],
     deps = [
         ":text_tools",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )

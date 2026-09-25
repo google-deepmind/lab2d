@@ -10,7 +10,7 @@ cc_library(
     srcs = ["tensor_view.cc"],
     hdrs = ["tensor_view.h"],
     visibility = ["//visibility:public"],
-    deps = ["@eigen_archive//:eigen"],
+    deps = ["@eigen"],
 )
 
 cc_test(
@@ -19,6 +19,6 @@ cc_test(
     srcs = ["tensor_view_test.cc"],
     deps = [
         ":tensor_view",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )

@@ -11,7 +11,7 @@ cc_library(
     srcs = ["files.cc"],
     hdrs = ["files.h"],
     visibility = ["//visibility:public"],
-    deps = ["@com_google_absl//absl/strings"],
+    deps = ["@abseil-cpp//absl/strings"],
 )
 
 cc_test(
@@ -19,7 +19,7 @@ cc_test(
     srcs = ["files_test.cc"],
     deps = [
         ":files",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -31,7 +31,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":file_reader_types",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -51,8 +51,8 @@ cc_test(
         ":default_read_only_file_system",
         ":file_reader",
         ":files",
-        "@com_google_absl//absl/log:check",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/log:check",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -73,7 +73,7 @@ cc_test(
     srcs = ["visit_set_difference_and_intersection_test.cc"],
     deps = [
         ":visit_set_difference_and_intersection",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -84,7 +84,7 @@ cc_library(
     hdrs = ["test_srcdir.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest",
     ],
 )

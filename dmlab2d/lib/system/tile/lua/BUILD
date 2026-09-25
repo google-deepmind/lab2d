@@ -38,8 +38,8 @@ cc_library(
         "//dmlab2d/lib/system/tile:pixel",
         "//dmlab2d/lib/system/tile:tile_renderer",
         "//dmlab2d/lib/system/tile:tile_set",
-        "@com_google_absl//absl/strings:str_format",
-        "@com_google_absl//absl/types:span",
+        "@abseil-cpp//absl/strings:str_format",
+        "@abseil-cpp//absl/types:span",
     ],
 )
 
@@ -59,9 +59,9 @@ cc_test(
         "//dmlab2d/lib/system/tensor:tensor_view",
         "//dmlab2d/lib/system/tensor/lua:tensor",
         "//dmlab2d/lib/util:default_read_only_file_system",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -80,8 +80,8 @@ cc_library(
         "//dmlab2d/lib/system/math/lua:math2d",
         "//dmlab2d/lib/system/tensor/lua:tensor",
         "//dmlab2d/lib/system/tile:tile_set",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/strings:str_format",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/strings:str_format",
     ],
 )
 
@@ -98,8 +98,8 @@ cc_test(
         "//dmlab2d/lib/system/math/lua:math2d",
         "//dmlab2d/lib/system/tensor/lua:tensor",
         "//dmlab2d/lib/system/tile:pixel",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )
 

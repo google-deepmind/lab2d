@@ -21,8 +21,8 @@ cc_library(
         "//dmlab2d/lib/util:file_reader",
         "//dmlab2d/lib/util:file_reader_types",
         "//dmlab2d/lib/util:files",
-        "@com_google_absl//absl/memory",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/memory",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -44,8 +44,8 @@ cc_test(
         "//dmlab2d/lib/util:default_read_only_file_system",
         "//dmlab2d/lib/util:file_reader_types",
         "//dmlab2d/lib/util:files",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )
 

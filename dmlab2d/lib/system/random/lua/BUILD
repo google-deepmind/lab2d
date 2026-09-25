@@ -14,7 +14,7 @@ cc_library(
         "//dmlab2d/lib/lua:n_results_or",
         "//dmlab2d/lib/lua:push",
         "//dmlab2d/lib/lua:read",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -30,8 +30,8 @@ cc_test(
         "//dmlab2d/lib/lua:push_script",
         "//dmlab2d/lib/lua:vm",
         "//dmlab2d/lib/lua:vm_test_util",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )

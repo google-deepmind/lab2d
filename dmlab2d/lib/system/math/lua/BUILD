@@ -16,7 +16,7 @@ cc_library(
         "//dmlab2d/lib/lua:read",
         "//dmlab2d/lib/lua:table_ref",
         "//dmlab2d/lib/system/math:math2d",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -30,7 +30,7 @@ cc_test(
         "//dmlab2d/lib/lua:table_ref",
         "//dmlab2d/lib/lua:vm_test_util",
         "//dmlab2d/lib/system/math:math2d",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )

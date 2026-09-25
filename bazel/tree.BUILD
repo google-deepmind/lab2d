@@ -12,17 +12,17 @@ cc_binary(
         "tree/tree.cc",
         "tree/tree.h",
     ],
-    linkshared = 1,
-    linkstatic = 1,
     linkopts = select({
         "@platforms//os:macos": ["-Wl,-undefined,dynamic_lookup"],
         "//conditions:default": [],
     }),
+    linkshared = 1,
+    linkstatic = 1,
     deps = [
-        "@com_google_absl//absl/memory",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/synchronization",
-        "@pybind11//:pybind11",
+        "@abseil-cpp//absl/memory",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/synchronization",
+        "@pybind11",
         "@rules_python//python/cc:current_py_cc_headers",
     ],
 )

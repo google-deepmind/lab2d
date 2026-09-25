@@ -30,8 +30,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":env_c_api",
-        "@com_google_absl//absl/log",
-        "@com_google_googletest//:gtest",
+        "@abseil-cpp//absl/log",
+        "@googletest//:gtest",
     ],
     alwayslink = 1,  # contains test definitions
 )
@@ -76,6 +76,6 @@ cc_test(
     ],
     deps = [
         ":env_c_api",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )

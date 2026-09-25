@@ -36,7 +36,7 @@ cc_library(
         "//dmlab2d/lib/system/tile/lua:tile",
         "//third_party/rl_api:env_c_api",
         "//third_party/rl_api:env_c_api_bind",
-        "@com_google_absl//absl/memory",
+        "@abseil-cpp//absl/memory",
     ],
 )
 
@@ -48,9 +48,9 @@ cc_test(
         "//dmlab2d/lib/util:test_srcdir",
         "//third_party/rl_api:env_c_api",
         "//third_party/rl_api:env_c_api_test_suite",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 

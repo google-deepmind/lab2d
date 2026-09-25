@@ -13,7 +13,7 @@ pybind_extension(
     visibility = ["//visibility:private"],
     deps = [
         "//dmlab2d/lib/system/generators/pushbox",
-        "@com_google_absl//absl/types:optional",
+        "@abseil-cpp//absl/types:optional",
     ],
 )
 
@@ -22,6 +22,6 @@ py_test(
     srcs = ["pushbox_test.py"],
     deps = [
         ":pushbox",
-        "@com_google_absl_py//absl/testing:absltest",
+        "@abseil-py//absl/testing:absltest",
     ],
 )

@@ -6,7 +6,7 @@ cc_library(
     name = "handle",
     hdrs = ["handle.h"],
     visibility = ["//visibility:public"],
-    deps = ["@com_google_absl//absl/log:check"],
+    deps = ["@abseil-cpp//absl/log:check"],
 )
 
 cc_test(
@@ -14,9 +14,9 @@ cc_test(
     srcs = ["handle_test.cc"],
     deps = [
         ":handle",
-        "@com_google_absl//absl/hash:hash_testing",
-        "@com_google_absl//absl/strings:str_format",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/hash:hash_testing",
+        "@abseil-cpp//absl/strings:str_format",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -32,7 +32,7 @@ cc_test(
     deps = [
         ":fixed_handle_map",
         ":handle",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -41,9 +41,9 @@ cc_library(
     hdrs = ["handle_names.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
     ],
 )
 
@@ -53,7 +53,7 @@ cc_test(
     deps = [
         ":handle",
         ":handle_names",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -61,7 +61,7 @@ cc_library(
     name = "object_pool",
     hdrs = ["object_pool.h"],
     visibility = ["//visibility:public"],
-    deps = ["@com_google_absl//absl/log:check"],
+    deps = ["@abseil-cpp//absl/log:check"],
 )
 
 cc_test(
@@ -70,7 +70,7 @@ cc_test(
     deps = [
         ":handle",
         ":object_pool",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -78,8 +78,8 @@ cc_library(
     name = "shuffled_set",
     hdrs = ["shuffled_set.h"],
     deps = [
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/types:span",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/types:span",
     ],
 )
 
@@ -88,7 +88,7 @@ cc_test(
     srcs = ["shuffled_set_test.cc"],
     deps = [
         ":shuffled_set",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -100,7 +100,7 @@ cc_library(
         ":fixed_handle_map",
         ":shuffled_set",
         "//dmlab2d/lib/util:visit_set_difference_and_intersection",
-        "@com_google_absl//absl/types:span",
+        "@abseil-cpp//absl/types:span",
     ],
 )
 
@@ -110,7 +110,7 @@ cc_test(
     deps = [
         ":handle",
         ":shuffled_membership",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )

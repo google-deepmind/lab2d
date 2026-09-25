@@ -47,7 +47,7 @@ DEFINES = [
         ":target_arch_arm64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
         "@platforms//cpu:x86_64": ["LUAJIT_TARGET=LUAJIT_ARCH_x64"],
         "@platforms//cpu:aarch64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
-        "@build_bazel_apple_support//configs:darwin_arm64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
+        "@apple_support//configs:darwin_arm64": ["LUAJIT_TARGET=LUAJIT_ARCH_arm64"],
     },
 )
 
@@ -253,14 +253,14 @@ DYNASM_FLAGS_ARCH = select({
     ":target_arch_arm64": DYNASM_FLAGS_ARM64,
     "@platforms//cpu:x86_64": DYNASM_FLAGS_X86_64,
     "@platforms//cpu:aarch64": DYNASM_FLAGS_ARM64,
-    "@build_bazel_apple_support//configs:darwin_arm64": DYNASM_FLAGS_ARM64,
+    "@apple_support//configs:darwin_arm64": DYNASM_FLAGS_ARM64,
 })
 
 DYNASM_SOURCE = select({
     ":target_arch_arm64": "vm_arm64.dasc",
     "@platforms//cpu:x86_64": "vm_x64.dasc",
     "@platforms//cpu:aarch64": "vm_arm64.dasc",
-    "@build_bazel_apple_support//configs:darwin_arm64": "vm_arm64.dasc",
+    "@apple_support//configs:darwin_arm64": "vm_arm64.dasc",
 })
 
 DYNASM_FLAGS_UNWIND = select({

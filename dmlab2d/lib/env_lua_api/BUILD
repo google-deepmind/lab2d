@@ -36,8 +36,8 @@ cc_library(
         "//dmlab2d/lib/util:default_read_only_file_system",
         "//dmlab2d/lib/util:file_reader_types",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -48,9 +48,9 @@ cc_test(
         ":env_lua_api",
         "//dmlab2d/lib/util:files",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -66,8 +66,8 @@ cc_library(
         "//dmlab2d/lib/system/tensor:tensor_view",
         "//dmlab2d/lib/system/tensor/lua:tensor",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/container:node_hash_map",
-        "@com_google_absl//absl/log",
+        "@abseil-cpp//absl/container:node_hash_map",
+        "@abseil-cpp//absl/log",
     ],
 )
 
@@ -84,7 +84,7 @@ cc_library(
         "//dmlab2d/lib/lua:stack_resetter",
         "//dmlab2d/lib/lua:table_ref",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -100,7 +100,7 @@ cc_test(
         "//dmlab2d/lib/lua:table_ref",
         "//dmlab2d/lib/lua:vm_test_util",
         "//third_party/rl_api:env_c_api",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -121,9 +121,9 @@ cc_test(
         "//dmlab2d/lib/util:default_read_only_file_system",
         "//dmlab2d/lib/util:file_reader_types",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -141,9 +141,9 @@ cc_library(
         "//dmlab2d/lib/lua:table_ref",
         "//dmlab2d/lib/system/tensor/lua:tensor",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/strings",
-        "@com_google_absl//absl/types:span",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:span",
     ],
 )
 
@@ -159,7 +159,7 @@ cc_test(
         "//dmlab2d/lib/lua:table_ref",
         "//dmlab2d/lib/lua:vm_test_util",
         "//third_party/rl_api:env_c_api",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -178,9 +178,9 @@ cc_library(
         "//dmlab2d/lib/system/tensor:tensor_view",
         "//dmlab2d/lib/system/tensor/lua:tensor",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/log",
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/log",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -202,8 +202,8 @@ cc_test(
         "//dmlab2d/lib/util:default_read_only_file_system",
         "//dmlab2d/lib/util:file_reader_types",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/types:span",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/types:span",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -221,9 +221,9 @@ cc_library(
         "//dmlab2d/lib/lua:stack_resetter",
         "//dmlab2d/lib/lua:table_ref",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/log",
-        "@com_google_absl//absl/log:check",
-        "@com_google_absl//absl/strings",
+        "@abseil-cpp//absl/log",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -240,7 +240,7 @@ cc_test(
         "//dmlab2d/lib/lua:table_ref",
         "//dmlab2d/lib/lua:vm_test_util",
         "//third_party/rl_api:env_c_api",
-        "@com_google_absl//absl/strings",
-        "@com_google_googletest//:gtest_main",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest_main",
     ],
 )
