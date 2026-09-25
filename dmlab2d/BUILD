@@ -1,6 +1,6 @@
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 load("@python_system//:defs.bzl", "PY_TAGS")
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
 load("@rules_python//python:py_binary.bzl", "py_binary")
 load("@rules_python//python:py_library.bzl", "py_library")

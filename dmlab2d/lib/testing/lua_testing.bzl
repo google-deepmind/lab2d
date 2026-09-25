@@ -39,7 +39,7 @@ end
 return test_runner.run(tests)
 """
 
-load("@rules_cc//cc:defs.bzl", "cc_test")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
 
 def dmlab2d_lua_test(name, main = None, root = None, data = None, **kwargs):
     """Creates rule that will run tests including DM Lab2D built-in libraries.

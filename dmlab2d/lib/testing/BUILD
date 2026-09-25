@@ -2,7 +2,7 @@
 #   Lua testing libraries.
 
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 
 licenses(["notice"])
 
@@ -41,4 +41,5 @@ bzl_library(
     name = "lua_testing_bzl",
     srcs = ["lua_testing.bzl"],
     visibility = ["//visibility:private"],
+    deps = ["@rules_cc//cc:core_rules"],
 )
