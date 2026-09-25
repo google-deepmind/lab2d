@@ -27,12 +27,12 @@
 #include "absl/strings/str_cat.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/dmlab2d.h"
-#include "include/pybind11/cast.h"
-#include "include/pybind11/detail/common.h"
-#include "include/pybind11/numpy.h"
-#include "include/pybind11/pybind11.h"
-#include "include/pybind11/pytypes.h"
-#include "include/pybind11/stl.h"
+#include "pybind11/cast.h"
+#include "pybind11/detail/common.h"
+#include "pybind11/numpy.h"
+#include "pybind11/pybind11.h"
+#include "pybind11/pytypes.h"
+#include "pybind11/stl.h"
 #include "third_party/rl_api/env_c_api.h"
 
 namespace {

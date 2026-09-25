@@ -17,9 +17,9 @@
 #include <optional>
 
 #include "absl/types/optional.h"
-#include "include/pybind11/pybind11.h"
-#include "include/pybind11/stl.h"
-#include "include/pybind11/stl_bind.h"
+#include "pybind11/pybind11.h"
+#include "pybind11/stl.h"
+#include "pybind11/stl_bind.h"
 
 namespace deepmind::lab2d {
 namespace {
