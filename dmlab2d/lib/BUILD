@@ -1,7 +1,3 @@
-# Description:
-#   Lab2D ("dmlab2d") is a 2D multiplayer grid-world
-#   environment for machine learning.
-
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_level_test", "dmlab2d_lua_test")
@@ -12,8 +8,6 @@ package(
 )
 
 licenses(["notice"])
-
-exports_files(["LICENSE"])
 
 cc_library(
     name = "dmlab2d",

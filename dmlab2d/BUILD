@@ -1,3 +1,7 @@
+# Description:
+#   Lab2D ("dmlab2d") is a 2D multiplayer grid-world
+#   environment for machine learning.
+
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 load("@python_system//:defs.bzl", "PY_TAGS")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")

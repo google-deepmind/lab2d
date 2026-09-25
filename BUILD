@@ -9,7 +9,7 @@ package(
 license(
     name = "license",
     package_name = "dmlab2d",
-    license_kinds = [],
+    visibility = ["//:__subpackages__"],
 )
 
 licenses(["notice"])

@@ -1,5 +1,5 @@
 # Description:
-#  Python bindings for Pushbox level generator.
+#   Python bindings for Pushbox level generator.
 
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 load("@rules_python//python:py_test.bzl", "py_test")
