@@ -52,11 +52,11 @@ bazel run -c opt dmlab2d/random_agent -- --level_name=clean_up
 *DeepMind Lab2D* depends on a few external software libraries, which we ship in
 several different ways:
 
- * The `dm_env`, `eigen`, `luajit`, `lua5.1`, `lua5.2`, `luajit`, `png`
-   and `zlib` libraries are referenced as external Bazel sources, and Bazel
-   BUILD files are provided. The dependent code itself should be fairly
-   portable, and the BUILD rules we ship are specific to Linux x86 and
-   MacOS (x86 and arm64). To build on a different platform you will most likely
+ * The `dm_env`, `eigen`, `luajit`, `lua5.1`, `lua5.2`, `luajit`, `png` and
+   `zlib` libraries are referenced as external Bazel sources, and Bazel BUILD
+   files are provided where needed. The dependent code itself should be fairly
+   portable, and the BUILD rules we ship are specific to Linux and MacOS, both
+   on x86-64 and aarch64). To build on a different platform you will most likely
    have to edit those BUILD files.
 
  * A "generic reinforcement learning API" is included in
@@ -66,6 +66,10 @@ several different ways:
    they must be present on your system:
 
    * `Python 3.8` or above with `NumPy`, `PyGame`, and `packaging`.
+
+   As time goes by, the continuous integration tests will only test on current
+   versions of Python, and we will only build PyPi/PIP wheels for a few recent
+   versions, but the code should be compatible at least back to Python 3.8.
 
 The build rules are using a few compiler settings that are specific to
 GCC/Clang. If some flags are not recognized by your compiler (typically those
