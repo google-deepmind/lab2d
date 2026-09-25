@@ -17,8 +17,12 @@
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <functional>
 #include <iomanip>
 #include <iterator>
+#include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
 

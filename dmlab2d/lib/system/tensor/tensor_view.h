@@ -21,7 +21,7 @@
 #include <cmath>
 #include <cstddef>
 #include <functional>
-#include <memory>
+#include <iterator>
 #include <numeric>
 #include <optional>
 #include <ostream>
@@ -29,6 +29,7 @@
 #include <utility>
 #include <vector>
 
+#include "Eigen/Core"
 #include "Eigen/Dense"
 
 namespace deepmind::lab2d {

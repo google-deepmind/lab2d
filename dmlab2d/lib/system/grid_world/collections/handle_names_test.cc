@@ -16,7 +16,7 @@
 
 #include "dmlab2d/lib/system/grid_world/collections/handle_names.h"
 
-#include <iterator>
+#include <string>
 #include <vector>
 
 #include "dmlab2d/lib/system/grid_world/collections/handle.h"

@@ -17,7 +17,9 @@
 #include "dmlab2d/lib/env_lua_api/env_lua_api.h"
 
 #include <cstdint>
-#include <istream>
+#include <fstream>
+#include <limits>
+#include <random>
 #include <string>
 #include <utility>
 
@@ -25,6 +27,7 @@
 #include "absl/strings/numbers.h"
 #include "absl/strings/str_cat.h"
 #include "absl/strings/string_view.h"
+#include "dmlab2d/lib/env_lua_api/events.h"
 #include "dmlab2d/lib/env_lua_api/properties.h"
 #include "dmlab2d/lib/lua/bind.h"
 #include "dmlab2d/lib/lua/call.h"
@@ -34,6 +37,7 @@
 #include "dmlab2d/lib/lua/push_script.h"
 #include "dmlab2d/lib/lua/read.h"
 #include "dmlab2d/lib/lua/stack_resetter.h"
+#include "dmlab2d/lib/lua/table_ref.h"
 #include "dmlab2d/lib/lua/vm.h"
 #include "dmlab2d/lib/system/image/lua_image.h"
 #include "dmlab2d/lib/system/random/lua/random.h"

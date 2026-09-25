@@ -45,7 +45,10 @@ cc_test(
     deps = [
         ":pixel",
         ":tile_renderer",
+        ":tile_set",
         "//dmlab2d/lib/system/math:math2d",
+        "//dmlab2d/lib/system/tensor:tensor_view",
+        "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/types:span",
         "@googletest//:gtest_main",
     ],
@@ -60,8 +63,6 @@ cc_library(
         ":pixel",
         "//dmlab2d/lib/system/math:math2d",
         "//dmlab2d/lib/system/tensor:tensor_view",
-        "@abseil-cpp//absl/strings",
-        "@abseil-cpp//absl/strings:str_format",
         "@abseil-cpp//absl/types:span",
     ],
 )
@@ -73,7 +74,8 @@ cc_test(
         ":pixel",
         ":tile_set",
         "//dmlab2d/lib/system/math:math2d",
-        "@abseil-cpp//absl/types:span",
+        "//dmlab2d/lib/system/tensor:tensor_view",
+        "@abseil-cpp//absl/log:check",
         "@googletest//:gtest_main",
     ],
 )

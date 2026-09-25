@@ -14,9 +14,14 @@
 
 #include "dmlab2d/lib/system/generators/pushbox/room_candidate_generator.h"
 
+#include <limits>
+#include <random>
 #include <utility>
+#include <vector>
 
 #include "absl/log/check.h"
+#include "dmlab2d/lib/system/generators/pushbox/room.h"
+#include "dmlab2d/lib/system/math/math2d.h"
 
 namespace deepmind::lab2d::pushbox {
 

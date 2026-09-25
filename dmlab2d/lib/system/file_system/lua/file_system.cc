@@ -18,16 +18,14 @@
 
 #include <cstddef>
 #include <memory>
+#include <string>
 
-#include "absl/memory/memory.h"
-#include "absl/strings/string_view.h"
 #include "dmlab2d/lib/lua/class.h"
+#include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
 #include "dmlab2d/lib/system/file_system/file_system.h"
 #include "dmlab2d/lib/util/file_reader.h"
-#include "dmlab2d/lib/util/file_reader_types.h"
-#include "dmlab2d/lib/util/files.h"
 
 namespace deepmind::lab2d {
 namespace {

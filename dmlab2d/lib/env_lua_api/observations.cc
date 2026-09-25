@@ -19,19 +19,19 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
-#include <iostream>
 #include <utility>
 
 #include "absl/log/check.h"
 #include "absl/log/log.h"
 #include "absl/strings/string_view.h"
 #include "dmlab2d/lib/lua/call.h"
-#include "dmlab2d/lib/lua/class.h"
 #include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
+#include "dmlab2d/lib/lua/table_ref.h"
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
+#include "third_party/rl_api/env_c_api.h"
 
 namespace deepmind::lab2d {
 

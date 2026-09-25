@@ -17,6 +17,7 @@
 #ifndef DMLAB2D_LIB_SYSTEM_GRID_WORLD_COLLECTIONS_FIXED_HANDLE_MAP_H_
 #define DMLAB2D_LIB_SYSTEM_GRID_WORLD_COLLECTIONS_FIXED_HANDLE_MAP_H_
 
+#include <cstddef>
 #include <utility>
 #include <vector>
 

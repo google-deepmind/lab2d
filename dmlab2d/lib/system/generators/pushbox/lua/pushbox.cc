@@ -14,6 +14,8 @@
 
 #include "dmlab2d/lib/system/generators/pushbox/lua/pushbox.h"
 
+#include <cstdint>
+
 #include "dmlab2d/lib/lua/bind.h"
 #include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/n_results_or.h"

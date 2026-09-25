@@ -17,14 +17,16 @@
 #ifndef DMLAB2D_LIB_SYSTEM_GRID_WORLD_GRID_H_
 #define DMLAB2D_LIB_SYSTEM_GRID_WORLD_GRID_H_
 
+#include <any>
+#include <cstddef>
 #include <memory>
+#include <optional>
 #include <random>
 #include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
-#include "absl/types/any.h"
-#include "absl/types/optional.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/grid_world/collections/fixed_handle_map.h"
 #include "dmlab2d/lib/system/grid_world/collections/object_pool.h"
@@ -195,8 +197,8 @@ class Grid {
   // If the ray leaves the grid then the result will have an empty piece
   // but the position will be the last valid location or start. When topology
   // is torus the position is converted to the nearest.
-  absl::optional<FindPieceResult> RayCast(Layer layer, math::Position2d start,
-                                          math::Position2d end) const;
+  std::optional<FindPieceResult> RayCast(Layer layer, math::Position2d start,
+                                         math::Position2d end) const;
 
   // Returns first piece on grid in line from `start` in direction `direction`
   // not including `start` if exists, otherwise the result will have an empty
@@ -204,7 +206,7 @@ class Grid {
   // math::RayCastLine. If the ray leaves the grid then the result will have an
   // empty piece but the position will be the last valid location or
   // start.
-  absl::optional<FindPieceResult> RayCastDirection(
+  std::optional<FindPieceResult> RayCastDirection(
       Layer layer, math::Position2d start, math::Vector2d Direction) const;
 
   // Returns piece at `position` and `layer`.
@@ -299,11 +301,11 @@ class Grid {
     return math::Transform2d{{-1, -1}, math::Orientation2d::kNorth};
   }
 
-  const absl::any& GetUserState(Piece piece) const {
+  const std::any& GetUserState(Piece piece) const {
     return piece_data_[piece].user_state;
   }
 
-  void SetUserState(Piece piece, absl::any any) {
+  void SetUserState(Piece piece, std::any any) {
     piece_data_[piece].user_state = std::move(any);
   }
 
@@ -380,7 +382,7 @@ class Grid {
     // Circular list of connected entities.
     Piece connect_next;
     Piece connect_prev;
-    absl::any user_state;
+    std::any user_state;
   };
 
   struct UpdateInfo {
@@ -437,10 +439,10 @@ class Grid {
   };
 
   using ActionType =
-      absl::variant<ActionRotate, ActionPush, ActionTeleport,
-                    ActionSetOrientation, ActionSetState, ActionTeleportToGroup,
-                    ActionHitBeam, ActionConnect, ActionDisconnect,
-                    ActionDisconnectAll>;
+      std::variant<ActionRotate, ActionPush, ActionTeleport,
+                   ActionSetOrientation, ActionSetState, ActionTeleportToGroup,
+                   ActionHitBeam, ActionConnect, ActionDisconnect,
+                   ActionDisconnectAll>;
   struct Action {
     Piece piece;
     ActionType action_type;

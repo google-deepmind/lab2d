@@ -18,6 +18,8 @@
 
 #include <algorithm>
 
+#include "absl/log/check.h"
+#include "absl/types/span.h"
 #include "dmlab2d/lib/system/grid_world/sprite_instance.h"
 #include "dmlab2d/lib/system/math/math2d.h"
 

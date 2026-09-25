@@ -16,6 +16,10 @@
 
 #include "dmlab2d/lib/system/grid_world/collections/handle.h"
 
+#include <algorithm>
+#include <iterator>
+#include <vector>
+
 #include "absl/hash/hash_testing.h"
 #include "absl/strings/str_format.h"
 #include "gmock/gmock.h"

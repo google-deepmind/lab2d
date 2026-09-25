@@ -19,7 +19,6 @@
 #include <memory>
 #include <utility>
 
-#include "absl/memory/memory.h"
 #include "dmlab2d/lib/env_lua_api/env_lua_api.h"
 #include "dmlab2d/lib/lua/bind.h"
 #include "dmlab2d/lib/system/file_system/lua/file_system.h"

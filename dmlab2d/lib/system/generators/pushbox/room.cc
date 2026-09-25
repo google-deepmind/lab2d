@@ -15,14 +15,16 @@
 #include "dmlab2d/lib/system/generators/pushbox/room.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <iterator>
-#include <memory>
 #include <string>
 
 #include "absl/log/check.h"
 #include "absl/log/log.h"
 #include "absl/strings/str_cat.h"
+#include "absl/types/span.h"
 #include "dmlab2d/lib/system/generators/pushbox/constants.h"
+#include "dmlab2d/lib/system/math/math2d.h"
 
 namespace deepmind::lab2d::pushbox {
 

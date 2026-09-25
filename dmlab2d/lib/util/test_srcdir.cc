@@ -16,7 +16,6 @@
 
 #include "dmlab2d/lib/util/test_srcdir.h"
 
-#include <cstdlib>
 #include <string>
 
 #include "absl/strings/str_cat.h"

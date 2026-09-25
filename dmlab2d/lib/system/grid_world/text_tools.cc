@@ -16,6 +16,8 @@
 
 #include "dmlab2d/lib/system/grid_world/text_tools.h"
 
+#include <algorithm>
+#include <string>
 #include <vector>
 
 #include "absl/strings/str_split.h"

@@ -21,14 +21,13 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
-#include <string>
 #include <type_traits>
+#include <variant>
 #include <vector>
 
 #include "absl/container/flat_hash_map.h"
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
-#include "absl/types/variant.h"
 #include "dmlab2d/lib/lua/lua.h"
 
 namespace deepmind::lab2d::lua {
@@ -81,7 +80,7 @@ template <typename T>
 void Push(lua_State* L, absl::Span<T> values);
 
 template <typename... T>
-void Push(lua_State* L, const absl::variant<T...>& value);
+void Push(lua_State* L, const std::variant<T...>& value);
 
 // End of public header, implementation details follow.
 
@@ -123,7 +122,7 @@ struct PushVariant {
     Push(L, value);
   }
 
-  void operator()(const absl::monostate) const { lua_pushnil(L); }
+  void operator()(const std::monostate) const { lua_pushnil(L); }
 
   lua_State* L;
 };
@@ -131,8 +130,8 @@ struct PushVariant {
 }  // namespace internal
 
 template <typename... T>
-void Push(lua_State* L, const absl::variant<T...>& value) {
-  absl::visit(internal::PushVariant{L}, value);
+void Push(lua_State* L, const std::variant<T...>& value) {
+  std::visit(internal::PushVariant{L}, value);
 }
 
 }  // namespace deepmind::lab2d::lua

@@ -30,6 +30,8 @@
 #include <memory>
 #include <string>
 
+#include "absl/strings/string_view.h"
+
 namespace deepmind::lab2d::util {
 
 extern "C" {

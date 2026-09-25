@@ -16,11 +16,14 @@
 
 #include "dmlab2d/lib/system/grid_world/grid_view.h"
 
+#include <vector>
+
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/grid_world/collections/fixed_handle_map.h"
 #include "dmlab2d/lib/system/grid_world/grid_window.h"
 #include "dmlab2d/lib/system/grid_world/handles.h"
 #include "dmlab2d/lib/system/grid_world/sprite_instance.h"
+#include "dmlab2d/lib/system/math/math2d.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 

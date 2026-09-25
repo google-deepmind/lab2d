@@ -15,6 +15,7 @@
 #include "dmlab2d/lib/system/grid_world/lua/lua_grid.h"
 
 #include <algorithm>
+#include <any>
 #include <memory>
 #include <type_traits>
 #include <utility>
@@ -28,6 +29,7 @@
 #include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/read.h"
+#include "dmlab2d/lib/lua/ref.h"
 #include "dmlab2d/lib/lua/stack_resetter.h"
 #include "dmlab2d/lib/lua/table_ref.h"
 #include "dmlab2d/lib/system/grid_world/handles.h"
@@ -526,7 +528,7 @@ lua::NResultsOr LuaGrid::GetUserState(lua_State* L) {
   }
   const auto& user_state = grid_->GetUserState(piece);
   if (user_state.has_value()) {
-    Push(L, absl::any_cast<lua::Ref>(user_state));
+    Push(L, std::any_cast<lua::Ref>(user_state));
   } else {
     lua_pushnil(L);
   }
@@ -539,7 +541,7 @@ lua::NResultsOr LuaGrid::SetUserState(lua_State* L) {
     return "Arg 1 must be valid piece!";
   }
   if (lua_isnoneornil(L, 3)) {
-    grid_->SetUserState(piece, absl::any());
+    grid_->SetUserState(piece, std::any());
     return 0;
   }
   lua::Ref ref;

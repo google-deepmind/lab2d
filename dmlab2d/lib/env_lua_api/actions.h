@@ -17,7 +17,6 @@
 #ifndef DMLAB2D_LIB_ENV_LUA_API_ACTIONS_H_
 #define DMLAB2D_LIB_ENV_LUA_API_ACTIONS_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 

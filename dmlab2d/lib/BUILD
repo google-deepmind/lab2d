@@ -31,7 +31,6 @@ cc_library(
         "//dmlab2d/lib/system/tile/lua:tile",
         "//third_party/rl_api:env_c_api",
         "//third_party/rl_api:env_c_api_bind",
-        "@abseil-cpp//absl/memory",
     ],
 )
 

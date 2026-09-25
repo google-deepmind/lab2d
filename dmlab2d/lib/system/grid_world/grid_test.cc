@@ -17,13 +17,14 @@
 #include "dmlab2d/lib/system/grid_world/grid.h"
 
 #include <algorithm>
+#include <any>
 #include <array>
+#include <cstddef>
 #include <iterator>
-#include <limits>
 #include <memory>
-#include <numeric>
 #include <random>
-#include <type_traits>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "absl/strings/ascii.h"
@@ -2365,7 +2366,7 @@ TEST(GridTest, UserState) {
           player_state, math::Transform2d{{0, 0}, math::Orientation2d::kNorth});
     }
   }
-  EXPECT_THAT(absl::any_cast<int>(grid.GetUserState(piece)), Eq(10));
+  EXPECT_THAT(std::any_cast<int>(grid.GetUserState(piece)), Eq(10));
 }
 
 }  // namespace

@@ -17,12 +17,12 @@
 #include "dmlab2d/lib/env_lua_api/actions.h"
 
 #include <cstddef>
-#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "absl/log/check.h"
+#include "absl/strings/str_cat.h"
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/lua/call.h"
@@ -30,7 +30,8 @@
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
 #include "dmlab2d/lib/lua/stack_resetter.h"
-#include "dmlab2d/lib/system/tensor/lua/tensor.h"
+#include "dmlab2d/lib/lua/table_ref.h"
+#include "third_party/rl_api/env_c_api.h"
 
 namespace deepmind::lab2d {
 

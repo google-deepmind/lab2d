@@ -18,17 +18,26 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdlib>
 #include <iterator>
+#include <memory>
+#include <optional>
 #include <random>
+#include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
+#include "absl/log/check.h"
 #include "absl/log/log.h"
-#include "absl/types/optional.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/grid_world/collections/shuffled_membership.h"
 #include "dmlab2d/lib/system/grid_world/grid_shape.h"
+#include "dmlab2d/lib/system/grid_world/grid_view.h"
+#include "dmlab2d/lib/system/grid_world/grid_window.h"
 #include "dmlab2d/lib/system/grid_world/handles.h"
+#include "dmlab2d/lib/system/grid_world/sprite_instance.h"
+#include "dmlab2d/lib/system/grid_world/world.h"
 #include "dmlab2d/lib/system/math/math2d.h"
 #include "dmlab2d/lib/system/math/math2d_algorithms.h"
 
@@ -114,7 +123,7 @@ void Grid::ReleaseInstanceActual(Piece piece) {
                        if (piece == action.piece) {
                          return true;
                        }
-                       if (auto* connect = absl::get_if<ActionConnect>(
+                       if (auto* connect = std::get_if<ActionConnect>(
                                &action.action_type)) {
                          return piece == connect->piece;
                        }
@@ -241,7 +250,7 @@ void Grid::DoUpdate(std::mt19937_64* random, int flush_count) {
     }
     ProcessQueue(&action_queue_, [this, random](const Action& action) {
       Piece piece = action.piece;
-      return absl::visit(
+      return std::visit(
           [this, random, piece](const auto& arg) -> bool {
             return this->ProcessAction(random, piece, arg);
           },
@@ -992,10 +1001,10 @@ void Grid::DisconnectActual(Piece piece) {
   piece_data_[piece].connect_prev = Piece();
 }
 
-absl::optional<Grid::FindPieceResult> Grid::RayCastDirection(
+std::optional<Grid::FindPieceResult> Grid::RayCastDirection(
     Layer layer, math::Position2d start, math::Vector2d direction) const {
   const CellIndex start_cell = shape_.TryToCellIndex(start, layer);
-  absl::optional<FindPieceResult> result{};
+  std::optional<Grid::FindPieceResult> result{};
   if (start_cell.IsEmpty()) {
     result.emplace().position = start;
     return result;
@@ -1024,8 +1033,9 @@ absl::optional<Grid::FindPieceResult> Grid::RayCastDirection(
   return result;
 }
 
-absl::optional<Grid::FindPieceResult> Grid::RayCast(
-    Layer layer, math::Position2d start, math::Position2d end) const {
+std::optional<Grid::FindPieceResult> Grid::RayCast(Layer layer,
+                                                   math::Position2d start,
+                                                   math::Position2d end) const {
   return RayCastDirection(layer, start, GetShape().SmallestVector(start, end));
 }
 

@@ -18,9 +18,11 @@
 
 #include <cstddef>
 #include <fstream>
+#include <ios>
 #include <string>
 
 #include "absl/strings/str_cat.h"
+#include "dmlab2d/lib/util/file_reader_types.h"
 
 namespace deepmind::lab2d::util {
 namespace {

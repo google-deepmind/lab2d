@@ -15,6 +15,7 @@
 #include "dmlab2d/lib/system/tile/tile_renderer.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <iterator>
 
@@ -22,6 +23,7 @@
 #include "absl/log/log.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/tile/pixel.h"
+#include "dmlab2d/lib/system/tile/tile_set.h"
 
 namespace deepmind::lab2d {
 namespace {

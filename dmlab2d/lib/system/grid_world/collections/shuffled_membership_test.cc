@@ -16,6 +16,9 @@
 
 #include "dmlab2d/lib/system/grid_world/collections/shuffled_membership.h"
 
+#include <random>
+#include <vector>
+
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/grid_world/collections/handle.h"
 #include "gmock/gmock.h"

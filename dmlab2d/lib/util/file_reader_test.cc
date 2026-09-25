@@ -22,6 +22,7 @@
 
 #include "absl/log/check.h"
 #include "dmlab2d/lib/util/default_read_only_file_system.h"
+#include "dmlab2d/lib/util/file_reader_types.h"
 #include "dmlab2d/lib/util/files.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"

@@ -16,8 +16,9 @@
 
 #include "dmlab2d/lib/lua/push_script.h"
 
+#include <string>
+
 #include "dmlab2d/lib/lua/n_results_or_test_util.h"
-#include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/vm_test_util.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"

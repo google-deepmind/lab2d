@@ -17,8 +17,6 @@
 #ifndef DMLAB2D_LIB_LUA_CLASS_H_
 #define DMLAB2D_LIB_LUA_CLASS_H_
 
-#include <new>
-#include <string>
 #include <utility>
 
 #include "absl/log/check.h"

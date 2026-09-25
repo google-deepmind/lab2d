@@ -17,9 +17,7 @@
 #ifndef DMLAB2D_LIB_SYSTEM_GRID_WORLD_GRID_VIEW_H_
 #define DMLAB2D_LIB_SYSTEM_GRID_WORLD_GRID_VIEW_H_
 
-#include <algorithm>
-#include <memory>
-#include <vector>
+#include <utility>
 
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/grid_world/collections/fixed_handle_map.h"

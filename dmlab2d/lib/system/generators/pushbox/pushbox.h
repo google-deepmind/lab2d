@@ -18,11 +18,9 @@
 #define DMLAB2D_LIB_SYSTEM_GENERATORS_PUSHBOX_PUSHBOX_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <utility>
-
-#include "dmlab2d/lib/system/generators/pushbox/random_room_generator.h"
-#include "dmlab2d/lib/system/generators/pushbox/room.h"
 
 namespace deepmind::lab2d::pushbox {
 
@@ -43,15 +41,15 @@ struct Settings {
   int room_steps = 20;
 
   // Seed for the room shape generation. Unset uses one generated from seed.
-  absl::optional<std::uint32_t> room_seed;
+  std::optional<std::uint32_t> room_seed;
 
   // Seed for the box targets' locations. Unset uses one generated from seed.
-  absl::optional<std::uint32_t> targets_seed;
+  std::optional<std::uint32_t> targets_seed;
 
   // Random seed for the order in which reverse actions are applied to the room
   // when searching for a valid starting position.  Unset uses one generated
   // from seed.
-  absl::optional<std::uint32_t> actions_seed;
+  std::optional<std::uint32_t> actions_seed;
 };
 
 struct ResultOr {

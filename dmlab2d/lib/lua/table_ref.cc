@@ -16,8 +16,11 @@
 
 #include "dmlab2d/lib/lua/table_ref.h"
 
+#include <cstddef>
+
 #include "absl/log/check.h"
 #include "dmlab2d/lib/lua/lua.h"
+#include "dmlab2d/lib/lua/read.h"
 
 namespace deepmind::lab2d::lua {
 

@@ -17,11 +17,12 @@
 #ifndef DMLAB2D_LIB_SYSTEM_GENERATORS_PUSHBOX_RANDOM_ROOM_GENERATOR_H_
 #define DMLAB2D_LIB_SYSTEM_GENERATORS_PUSHBOX_RANDOM_ROOM_GENERATOR_H_
 
+#include <cstdint>
+#include <optional>
 #include <random>
 #include <vector>
 
-#include "absl/status/status.h"
-#include "absl/types/optional.h"
+#include "absl/types/span.h"
 #include "dmlab2d/lib/system/generators/pushbox/room.h"
 #include "dmlab2d/lib/system/math/math2d.h"
 
@@ -58,7 +59,7 @@ class RandomRoomGenerator {
   // Generates a random room (topology only) without player or targets placed.
   // Returns absl::nullopt if the room generation couldn't be completed (e.g. if
   // we exceed the maximum number of step retries).
-  absl::optional<std::vector<TileType>> GenerateRoomTopology();
+  std::optional<std::vector<TileType>> GenerateRoomTopology();
 
   // Uses a preexisting room layout and regenerates the player and boxes
   // positions, returning the resulting room. Returns absl::nullopt if the room
@@ -67,7 +68,7 @@ class RandomRoomGenerator {
   // that if a room topology wasn't previously generated this method will return
   // absl::nullopt as there will not be suitable positions to place the boxes
   // and player.
-  absl::optional<Room> UpdateBoxAndPlayerPositions(
+  std::optional<Room> UpdateBoxAndPlayerPositions(
       absl::Span<TileType> topology);
 
  private:

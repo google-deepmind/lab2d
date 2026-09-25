@@ -16,6 +16,9 @@
 
 #include "dmlab2d/lib/system/grid_world/text_tools.h"
 
+#include "absl/strings/string_view.h"
+#include "dmlab2d/lib/system/grid_world/handles.h"
+#include "dmlab2d/lib/system/math/math2d.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 

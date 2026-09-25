@@ -17,10 +17,7 @@
 #ifndef DMLAB2D_LIB_ENV_LUA_API_ENV_LUA_API_H_
 #define DMLAB2D_LIB_ENV_LUA_API_ENV_LUA_API_H_
 
-#include <array>
-#include <cstddef>
 #include <cstdint>
-#include <memory>
 #include <random>
 #include <string>
 #include <vector>
@@ -36,7 +33,6 @@
 #include "dmlab2d/lib/lua/table_ref.h"
 #include "dmlab2d/lib/lua/vm.h"
 #include "dmlab2d/lib/system/file_system/file_system.h"
-#include "dmlab2d/lib/util/file_reader_types.h"
 #include "third_party/rl_api/env_c_api.h"
 
 namespace deepmind::lab2d {

@@ -16,14 +16,17 @@
 
 #include "dmlab2d/lib/lua/push.h"
 
+#include <array>
 #include <cstddef>
 #include <set>
 #include <string>
-#include <utility>
+#include <variant>
+#include <vector>
 
 #include "absl/container/flat_hash_map.h"
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
+#include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/vm_test_util.h"
 #include "gtest/gtest.h"
 
@@ -199,7 +202,7 @@ TEST_F(PushTest, PushTable) {
 }
 
 TEST_F(PushTest, PushVariant) {
-  absl::variant<absl::string_view, int, double> value;
+  std::variant<absl::string_view, int, double> value;
 
   // Push default constructed string_view.
   Push(L, value);
@@ -224,7 +227,7 @@ TEST_F(PushTest, PushVariant) {
 }
 
 TEST_F(PushTest, PushVariantMonostate) {
-  absl::variant<absl::monostate, int> value;
+  std::variant<std::monostate, int> value;
   Push(L, value);
   ASSERT_EQ(LUA_TNIL, lua_type(L, 1));
   value = 10;
@@ -235,7 +238,7 @@ TEST_F(PushTest, PushVariantMonostate) {
 }
 
 TEST_F(PushTest, PushVariantArray) {
-  std::vector<absl::variant<absl::string_view, double>> values;
+  std::vector<std::variant<absl::string_view, double>> values;
   values.emplace_back(10.5);
   values.emplace_back("Hello");
   Push(L, values);

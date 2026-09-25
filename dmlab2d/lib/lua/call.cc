@@ -20,6 +20,7 @@
 #include <utility>
 
 #include "absl/log/check.h"
+#include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
 

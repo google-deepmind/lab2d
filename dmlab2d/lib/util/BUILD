@@ -53,6 +53,7 @@ cc_test(
     deps = [
         ":default_read_only_file_system",
         ":file_reader",
+        ":file_reader_types",
         ":files",
         "@abseil-cpp//absl/log:check",
         "@googletest//:gtest_main",

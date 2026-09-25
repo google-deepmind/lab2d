@@ -17,6 +17,7 @@
 #ifndef DMLAB2D_LIB_SYSTEM_TILE_TILE_RENDERER_H_
 #define DMLAB2D_LIB_SYSTEM_TILE_TILE_RENDERER_H_
 
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 

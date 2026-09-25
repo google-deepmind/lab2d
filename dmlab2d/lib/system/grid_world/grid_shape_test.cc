@@ -16,6 +16,7 @@
 
 #include "dmlab2d/lib/system/grid_world/grid_shape.h"
 
+#include "dmlab2d/lib/system/grid_world/handles.h"
 #include "dmlab2d/lib/system/math/math2d.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"

@@ -16,17 +16,15 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <optional>
 #include <random>
 #include <stack>
 #include <string>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "absl/container/flat_hash_set.h"
-#include "absl/strings/str_cat.h"
 #include "absl/strings/str_format.h"
-#include "absl/types/optional.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/generators/pushbox/constants.h"
 #include "dmlab2d/lib/system/generators/pushbox/random_room_generator.h"
@@ -47,10 +45,9 @@ namespace {
 // The max_action_depth parameter indicates the maximum length of the sequence
 // of actions applied when exploring new room configurations (i.e. the search
 // depth).
-absl::optional<Room> ReverseSolveRoom(const Room& base_room,
-                                      std::mt19937_64* rng,
-                                      int max_room_configs,
-                                      int max_action_depth) {
+std::optional<Room> ReverseSolveRoom(const Room& base_room,
+                                     std::mt19937_64* rng, int max_room_configs,
+                                     int max_action_depth) {
   // Set of rooms that we have already visited.
   absl::flat_hash_set<std::uint64_t> visited_rooms(
       generator::kVisitedRoomsBucketCount);
@@ -97,7 +94,7 @@ absl::optional<Room> ReverseSolveRoom(const Room& base_room,
 
   generator.MovePlayerToRandomAccessiblePosition(rng, &highest_score_room);
 
-  if (highest_score_room.room_score() == 0) return absl::nullopt;
+  if (highest_score_room.room_score() == 0) return std::nullopt;
 
   return highest_score_room;
 }

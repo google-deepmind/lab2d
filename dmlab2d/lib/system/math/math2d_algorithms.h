@@ -15,6 +15,7 @@
 #ifndef DMLAB2D_LIB_SYSTEM_MATH_MATH2D_ALGORITHMS_H_
 #define DMLAB2D_LIB_SYSTEM_MATH_MATH2D_ALGORITHMS_H_
 
+#include <algorithm>
 #include <cmath>
 
 #include "dmlab2d/lib/system/math/math2d.h"

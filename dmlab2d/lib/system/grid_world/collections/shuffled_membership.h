@@ -17,8 +17,6 @@
 #ifndef DMLAB2D_LIB_SYSTEM_GRID_WORLD_COLLECTIONS_SHUFFLED_MEMBERSHIP_H_
 #define DMLAB2D_LIB_SYSTEM_GRID_WORLD_COLLECTIONS_SHUFFLED_MEMBERSHIP_H_
 
-#include <algorithm>
-
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/grid_world/collections/fixed_handle_map.h"
 #include "dmlab2d/lib/system/grid_world/collections/shuffled_set.h"

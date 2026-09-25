@@ -22,10 +22,6 @@ cc_library(
         "//dmlab2d/lib/lua:read",
         "//dmlab2d/lib/system/file_system",
         "//dmlab2d/lib/util:file_reader",
-        "//dmlab2d/lib/util:file_reader_types",
-        "//dmlab2d/lib/util:files",
-        "@abseil-cpp//absl/memory",
-        "@abseil-cpp//absl/strings",
     ],
 )
 

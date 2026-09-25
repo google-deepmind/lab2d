@@ -16,9 +16,14 @@
 
 #include "dmlab2d/lib/lua/vm.h"
 
+#include <cstddef>
+#include <string>
 #include <utility>
+#include <vector>
 
+#include "absl/container/flat_hash_map.h"
 #include "absl/strings/str_cat.h"
+#include "absl/strings/string_view.h"
 #include "dmlab2d/lib/lua/lua.h"
 
 #if LUA_VERSION_NUM == 501

@@ -17,8 +17,6 @@
 #ifndef DMLAB2D_LIB_LUA_PUSH_SCRIPT_H_
 #define DMLAB2D_LIB_LUA_PUSH_SCRIPT_H_
 
-#include <cstddef>
-#include <cstring>
 #include <string>
 
 #include "absl/strings/string_view.h"

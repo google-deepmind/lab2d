@@ -142,7 +142,6 @@ cc_library(
         "//dmlab2d/lib/lua:read",
         "//dmlab2d/lib/lua:stack_resetter",
         "//dmlab2d/lib/lua:table_ref",
-        "//dmlab2d/lib/system/tensor/lua:tensor",
         "//third_party/rl_api:env_c_api",
         "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings",
@@ -173,7 +172,6 @@ cc_library(
     deps = [
         "//dmlab2d/lib/lua",
         "//dmlab2d/lib/lua:call",
-        "//dmlab2d/lib/lua:class",
         "//dmlab2d/lib/lua:n_results_or",
         "//dmlab2d/lib/lua:push",
         "//dmlab2d/lib/lua:read",

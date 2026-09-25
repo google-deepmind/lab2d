@@ -14,12 +14,12 @@
 
 #include "dmlab2d/lib/system/tile/tile_set.h"
 
-#include <cstdint>
-#include <numeric>
+#include <cstddef>
 #include <vector>
 
-#include "absl/types/span.h"
+#include "absl/log/check.h"
 #include "dmlab2d/lib/system/math/math2d.h"
+#include "dmlab2d/lib/system/tensor/tensor_view.h"
 #include "dmlab2d/lib/system/tile/pixel.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"

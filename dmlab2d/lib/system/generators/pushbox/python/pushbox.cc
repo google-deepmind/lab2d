@@ -48,9 +48,9 @@ PYBIND11_MODULE(pushbox, m) {
         py::arg("width") = settings.width, py::arg("height") = settings.height,
         py::arg("num_boxes") = settings.num_boxes,
         py::arg("room_steps") = settings.room_steps,
-        py::arg("room_seed") = absl::nullopt,
-        py::arg("targets_seed") = absl::nullopt,
-        py::arg("actions_seed") = absl::nullopt);
+        py::arg("room_seed") = std::nullopt,
+        py::arg("targets_seed") = std::nullopt,
+        py::arg("actions_seed") = std::nullopt);
 }
 
 }  // namespace

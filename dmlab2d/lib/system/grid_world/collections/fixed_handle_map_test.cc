@@ -17,6 +17,7 @@
 #include "dmlab2d/lib/system/grid_world/collections/fixed_handle_map.h"
 
 #include <utility>
+#include <vector>
 
 #include "dmlab2d/lib/system/grid_world/collections/handle.h"
 #include "gmock/gmock.h"

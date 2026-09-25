@@ -14,6 +14,8 @@
 
 #include "dmlab2d/lib/system/math/math2d_algorithms.h"
 
+#include <cstdlib>
+#include <string>
 #include <vector>
 
 #include "dmlab2d/lib/system/math/math2d.h"

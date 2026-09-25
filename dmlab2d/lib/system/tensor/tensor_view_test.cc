@@ -16,8 +16,12 @@
 
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
 
+#include <cstddef>
 #include <optional>
 #include <random>
+#include <sstream>
+#include <utility>
+#include <vector>
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"

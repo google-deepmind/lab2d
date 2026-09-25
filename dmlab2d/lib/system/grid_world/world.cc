@@ -17,11 +17,12 @@
 #include "dmlab2d/lib/system/grid_world/world.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "absl/container/btree_set.h"
-#include "absl/strings/string_view.h"
 #include "dmlab2d/lib/system/grid_world/handles.h"
 
 namespace deepmind::lab2d {

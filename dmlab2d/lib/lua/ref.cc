@@ -16,8 +16,8 @@
 
 #include "dmlab2d/lib/lua/ref.h"
 
-#include "absl/log/check.h"
-#include "absl/utility/utility.h"
+#include <utility>
+
 #include "dmlab2d/lib/lua/lua.h"
 
 namespace deepmind::lab2d::lua {
@@ -34,8 +34,8 @@ Ref::Ref() : Ref(nullptr, 0) {}
 Ref::Ref(lua_State* L, int reference) : lua_state_(L), reference_(reference) {}
 
 Ref::Ref(Ref&& other) noexcept
-    : lua_state_(absl::exchange(other.lua_state_, nullptr)),
-      reference_(absl::exchange(other.reference_, 0)) {}
+    : lua_state_(std::exchange(other.lua_state_, nullptr)),
+      reference_(std::exchange(other.reference_, 0)) {}
 
 Ref::Ref(const Ref& other) : lua_state_(other.lua_state_), reference_(0) {
   // Create our own internal reference.

@@ -18,13 +18,13 @@
 #include <array>
 #include <cstdint>
 #include <iterator>
+#include <optional>
 #include <random>
 #include <vector>
 
-#include "absl/random/distributions.h"
-#include "absl/random/random.h"
 #include "absl/types/span.h"
 #include "dmlab2d/lib/system/generators/pushbox/constants.h"
+#include "dmlab2d/lib/system/generators/pushbox/room.h"
 #include "dmlab2d/lib/system/math/math2d.h"
 
 namespace deepmind::lab2d::pushbox {
@@ -86,22 +86,22 @@ RandomRoomGenerator::RandomRoomGenerator(int width, int height, int num_targets,
       positions_rng_(positions_seed),
       zobrist_bitstrings_(GenerateZobristBitstrings(width, height, 2)) {}
 
-absl::optional<Room> RandomRoomGenerator::UpdateBoxAndPlayerPositions(
+std::optional<Room> RandomRoomGenerator::UpdateBoxAndPlayerPositions(
     absl::Span<TileType> topology) {
   std::replace(topology.begin(), topology.end(), TileType::kTarget,
                TileType::kFloor);
 
   Room room(width_, height_, topology, zobrist_bitstrings_);
   if (!AddRandomTargets(&room, topology)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!AddPlayerRandomPosition(&room)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return room;
 }
 
-absl::optional<std::vector<TileType>>
+std::optional<std::vector<TileType>>
 RandomRoomGenerator::GenerateRoomTopology() {
   // Start a new room from scratch.
   std::vector<TileType> topology(width_ * height_, TileType::kWall);
@@ -124,8 +124,7 @@ RandomRoomGenerator::GenerateRoomTopology() {
       ++applied_steps;
     }
 
-    if (++retried_steps >= room::kMaxGenerationStepRetries)
-      return absl::nullopt;
+    if (++retried_steps >= room::kMaxGenerationStepRetries) return std::nullopt;
   }
 
   return topology;

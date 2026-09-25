@@ -16,14 +16,19 @@
 
 #include "dmlab2d/lib/env_lua_api/events.h"
 
+#include <cstdint>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "absl/log/log.h"
 #include "dmlab2d/lib/lua/class.h"
 #include "dmlab2d/lib/lua/lua.h"
+#include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/read.h"
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
+#include "third_party/rl_api/env_c_api.h"
 
 namespace deepmind::lab2d {
 namespace {

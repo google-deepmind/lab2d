@@ -18,12 +18,12 @@
 
 #include <cstddef>
 #include <cstring>
+#include <variant>
 
 #include "absl/container/flat_hash_map.h"
 #include "absl/strings/str_cat.h"
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
-#include "absl/types/variant.h"
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/vm_test_util.h"
 #include "gmock/gmock.h"
@@ -231,39 +231,39 @@ TEST_F(ReadTest, ReadTable) {
 }
 
 TEST_F(ReadTest, ReadVariant) {
-  absl::variant<absl::string_view, int, bool> var;
+  std::variant<absl::string_view, int, bool> var;
 
   Push(L, kTestString);
   ASSERT_TRUE(IsFound(lua::Read(L, 1, &var)));
   ASSERT_EQ(var.index(), 0);
-  EXPECT_EQ(kTestString, absl::get<0>(var));
+  EXPECT_EQ(kTestString, std::get<0>(var));
 
   Push(L, 10);
   ASSERT_TRUE(IsFound(lua::Read(L, 2, &var)));
   ASSERT_EQ(var.index(), 1);
-  EXPECT_EQ(10, absl::get<1>(var));
+  EXPECT_EQ(10, std::get<1>(var));
 
   Push(L, true);
   ASSERT_TRUE(IsFound(lua::Read(L, 3, &var)));
   ASSERT_EQ(var.index(), 2);
-  EXPECT_EQ(true, absl::get<2>(var));
+  EXPECT_EQ(true, std::get<2>(var));
 }
 
 TEST_F(ReadTest, ReadVariantTypeMismatch) {
-  absl::variant<int, bool> var;
+  std::variant<int, bool> var;
   Push(L, kTestString);
   EXPECT_TRUE(IsTypeMismatch(lua::Read(L, 1, &var)));
 }
 
 TEST_F(ReadTest, ReadVariantMissing) {
-  absl::variant<int, bool> var;
+  std::variant<int, bool> var;
   EXPECT_TRUE(IsNotFound(lua::Read(L, 1, &var)));
   lua_pushnil(L);
   EXPECT_TRUE(IsNotFound(lua::Read(L, 1, &var)));
 }
 
 TEST_F(ReadTest, ReadVariantVectorFail) {
-  std::vector<absl::variant<bool, int>> vars;
+  std::vector<std::variant<bool, int>> vars;
   std::array<const char*, 5> string_args{{"0", "1", "2", "3", "4"}};
   Push(L, string_args);
   EXPECT_TRUE(IsTypeMismatch(lua::Read(L, 1, &vars)));

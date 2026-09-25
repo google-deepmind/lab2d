@@ -18,7 +18,6 @@ cc_library(
         "//dmlab2d/lib:dmlab2d",
         "//dmlab2d/lib/util:test_srcdir",
         "//third_party/rl_api:env_c_api",
-        "@abseil-cpp//absl/strings",
         "@googletest//:gtest",
     ],
 )
@@ -34,7 +33,6 @@ cc_library(
         "//dmlab2d/lib/util:test_srcdir",
         "//third_party/rl_api:env_c_api",
         "//third_party/rl_api:env_c_api_test_suite",
-        "@abseil-cpp//absl/strings",
         "@googletest//:gtest",
     ],
 )

@@ -18,7 +18,6 @@
 #define DMLAB2D_LIB_ENV_LUA_API_OBSERVATIONS_H_
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <vector>
 

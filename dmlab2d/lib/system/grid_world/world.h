@@ -19,13 +19,11 @@
 
 #include <stddef.h>
 
-#include <functional>
-#include <memory>
+#include <cstddef>
 #include <string>
 #include <vector>
 
 #include "absl/container/btree_map.h"
-#include "absl/strings/string_view.h"
 #include "dmlab2d/lib/system/grid_world/collections/fixed_handle_map.h"
 #include "dmlab2d/lib/system/grid_world/collections/handle_names.h"
 #include "dmlab2d/lib/system/grid_world/handles.h"

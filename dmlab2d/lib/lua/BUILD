@@ -170,10 +170,8 @@ cc_test(
     srcs = ["push_script_test.cc"],
     deps = [
         ":n_results_or_test_util",
-        ":push",
         ":push_script",
         ":vm_test_util",
-        "@abseil-cpp//absl/flags:flag",
         "@googletest//:gtest_main",
     ],
 )
@@ -186,7 +184,6 @@ cc_library(
         "@abseil-cpp//absl/container:flat_hash_map",
         "@abseil-cpp//absl/strings",
         "@abseil-cpp//absl/types:span",
-        "@abseil-cpp//absl/types:variant",
     ],
 )
 
@@ -195,6 +192,7 @@ cc_test(
     size = "small",
     srcs = ["push_test.cc"],
     deps = [
+        ":lua",
         ":push",
         ":vm_test_util",
         "@abseil-cpp//absl/container:flat_hash_map",
@@ -224,7 +222,6 @@ cc_library(
         "@abseil-cpp//absl/container:flat_hash_map",
         "@abseil-cpp//absl/strings",
         "@abseil-cpp//absl/types:span",
-        "@abseil-cpp//absl/types:variant",
     ],
 )
 
@@ -239,7 +236,6 @@ cc_test(
         "@abseil-cpp//absl/container:flat_hash_map",
         "@abseil-cpp//absl/strings",
         "@abseil-cpp//absl/types:span",
-        "@abseil-cpp//absl/types:variant",
         "@googletest//:gtest_main",
     ],
 )
@@ -285,7 +281,6 @@ cc_library(
         ":push",
         ":read",
         "@abseil-cpp//absl/log:check",
-        "@abseil-cpp//absl/utility",
     ],
 )
 

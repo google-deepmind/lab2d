@@ -21,6 +21,7 @@
 
 #include "absl/strings/str_cat.h"
 #include "absl/strings/string_view.h"
+#include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/read.h"
 
 namespace deepmind::lab2d::lua {

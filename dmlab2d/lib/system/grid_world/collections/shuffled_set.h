@@ -18,9 +18,9 @@
 #define DMLAB2D_LIB_SYSTEM_GRID_WORLD_COLLECTIONS_SHUFFLED_SET_H_
 
 #include <algorithm>
+#include <cstddef>
 #include <iterator>
 #include <random>
-#include <utility>
 #include <vector>
 
 #include "absl/log/check.h"

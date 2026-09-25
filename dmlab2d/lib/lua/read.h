@@ -24,12 +24,12 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "absl/container/flat_hash_map.h"
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
-#include "absl/types/variant.h"
 #include "dmlab2d/lib/lua/lua.h"
 
 namespace deepmind::lab2d::lua {
@@ -299,7 +299,7 @@ ReadResult Read(lua_State* L, int idx,
 // the value on the stack. The reads are attempted in the order that the types
 // are presented in the variant.
 template <typename... T>
-ReadResult Read(lua_State* L, int idx, absl::variant<T...>* result);
+ReadResult Read(lua_State* L, int idx, std::variant<T...>* result);
 
 template <typename T>
 ReadResult Read(lua_State* L, int idx, absl::Span<T> values) {
@@ -423,14 +423,14 @@ ReadResult TryReadValueRecursive(lua_State* L, int idx, Variant* result) {
 }  // namespace internal
 
 template <typename... T>
-ReadResult Read(lua_State* L, int idx, absl::variant<T...>* result) {
+ReadResult Read(lua_State* L, int idx, std::variant<T...>* result) {
   switch (lua_type(L, idx)) {
     case LUA_TNONE:
     case LUA_TNIL:
       return ReadNotFound();
     default:
-      return internal::TryReadValueRecursive<absl::variant<T...>, T...>(L, idx,
-                                                                        result);
+      return internal::TryReadValueRecursive<std::variant<T...>, T...>(L, idx,
+                                                                       result);
   }
 }
 
