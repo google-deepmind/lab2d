@@ -9,52 +9,23 @@ on:
       - 'release*'
 
 jobs:
-  create-release:
-    name: Create new draft release
-
-    runs-on: 'ubuntu-22.04'
-
-    timeout-minutes: 30
-
-    outputs:
-      upload-url: ${{ steps.create_release.outputs.upload_url }}
-
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: true
-          prerelease: false
-
   build-wheel:
-    name: Build-wheel ${{ matrix.cfg.name }} for Python ${{ matrix.py.version }}
+    name: Build-wheel ${{ matrix.cfg.name }} for Python ${{ matrix.python-version }}
 
     runs-on: ${{ matrix.cfg.os }}
-
-    needs: create-release
 
     strategy:
       matrix:
         cfg:
-          - { name: 'ManyLinux 2.35 LLVM+libstdc++', os: 'ubuntu-22.04', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
-          - { name: 'ManyLinux 2.31 LLVM+libstdc++', os: 'ubuntu-20.04', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
-          - { name: 'MacOS 11 x86_64 LLVM+libc++', os: 'macos-11', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
-          - { name: 'MacOS 12 x86_64 LLVM+libc++', os: 'macos-12', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
-          - { name: 'MacOS 13 x86_64 LLVM+libc++', os: 'macos-13', cc: clang, cxx: clang++, config: --config=libc++ --config=macos }
-          - { name: 'MacOS 12 ARM64 LLVM+libc++', os: 'macos-12', cc: clang, cxx: clang++,
-              config: --config=libc++ --config=macos_arm64 --repo_env=PY_PLATFORM_OVERRIDE=macosx_12_0_arm64 }
-          - { name: 'MacOS 13 ARM64 LLVM+libc++', os: 'macos-13', cc: clang, cxx: clang++,
-              config: --config=libc++ --config=macos_arm64 --repo_env=PY_PLATFORM_OVERRIDE=macosx_13_0_arm64 }
+          - { name: 'Linux x86_64 LLVM+libstdc++', os: 'ubuntu-24.04',     cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
+          - { name: 'Linux ARM64 LLVM+libstdc++',  os: 'ubuntu-24.04-arm', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld --luajit_target_arch=arm64 }
+          - { name: 'MacOS 15 x86_64 LLVM+libc++', os: 'macos-15-intel',   cc: clang, cxx: clang++, config: --config=libc++ }
+          - { name: 'MacOS 15 ARM64 LLVM+libc++',  os: 'macos-15',         cc: clang, cxx: clang++, config: --config=libc++ --luajit_target_arch=arm64 }
         python-version:
-          - '3.8'
-          - '3.9'
-          - '3.10'
           - '3.11'
+          - '3.12'
+          - '3.13'
+          - '3.14'
 
     env:
       CC:  ${{ matrix.cfg.cc }}
@@ -62,9 +33,9 @@ jobs:
       WHEEL_NAME: ''
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -84,7 +55,6 @@ jobs:
         run: check-wheel-contents bazel-bin/dmlab2d/${{ env.WHEEL_NAME }}
 
       - name: Test wheel
-        if: (!contains(env.WHEEL_NAME, 'arm64'))
         run: |
           pip install bazel-bin/dmlab2d/${{ env.WHEEL_NAME }}
           python -I - <<'____HERE'
@@ -96,12 +66,35 @@ jobs:
           env.step({})
           ____HERE
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
         with:
-          upload_url: ${{ needs.create-release.outputs.upload-url }}
-          asset_path: bazel-bin/dmlab2d/${{ env.WHEEL_NAME }}
-          asset_name: ${{ env.WHEEL_NAME }}
-          asset_content_type: application/zip
+          path: bazel-bin/dmlab2d/${{ env.WHEEL_NAME }}
+          archive: false
+
+  create-release:
+    name: Create new draft release
+
+    runs-on: ubuntu-latest
+    
+    needs: build-wheel
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          merge-multiple: true
+          path: dist
+
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" dist/*.whl \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "Release ${GITHUB_REF_NAME}" \
+            --draft \
+            --generate-notes
