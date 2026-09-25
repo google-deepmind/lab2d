@@ -91,7 +91,7 @@ class Grid {
   Grid(math::Size2d shape, std::size_t layers)
       : shape_{static_cast<std::size_t>(shape.height),
                static_cast<std::size_t>(shape.width), layers},
-        grid_(std::accumulate(shape_.begin(), shape_.end(), 1,
+        grid_(std::accumulate(shape_.begin(), shape_.end(), std::size_t{1},
                               std::multiplies<std::size_t>())) {}
 
   absl::Span<const std::int32_t> grid() const {

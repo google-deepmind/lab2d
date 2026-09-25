@@ -260,7 +260,7 @@ TEST_P(Math2dAlgorithmTestRange, VisitDiscEquivalenceTest) {
       ASSERT_LT(expected_disc[index] + 1, sizeof(kLookup));
       rendered_disc += kLookup[expected_disc[index]];
     }
-    rendered_disc += "\n";
+    rendered_disc += '\n';
   }
 
   std::string target_disc;
@@ -326,7 +326,7 @@ TEST_P(Math2dAlgorithmTestRange, VisitDiamondEquivalenceTest) {
       ASSERT_LT(expected_diamond[idx] + 1, sizeof(kLookup));
       rendered_diamond += kLookup[expected_diamond[idx]];
     }
-    rendered_diamond += "\n";
+    rendered_diamond += '\n';
   }
 
   std::string target_diamond;

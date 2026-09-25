@@ -125,9 +125,7 @@ class PyEnvCApi {
     return PyEnvCApi(std::move(env));
   }
 
-  const std::string Name() const {
-    return env_->api.environment_name(env_->ctx);
-  }
+  std::string Name() const { return env_->api.environment_name(env_->ctx); }
 
   const std::vector<std::string>& ObservationNames() const {
     return observation_names_;
