@@ -76,7 +76,7 @@ jobs:
     name: Create new draft release
 
     runs-on: ubuntu-latest
-    
+
     needs: build-wheel
 
     permissions:
