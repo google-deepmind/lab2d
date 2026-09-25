@@ -21,7 +21,5 @@ pytype_strict_binary(
     name = "play",
     srcs = ["play.py"],
     data = [":chase_eat"],
-    python_version = "PY3",
-    srcs_version = "PY3",
     deps = ["//dmlab2d:ui_renderer"],
 )

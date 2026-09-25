@@ -19,7 +19,5 @@ dmlab2d_lua_level_test(
 pytype_strict_binary(
     name = "play",
     srcs = ["play.py"],
-    python_version = "PY3",
-    srcs_version = "PY3",
     deps = ["//dmlab2d:ui_renderer"],
 )

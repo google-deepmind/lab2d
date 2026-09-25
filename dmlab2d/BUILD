@@ -46,8 +46,6 @@ pytype_strict_library(
 py_test(
     name = "dmlab2d_test",
     srcs = ["dmlab2d_test.py"],
-    python_version = "PY3",
-    srcs_version = "PY3",
     deps = [
         ":dmlab2d",
         ":expect_numpy_installed",
@@ -87,8 +85,6 @@ pytype_strict_library(
 py_binary(
     name = "random_agent",
     srcs = ["random_agent.py"],
-    python_version = "PY3",
-    srcs_version = "PY3",
     deps = [
         ":dmlab2d",
         ":expect_numpy_installed",
