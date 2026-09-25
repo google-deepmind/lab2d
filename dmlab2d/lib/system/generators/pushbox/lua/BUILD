@@ -4,6 +4,8 @@
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_test")
 
+package(default_applicable_licenses = ["//:license"])
+
 licenses(["notice"])
 
 cc_library(

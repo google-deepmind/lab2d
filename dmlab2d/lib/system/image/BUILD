@@ -2,6 +2,8 @@ load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_test")
 
+package(default_applicable_licenses = ["//:license"])
+
 licenses(["notice"])
 
 # Library for loading and manipulating images as Tensors.

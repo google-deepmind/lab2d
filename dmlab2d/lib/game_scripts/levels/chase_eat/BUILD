@@ -1,6 +1,8 @@
 load("//:build_defs.bzl", "pytype_strict_binary")
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_level_test")
 
+package(default_applicable_licenses = ["//:license"])
+
 licenses(["notice"])
 
 filegroup(

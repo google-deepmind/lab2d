@@ -4,6 +4,8 @@
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 load("@rules_python//python:py_test.bzl", "py_test")
 
+package(default_applicable_licenses = ["//:license"])
+
 licenses(["notice"])
 
 pybind_extension(
