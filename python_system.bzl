@@ -18,7 +18,11 @@
 _GET_PYTHON_SOABI = """
 import os
 from packaging import tags
-tag = next(iter(tags.sys_tags()))
+it = iter(tags.sys_tags())
+tag = next(it)
+# Ordering on Linux changed, see https://github.com/pypa/packaging/issues/160
+if tag.platform.startswith("linux_"):
+  tag = next(it)
 env_key = "PY_PLATFORM_OVERRIDE"
 print(f'PY_TAGS = struct(interpreter = "{tag.interpreter}", abi = "{tag.abi}", platform = "{os.environ.get(env_key, tag.platform)}")')
 """.strip()
