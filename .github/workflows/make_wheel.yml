@@ -17,8 +17,10 @@ jobs:
     strategy:
       matrix:
         cfg:
-          - { name: 'Linux x86_64 LLVM+libstdc++', os: 'ubuntu-24.04',     cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
-          - { name: 'Linux ARM64 LLVM+libstdc++',  os: 'ubuntu-24.04-arm', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld --luajit_target_arch=arm64 }
+          - { name: 'Linux U22 x86_64 LLVM+libstdc++', os: 'ubuntu-22.04',     cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
+          - { name: 'Linux U22 ARM64 LLVM+libstdc++',  os: 'ubuntu-22.04-arm', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld --luajit_target_arch=arm64 }
+          - { name: 'Linux U24 x86_64 LLVM+libstdc++', os: 'ubuntu-24.04',     cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld }
+          - { name: 'Linux U24 ARM64 LLVM+libstdc++',  os: 'ubuntu-24.04-arm', cc: clang, cxx: clang++, config: --linkopt=-fuse-ld=lld --luajit_target_arch=arm64 }
           - { name: 'MacOS 15 x86_64 LLVM+libc++', os: 'macos-15-intel',   cc: clang, cxx: clang++, config: --config=libc++ }
           - { name: 'MacOS 15 ARM64 LLVM+libc++',  os: 'macos-15',         cc: clang, cxx: clang++, config: --config=libc++ --luajit_target_arch=arm64 }
         python-version:
