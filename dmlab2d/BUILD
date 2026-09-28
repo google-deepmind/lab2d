@@ -4,7 +4,6 @@
 
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 load("@python_system//:defs.bzl", "PY_TAGS")
-load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
 load("@rules_python//python:py_binary.bzl", "py_binary")
 load("@rules_python//python:py_library.bzl", "py_library")
@@ -18,6 +17,11 @@ licenses(["notice"])
 pybind_extension(
     name = "dmlab2d_pybind",
     srcs = ["dmlab2d_pybind.cc"],
+    additional_linker_inputs = select({
+        "@platforms//os:linux": [":dmlab2d_pybind.lds"],
+        "@platforms//os:macos": [":dmlab2d_pybind.syms.lds"],
+        "//conditions:default": [],
+    }),
     copts = ["-fexceptions"],
     linkopts = select({
         "@platforms//os:linux": ["-Wl,--version-script=$(location :dmlab2d_pybind.lds)"],
@@ -25,8 +29,6 @@ pybind_extension(
         "//conditions:default": [],
     }),
     deps = [
-        ":dmlab2d_pybind.lds",
-        ":dmlab2d_pybind.syms.lds",
         "//dmlab2d/lib:dmlab2d",
         "//third_party/rl_api:env_c_api",
         "@abseil-cpp//absl/container:flat_hash_map",
