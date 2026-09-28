@@ -70,7 +70,7 @@ class StepType(enum.Enum):
 
 @dataclasses.dataclass
 class Step:
-  env: object
+  env: dmlab2d.Lab2d
   reward: Optional[float]
   type: StepType
   player: int
