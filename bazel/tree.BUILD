@@ -22,7 +22,6 @@ pybind_extension(
 py_library(
     name = "tree",
     srcs = ["tree/__init__.py"],
-    srcs_version = "PY3",
     visibility = ["@dm_env_archive//:__pkg__"],
     deps = [
         ":sequence",
@@ -33,6 +32,5 @@ py_library(
 py_library(
     name = "sequence",
     srcs = ["tree/sequence.py"],
-    srcs_version = "PY3",
     deps = [":tree/_tree"],
 )
