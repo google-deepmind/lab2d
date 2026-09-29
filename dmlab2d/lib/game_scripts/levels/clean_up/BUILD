@@ -1,4 +1,4 @@
-load("//:build_defs.bzl", "pytype_strict_binary")
+load("@rules_python//python:py_binary.bzl", "py_binary")
 load("//dmlab2d/lib/testing:lua_testing.bzl", "dmlab2d_lua_level_test")
 
 package(default_applicable_licenses = ["//:license"])
@@ -19,7 +19,7 @@ dmlab2d_lua_level_test(
     main = "init.lua",
 )
 
-pytype_strict_binary(
+py_binary(
     name = "play",
     srcs = ["play.py"],
     deps = ["//dmlab2d:ui_renderer"],

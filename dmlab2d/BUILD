@@ -8,7 +8,6 @@ load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
 load("@rules_python//python:py_binary.bzl", "py_binary")
 load("@rules_python//python:py_library.bzl", "py_library")
 load("@rules_python//python:py_test.bzl", "py_test")
-load("//:build_defs.bzl", "pytype_strict_library")
 
 package(default_applicable_licenses = ["//:license"])
 
@@ -38,7 +37,7 @@ pybind_extension(
     ],
 )
 
-pytype_strict_library(
+py_library(
     name = "dmlab2d",
     srcs = ["__init__.py"],
     visibility = ["//visibility:public"],
@@ -61,7 +60,7 @@ py_test(
     ],
 )
 
-pytype_strict_library(
+py_library(
     name = "settings_helper",
     srcs = ["settings_helper.py"],
     visibility = ["//visibility:public"],
@@ -76,7 +75,7 @@ py_test(
     ],
 )
 
-pytype_strict_library(
+py_library(
     name = "ui_renderer",
     srcs = ["ui_renderer.py"],
     visibility = ["//visibility:public"],
@@ -99,7 +98,7 @@ py_binary(
     ],
 )
 
-pytype_strict_library(
+py_library(
     name = "runfiles_helper",
     srcs = ["runfiles_helper.py"],
     visibility = ["//visibility:public"],

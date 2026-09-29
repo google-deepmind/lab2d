@@ -20,12 +20,6 @@ exports_files([
 ])
 
 bzl_library(
-    name = "build_defs",
-    srcs = ["build_defs.bzl"],
-    deps = ["@bazel_skylib//lib:collections"],
-)
-
-bzl_library(
     name = "python_system",
     srcs = ["python_system.bzl"],
 )
