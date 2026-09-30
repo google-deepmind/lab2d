@@ -28,10 +28,10 @@
 
 #if LUA_VERSION_NUM == 501
 static constexpr char kSearcher[] = "loaders";
-#elif LUA_VERSION_NUM == 502
+#elif LUA_VERSION_NUM == 502 || LUA_VERSION_NUM == 503 || LUA_VERSION_NUM == 504
 static constexpr char kSearcher[] = "searchers";
 #else
-#error Only Lua 5.1 and 5.2 are supported
+#error Only Luajit, Lua 5.1, 5.2, 5.3, and 5.4 are supported.
 #endif
 
 using deepmind::lab2d::lua::internal::EmbeddedClosure;

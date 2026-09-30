@@ -70,12 +70,14 @@ function Simulation:addSprites(tileSet)
     local colors = {{255, 0, 0}, {255, 255, 0}, {0, 255, 0}}
     local count = #self._settings.appleRespawnProbabilities
     local maxP = 1e-3
-    for i, p in ipairs(self._settings.appleRespawnProbabilities) do
+    for i = 1, count do
+      local p = self._settings.appleRespawnProbabilities[i]
       if p > maxP then
         maxP = p
       end
     end
-    for i, p in ipairs(self._settings.appleRespawnProbabilities) do
+    for i = 1, count do
+      local p = self._settings.appleRespawnProbabilities[i]
       local color = interpColor(colors, math.sqrt(p) / math.sqrt(maxP))
       tileSet:addColor('apple.wait.' .. i, color)
     end
@@ -106,7 +108,8 @@ function Simulation:worldConfig()
       }
   }
   local waitNames = {}
-  for i, prob in ipairs(settings.appleRespawnProbabilities) do
+  for i = 1, #settings.appleRespawnProbabilities do
+    local prob = settings.appleRespawnProbabilities[i]
     local name = 'apple.wait.' .. i
     local spriteName = settings.showRespawnProbability and name or nil
     waitNames[i] = name
@@ -224,7 +227,8 @@ function Simulation:stateCallbacks(avatars)
 end
 
 function Simulation:start(grid)
-  for i, prob in ipairs(self._settings.appleRespawnProbabilities) do
+  for i = 1, #self._settings.appleRespawnProbabilities do
+    local prob = self._settings.appleRespawnProbabilities[i]
     local name = 'apple.wait.' .. i
     grid:setUpdater{update = name, group = name, probability = prob}
   end
