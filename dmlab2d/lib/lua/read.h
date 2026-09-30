@@ -1,4 +1,4 @@
-// Copyright (C) 2016-2019 The DMLab2D Authors.
+// Copyright (C) 2016-2026 The DMLab2D Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -168,8 +168,20 @@ inline ReadResult Read(lua_State* L, int idx, bool* result) {
 inline ReadResult Read(lua_State* L, int idx, lua_Integer* result) {
   switch (lua_type(L, idx)) {
     case LUA_TNUMBER:
+#if LUA_VERSION_NUM == 501
       *result = lua_tointeger(L, idx);
       return ReadFound();
+#else
+    {
+      int isnum = 0;
+      if (lua_Integer val = lua_tointegerx(L, idx, &isnum); isnum == 0) {
+        return ReadTypeMismatch();
+      } else {
+        *result = val;
+        return ReadFound();
+      }
+    }
+#endif
     case LUA_TNIL:
     case LUA_TNONE:
       return ReadNotFound();
@@ -193,9 +205,8 @@ inline ReadResult Read(lua_State* L, int idx, lua_Number* result) {
 
 // Convenience wrapper for arbitrary signed integral types.
 template <typename T>
-typename std::enable_if<std::is_integral<T>::value && std::is_signed<T>::value,
-                        ReadResult>::type
-Read(lua_State* L, int idx, T* out) {
+std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, ReadResult> Read(
+    lua_State* L, int idx, T* out) {
   lua_Integer result;
   ReadResult read_result = Read(L, idx, &result);
   if (IsFound(read_result)) {
@@ -207,9 +218,7 @@ Read(lua_State* L, int idx, T* out) {
 // Convenience wrapper for arbitrary unsigned integral types.
 // Read fails if value is negative.
 template <typename T>
-typename std::enable_if<std::is_unsigned<T>::value &&
-                            !std::is_same<T, bool>::value,
-                        ReadResult>::type
+std::enable_if_t<std::is_unsigned_v<T> && !std::is_same_v<T, bool>, ReadResult>
 Read(lua_State* L, int idx, T* out) {
   lua_Integer result;
   ReadResult read_result = Read(L, idx, &result);
@@ -225,8 +234,9 @@ Read(lua_State* L, int idx, T* out) {
 
 // Convenience wrapper for arbitrary floating-point types.
 template <typename T>
-typename std::enable_if<std::is_floating_point<T>::value, ReadResult>::type
-Read(lua_State* L, int idx, T* out) {
+std::enable_if_t<std::is_floating_point_v<T>, ReadResult> Read(lua_State* L,
+                                                               int idx,
+                                                               T* out) {
   lua_Number result;
   ReadResult read_result = Read(L, idx, &result);
   if (IsFound(read_result)) {

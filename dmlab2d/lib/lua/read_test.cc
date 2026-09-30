@@ -96,6 +96,25 @@ TEST_F(ReadTest, ReadNumber) {
   EXPECT_EQ(kTestValue, result);
 }
 
+TEST_F(ReadTest, ReadInteger) {
+  Push(L, 12.5);
+  Push(L, false);
+  int result;
+#if LUA_VERSION_NUM >= 503
+  // Lua >= 5.3 has a separate integer type and does not accept
+  // a floating-point value as an integer.
+  EXPECT_TRUE(IsTypeMismatch(Read(L, 1, &result)));
+  EXPECT_TRUE(IsTypeMismatch(Read(L, 2, &result)));
+  EXPECT_TRUE(IsNotFound(Read(L, 3, &result)));
+#else
+  EXPECT_TRUE(IsFound(Read(L, 1, &result)));
+  EXPECT_TRUE(IsTypeMismatch(Read(L, 2, &result)));
+  EXPECT_TRUE(IsNotFound(Read(L, 3, &result)));
+  // Lua <= 5.2 truncates to integer.
+  EXPECT_EQ(12, result);
+#endif
+}
+
 TEST_F(ReadTest, ReadUnsigned) {
   Push(L, 20);
   Push(L, -20);
