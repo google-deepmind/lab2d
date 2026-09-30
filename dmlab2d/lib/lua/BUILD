@@ -321,6 +321,7 @@ cc_test(
         ":bind",
         ":call",
         ":class",
+        ":lua",
         ":n_results_or_test_util",
         ":push_script",
         ":read",

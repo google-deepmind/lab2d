@@ -1,4 +1,4 @@
-// Copyright (C) 2016-2019 The DMLab2D Authors.
+// Copyright (C) 2016-2026 The DMLab2D Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 
 #include "dmlab2d/lib/lua/bind.h"
 #include "dmlab2d/lib/lua/call.h"
+#include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/n_results_or_test_util.h"
 #include "dmlab2d/lib/lua/push_script.h"
 #include "dmlab2d/lib/lua/read.h"
@@ -224,8 +225,13 @@ TEST_F(ClassTest, CallErrorMessage) {
   vm()->AddCModuleToSearchers("test_module", RequireFooBar);
   ASSERT_THAT(PushScript(L, kScriptCallError, "kScriptCallError"),
               IsOkAndHolds(1));
+#if LUA_VERSION_NUM >= 503
+  constexpr char kActualType[] = "system.Bar";
+#else
+  constexpr char kActualType[] = "userdata";
+#endif
   ASSERT_THAT(Call(L, 0),
-              StatusIs(AllOf(HasSubstr("system.Foo"), HasSubstr("userdata"))));
+              StatusIs(AllOf(HasSubstr("system.Foo"), HasSubstr(kActualType))));
 }
 
 }  // namespace
