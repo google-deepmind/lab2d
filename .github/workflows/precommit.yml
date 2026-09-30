@@ -55,16 +55,38 @@ jobs:
         run: brew install numpy python-packaging
 
       - name: build-lua5.1
+        if: matrix.os == 'ubuntu-24.04'
         run: |
           bazel --bazelrc=.bazelrc build --config=lua5_1 ${{ matrix.config }} //...
       - name: test-lua5.1
+        if: matrix.os == 'ubuntu-24.04'
         run: |
           bazel --bazelrc=.bazelrc test  --config=lua5_1 ${{ matrix.config }} --test_output=errors //...
 
       - name: build-lua5.2
+        if: matrix.os == 'ubuntu-24.04-arm'
         run: |
           bazel --bazelrc=.bazelrc build --config=lua5_2 ${{ matrix.config }} //...
       - name: test-lua5.2
+        if: matrix.os == 'ubuntu-24.04-arm'
+        run: |
+          bazel --bazelrc=.bazelrc test  --config=lua5_2 ${{ matrix.config }} --test_output=errors //...
+
+      - name: build-lua5.3
+        if: matrix.os == 'ubuntu-24.04'
+        run: |
+          bazel --bazelrc=.bazelrc build --config=lua5_2 ${{ matrix.config }} //...
+      - name: test-lua5.3
+        if: matrix.os == 'ubuntu-24.04'
+        run: |
+          bazel --bazelrc=.bazelrc test  --config=lua5_2 ${{ matrix.config }} --test_output=errors //...
+
+      - name: build-lua5.4
+        if: matrix.os == 'ubuntu-24.04-arm'
+        run: |
+          bazel --bazelrc=.bazelrc build --config=lua5_2 ${{ matrix.config }} //...
+      - name: test-lua5.4
+        if: matrix.os == 'ubuntu-24.04-arm'
         run: |
           bazel --bazelrc=.bazelrc test  --config=lua5_2 ${{ matrix.config }} --test_output=errors //...
 
@@ -76,8 +98,10 @@ jobs:
           bazel --bazelrc=.bazelrc test  --config=luajit ${{ matrix.config }} --test_output=errors //...
 
       - name: build-luajit-internal_unwind
+        if: contains(matrix.os, 'macos-15')
         run: |
           bazel --bazelrc=.bazelrc build --config=luajit ${{ matrix.config }} --copt=-fno-asynchronous-unwind-tables --luajit_external_unwinder=False //...
       - name: test-luajit-internal_unwind
+        if: contains(matrix.os, 'macos-15')
         run: |
           bazel --bazelrc=.bazelrc test  --config=luajit ${{ matrix.config }} --copt=-fno-asynchronous-unwind-tables --luajit_external_unwinder=False --test_output=errors //...
