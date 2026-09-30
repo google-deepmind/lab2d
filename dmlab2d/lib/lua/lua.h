@@ -32,10 +32,10 @@ namespace deepmind::lab2d::lua {
 inline std::size_t ArrayLength(lua_State* L, int idx) {
 #if LUA_VERSION_NUM == 501
   return lua_objlen(L, idx);
-#elif LUA_VERSION_NUM == 502
+#elif LUA_VERSION_NUM == 502 || LUA_VERSION_NUM == 503 || LUA_VERSION_NUM == 504
   return lua_rawlen(L, idx);
 #else
-#error Only Luajit, Lua 5.1 and 5.2 are supported.
+#error Only Luajit, Lua 5.1, 5.2, 5.3, and 5.4 are supported.
 #endif
 }
 

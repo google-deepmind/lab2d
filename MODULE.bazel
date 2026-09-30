@@ -45,6 +45,24 @@ http_archive(
     ],
 )
 
+http_archive(
+    name = "lua5_3_archive",
+    build_file = "@//bazel:lua5_3.BUILD",
+    strip_prefix = "lua-5.3.5/src",
+    urls = [
+        "https://www.lua.org/ftp/lua-5.3.5.tar.gz",
+    ],
+)
+
+http_archive(
+    name = "lua5_4_archive",
+    build_file = "@//bazel:lua5_4.BUILD",
+    strip_prefix = "lua-5.4.8/src",
+    urls = [
+        "https://www.lua.org/ftp/lua-5.4.8.tar.gz",
+    ],
+)
+
 LJ_VER = "f0ff869bc2fffa17bb765c4c773457578da125a9"
 
 http_archive(
