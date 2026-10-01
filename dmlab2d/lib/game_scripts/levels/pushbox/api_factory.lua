@@ -56,7 +56,7 @@ function api_factory.apiFactory(env)
     tileSet:addShape('Box', images.box())
     tileSet:addShape('XGoal', images.goal())
     tileSet:addShape('&BoxGoal', images.goal())
-    tileSet:addShape('Player', images.player('green'))
+    tileSet:addShape('Player', images.player())
     return tileSet:set()
   end
 
