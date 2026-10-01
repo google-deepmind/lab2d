@@ -624,7 +624,7 @@ the rank of the resulting tensor is one less than the rank of the operand and
 the tensor returned will have the shape of the original tensor without the
 selected dimension.
 
-### `argMax(*dim*)`
+### `argMax`(*dim*)
 
 Returns a tensor containing the max value index across given dimension.
 
@@ -640,7 +640,7 @@ Shape: [2]
 [3, 3]
 ```
 
-### `argMin(*dim*)`
+### `argMin`(*dim*)
 
 Returns a tensor containing the min value index across given dimension.
 
@@ -656,7 +656,7 @@ Shape: [2]
 [1, 1]
 ```
 
-### `max(*dim*)`
+### `max`(*dim*)
 
 Returns a tensor containing the largest value across given dimension.
 
@@ -672,7 +672,7 @@ Shape: [3]
 [111, 222, 333]
 ```
 
-### `min([*dim*])`
+### `min`(*dim*)
 
 Returns a tensor containing the smallest value across given dimension.
 
@@ -743,7 +743,7 @@ Elements are converted to double before accumulation:
 > assert(z:lengthSquared() == 5 * 5 + 25 * 25 + 100 * 100)
 ```
 
-### `argMaxElement()`
+### `argMaxElement`()
 
 Returns index of largest value.
 
@@ -753,7 +753,7 @@ Returns index of largest value.
 3 2
 ```
 
-### `argMinElement()`
+### `argMinElement`()
 
 Returns index of smallest value.
 
@@ -763,7 +763,7 @@ Returns index of smallest value.
 1   1
 ```
 
-### `maxElement()`
+### `maxElement`()
 
 Returns the largest value.
 
@@ -773,7 +773,7 @@ Returns the largest value.
 333
 ```
 
-### `minElement()`
+### `minElement`()
 
 Returns the smallest value.
 
