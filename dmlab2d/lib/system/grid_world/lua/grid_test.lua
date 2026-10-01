@@ -116,25 +116,6 @@ function tests.canCreateLayout()
   asserts.EQ(grid:layer(pieces[3]), 'layer2')
 end
 
-function tests.canCreateGridWithSize()
-  local grid = TEST_WORLD.world:createGrid{size = {width = 5, height = 1}}
-  asserts.EQ(tostring(grid), '     \n')
-end
-
-function tests.canCreateLayout()
-  local grid = TEST_WORLD.world:createGrid{size = {width = 5, height = 1}}
-  asserts.EQ(tostring(grid), '     \n')
-  local pieces = grid:createLayout{
-      layout = '0 1 2',
-      stateMap = TEST_WORLD.stateMap,
-  }
-  asserts.EQ(tostring(grid), '0   2\n')
-  asserts.EQ(#pieces, 3)
-  asserts.EQ(grid:state(pieces[1]), 'type0')
-  asserts.EQ(grid:state(pieces[2]), 'type1')
-  asserts.EQ(grid:state(pieces[3]), 'type2')
-end
-
 function tests.canTransitionStates()
   local types = {}
   local callbacks = {}
