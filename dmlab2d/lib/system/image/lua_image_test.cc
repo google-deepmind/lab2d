@@ -428,7 +428,7 @@ local src = tensor.ByteTensor{
     {0, 0, 0},
 }
 local greenHue = 120
-image.setHue(src, greenHue)
+assert(image.setHue(src, greenHue) == src)
 assert(src == tensor.ByteTensor{
     {0, 255, 0},
     {0, 127, 0},
@@ -458,7 +458,7 @@ local src = tensor.ByteTensor{
     {0, 0, 0},
 }
 local yellowHue = 60
-image.setHue(src, yellowHue)
+assert(image.setHue(src, yellowHue) == src)
 assert(src == tensor.ByteTensor{
     {255, 255, 0},
     {127, 127, 0},
@@ -490,7 +490,7 @@ local src = tensor.ByteTensor{
     {0, 0, 0},
 }
 local cyan = 180
-image.setHue(src, cyan)
+assert(image.setHue(src, cyan) == src)
 assert(src == tensor.ByteTensor{
     {0, 255, 255},
     {0, 127, 127},
@@ -520,7 +520,7 @@ local src = tensor.ByteTensor{
     {0, 0, 0},
 }
 local deepPinkHue = 330
-image.setHue(src, deepPinkHue)
+assert(image.setHue(src, deepPinkHue) == src)
 assert(src == tensor.ByteTensor{
     {255, 0, 127},
     {127, 0, 63},

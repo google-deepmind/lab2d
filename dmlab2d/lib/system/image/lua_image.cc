@@ -627,6 +627,7 @@ lua::NResultsOr SetHue(lua_State* L) {
     RgbToSl(*r, *g, *b, &s, &l);
     sl_to_rgb(s, l, r, g, b);
   }
+  lua_settop(L, 1);
   return 1;
 }
 
