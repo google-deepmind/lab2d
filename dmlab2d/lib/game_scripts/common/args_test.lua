@@ -452,7 +452,7 @@ function tests.classIsFail()
           'classIs incorrect instance class.'
       })
   asserts.shouldFail(
-      function() args.parse({opt = {}}, declArgs) end,
+      function() args.parse({opt = d}, declArgs) end,
       {
           'Error parsing "opt":',
           'classIs incorrect instance class.'
