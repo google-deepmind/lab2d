@@ -423,7 +423,7 @@ local function apiFactory(env)
     grid:setUpdater{
         update = 'chase',
         group = 'allFoes',
-        self:_foeSpeed(false)
+        probability = self:_foeSpeed(false)
     }
     grid:update(random)
     -- skip first spawn point.
@@ -463,7 +463,6 @@ local function apiFactory(env)
     grid:setUpdater{
         update = 'chase',
         group = 'allFoes',
-        self:_foeSpeed(true),
         probability = self:_foeSpeed(true),
     }
     for _, piece in ipairs(grid:groupShuffled(random, 'foes')) do
