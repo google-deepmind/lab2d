@@ -785,7 +785,7 @@ function tests.updateCallbackWorksWithProbability()
       stateCallbacks = {
           type2 = {
               onUpdate = {
-                  phase1 = function(g, piece, frames)
+                  funcPhase1 = function(g, piece, frames)
                     framesPhase1[#framesPhase1 + 1] = frames
                   end
               }
@@ -808,7 +808,7 @@ function tests.updateCallbackWorksWithProbability()
   asserts.LT(mean, 520)
 end
 
-function tests.updateCallbackWorksWithProbability()
+function tests.updateCallbackFailsWithBadProbability()
   local grid = TEST_WORLD.world:createGrid{
       layout = ' ',
       stateMap = TEST_WORLD.stateMap,
