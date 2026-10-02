@@ -332,7 +332,7 @@ function tests.unpackStartIndexWorks()
   testUnpack(tables.unpack(capture.args, capture.count, 2))
 end
 
-function tests.unpackInfered()
+function tests.unpackInferred()
   local capture = unpackCapture(10, 20, nil)
   local function testUnpack(...)
     asserts.EQ(select('#', ...), 2)

@@ -56,7 +56,7 @@ Arguments:
 
 *   name - Name of sprite to set.
 *   sprite - ByteTensor with 3 dims.
-*   noRatate - Whether to use the same sprite for each rotation or to generate
+*   noRotate - Whether to use the same sprite for each rotation or to generate
     rotations.
 ]]
 function TileSet:setSprite(name, sprite, noRotate)

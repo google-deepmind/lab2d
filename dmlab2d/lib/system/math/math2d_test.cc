@@ -75,7 +75,7 @@ TEST(Vector2Test, InplaceDivVector2) {
   EXPECT_THAT(a, Eq(Vector2d{2, 4}));
 }
 
-TEST(Vector2Test, FromOrienation) {
+TEST(Vector2Test, FromOrientation) {
   EXPECT_THAT(Vector2d::FromOrientation(Orientation2d::kNorth),
               Eq(Vector2d::North()));
   EXPECT_THAT(Vector2d::FromOrientation(Orientation2d::kEast),
@@ -378,7 +378,7 @@ TEST(RotateTest, ToAbsoluteSpaceEast) {
               Eq(Orientation2d::kEast));
 }
 
-TEST(RotateTest, ToAbsoluteSpaceAffset) {
+TEST(RotateTest, ToAbsoluteSpaceOffset) {
   Transform2d transform{Position2d{5, 3}, Orientation2d::kWest};
   EXPECT_THAT(transform.ToAbsoluteSpace(Position2d{2, -3}),
               Eq(Position2d{2, 1}));

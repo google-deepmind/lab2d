@@ -22,7 +22,7 @@ local args = require 'common.args'
 -- Function for creating a mocking object. Accepts a template object.
 local mock = mocking.mock
 
--- Used to declare matchers for funtion calls and the actions to take.
+-- Used to declare matchers for function calls and the actions to take.
 local when = mocking.when
 
 -- Library of capture functions.
@@ -134,7 +134,7 @@ end
 -- Tests that mocking with specified argument values works.
 function tests.withValues()
   local obj = mock()
-  -- Create catch all matcher that returns nil if none of the othe matchers
+  -- Create catch all matcher that returns nil if none of the other matchers
   -- succeed.
   when(obj).sum(dotDotDot())
   when(obj).sum(5, 5).thenReturn(10)

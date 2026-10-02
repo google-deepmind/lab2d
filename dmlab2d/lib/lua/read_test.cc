@@ -242,11 +242,11 @@ TEST_F(ReadTest, ReadTable) {
   EXPECT_TRUE(IsTypeMismatch(Read(L, 1, &result)));
   EXPECT_TRUE(IsNotFound(Read(L, 4, &result)));
 
-  absl::flat_hash_map<std::string, std::string> result_missmatch_value;
-  EXPECT_TRUE(IsTypeMismatch(Read(L, 2, &result_missmatch_value)));
+  absl::flat_hash_map<std::string, std::string> result_mismatch_value;
+  EXPECT_TRUE(IsTypeMismatch(Read(L, 2, &result_mismatch_value)));
 
-  absl::flat_hash_map<double, double> result_missmatch_key;
-  EXPECT_TRUE(IsTypeMismatch(Read(L, 2, &result_missmatch_value)));
+  absl::flat_hash_map<double, double> result_mismatch_key;
+  EXPECT_TRUE(IsTypeMismatch(Read(L, 2, &result_mismatch_key)));
 }
 
 TEST_F(ReadTest, ReadVariant) {

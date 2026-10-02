@@ -500,28 +500,28 @@ TEST(TensorViewTest, TestProductByteToInt) {
   EXPECT_EQ(view.Product<int>(), 16 * 32 * 64 * 128);
 }
 
-TEST(TensorViewTest, TestLengthSquard) {
+TEST(TensorViewTest, TestLengthSquared) {
   ShapeVector shape = {2};
   std::vector<int> storage = {5, 5};
   TensorView<int> view(Layout(shape), storage.data());
   EXPECT_EQ(view.LengthSquared(), 25 + 25);
 }
 
-TEST(TensorViewTest, TestLengthSquardEmpty) {
+TEST(TensorViewTest, TestLengthSquaredEmpty) {
   ShapeVector shape = {0};
   std::vector<int> storage = {};
   TensorView<int> view(Layout(shape), storage.data());
   EXPECT_EQ(view.LengthSquared(), 0);
 }
 
-TEST(TensorViewTest, TestLengthSquardByteToInt) {
+TEST(TensorViewTest, TestLengthSquaredByteToInt) {
   ShapeVector shape = {2};
   std::vector<unsigned char> storage = {255, 128};
   TensorView<unsigned char> view(Layout(shape), storage.data());
   EXPECT_EQ(view.LengthSquared<int>(), 255 * 255 + 128 * 128);
 }
 
-TEST(TensorViewTest, TestLengthSquardSignedCharToInt) {
+TEST(TensorViewTest, TestLengthSquaredSignedCharToInt) {
   ShapeVector shape = {2};
   std::vector<signed char> storage = {-120, 100};
   TensorView<signed char> view(Layout(shape), storage.data());

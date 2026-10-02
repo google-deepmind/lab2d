@@ -99,7 +99,7 @@ struct World::ProcessedArgs {
       layer_names_set.erase(name);
       layer_names.push_back(name);
     }
-    // Place remaining layer names in lexagraphical order.
+    // Place remaining layer names in lexicographical order.
     for (const auto& layer : layer_names_set) {
       layer_names.push_back(layer);
     }

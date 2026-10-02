@@ -66,7 +66,7 @@ namespace deepmind::lab2d::lua {
 // The host code should call "X::Register(L);" to register the class and its
 // member functions. It should also push an object of type X to the Lua stack,
 // or register a factory function that can be used from Lua to create instances.
-// Given an instace "x" in Lua, the code "x:foo(a, b, c)" calls the instance's
+// Given an instance "x" in Lua, the code "x:foo(a, b, c)" calls the instance's
 // member function "f", and the arguments are available on the Lua stack. The
 // function should pop off the arguments, place its results on the Lua stack,
 // and return the number of results, or an error.
@@ -93,7 +93,7 @@ class Class {
 
   // Reads non-null T* from the Lua stack if the stack contains userdata at the
   // given position, the name of the userdata's metadata is T::ClassName() and
-  // the intstance reports itself as valid. Otherwise returns nullptr.
+  // the instance reports itself as valid. Otherwise returns nullptr.
   static T* ReadObject(lua_State* L, int idx) {
     if (T* t = lua::ReadUDT<T>(L, idx, T::ClassName());
         t != nullptr && t->IsValidObject()) {

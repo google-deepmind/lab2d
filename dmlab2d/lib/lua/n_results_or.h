@@ -29,7 +29,7 @@ class NResultsOr {
   // Function call completed without error and n return values on the stack.
   NResultsOr(int n_results) : n_results_(n_results) {}
 
-  // Function call failled with error message `error`.
+  // Function call failed with error message `error`.
   // Make sure no results are left on the stack, so that n_results() can be
   // popped regardless of error.
   NResultsOr(std::string error) : n_results_(0), error_(std::move(error)) {

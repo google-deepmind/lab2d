@@ -27,7 +27,7 @@ local set = tile.Set{
 ### `set:setSprite{name=<string>, image=<ByteTensor>}`
 
 Afterwards, an image may be set for each sprite name.
-The folowing sets `'Empty'` to solid green.
+The following sets `'Empty'` to solid green.
 ```lua
 set:setSprite{
     name = 'Empty',

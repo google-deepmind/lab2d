@@ -94,8 +94,8 @@ class RandomRoomGenerator {
   const math::Vector2d& RandomDirection(std::mt19937_64* rng);
 
   // Returns a random position in the room (generated using the passed in random
-  // number generator). The position respects the stablished wall margins at the
-  // room sides.
+  // number generator). The position respects the established wall margins at
+  // the room sides.
   math::Vector2d RandomPosition(int margin, std::mt19937_64* rng);
 
   // Applies a floor pattern, randomly picked from the set of available ones,
@@ -110,7 +110,7 @@ class RandomRoomGenerator {
                        absl::Span<const math::Vector2d> pattern,
                        absl::Span<TileType> topology);
 
-  // Adds as many random targets in the room as specified in the interanl
+  // Adds as many random targets in the room as specified in the internal
   // parameters.
   // This methods is expected to be called with a room without any entities
   // placed beforehand.

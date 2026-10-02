@@ -125,7 +125,7 @@ function set.isSame(theSet, otherSet)
   return theSet == otherSet
 end
 
--- Retuns whether two sets are disjoint.
+-- Returns whether two sets are disjoint.
 function set.isDisjoint(theSet, otherSet)
   assert(getmetatable(theSet) == setMt and getmetatable(otherSet) == setMt)
   for k in pairs(otherSet) do

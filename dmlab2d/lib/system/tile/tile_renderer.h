@@ -31,7 +31,8 @@ namespace deepmind::lab2d {
 // An object for blending and placing sprites from a TileSet onto a scene.
 class TileRenderer {
  public:
-  // A referene to `*tile_set` is stored, which must hence out-live this object.
+  // A reference to `*tile_set` is stored, which must hence out-live this
+  // object.
   explicit TileRenderer(const TileSet* tile_set)
       : tile_set_(*tile_set),
         empty_(tile_set_.sprite_pixels(), Pixel::Black()),
@@ -43,7 +44,7 @@ class TileRenderer {
   // `grid_shape` must have 3 elements and `grid.size()` must be equal to:
   // grid_shape[0] * grid_shape[1] * grid_shape[2].
   // `scene.size()` must be equal to:
-  // sprite_shape().height() * sprit_shape().width() * grid_shape[0] * grid[1].
+  // sprite_shape().height() * sprite_shape().width() * grid_shape[0] * grid[1].
   void Render(absl::Span<const std::int32_t> grid,
               absl::Span<const std::size_t> grid_shape,
               absl::Span<Pixel> scene);

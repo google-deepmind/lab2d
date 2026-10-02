@@ -81,7 +81,7 @@ LEVEL_DIRS = [p[:-len("/init.lua")] for p in glob(
     allow_empty = True,
 )]
 
-# Find single levels not in subdirectorys of LEVEL_DIRS
+# Find single levels not in subdirectories of LEVEL_DIRS
 SINGLE_LEVEL_SCRIPTS = [test[:-len(".lua")] for test in glob(
     include = ["game_scripts/levels/**/*.lua"],
     exclude = ["**/*_test.lua"] + [p + "/**/*.lua" for p in LEVEL_DIRS],

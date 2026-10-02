@@ -1412,14 +1412,14 @@ TEST(GridTest, PlayerCantMoveOffGridWorks) {
   }
 }
 
-constexpr const absl::string_view kCanMoveInisible = R"(
+constexpr const absl::string_view kCanMoveInvisible = R"(
    *
  * *
    *
 ****
 )";
 
-TEST(GridTest, CanMoveInisible) {
+TEST(GridTest, CanMoveInvisible) {
   std::mt19937_64 random;
   const World world(CreateWorldArgs());
   GridView view = CreateGridView(world, /*left=*/3, /*right=*/3,
@@ -1428,9 +1428,9 @@ TEST(GridTest, CanMoveInisible) {
   char_to_state['S'] = world.states().ToHandle("Spawn");
   char_to_state['*'] = world.states().ToHandle("Wall");
 
-  Grid grid(world, GetSize2dOfText(kCanMoveInisible),
+  Grid grid(world, GetSize2dOfText(kCanMoveInvisible),
             GridShape::Topology::kBounded);
-  PlaceGrid(char_to_state, kCanMoveInisible, math::Orientation2d::kNorth,
+  PlaceGrid(char_to_state, kCanMoveInvisible, math::Orientation2d::kNorth,
             &grid);
   math::Transform2d spawn_transform = {{0, 0}, math::Orientation2d::kEast};
   Piece spawn = grid.CreateInstance(char_to_state['S'], spawn_transform);

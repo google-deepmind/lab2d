@@ -51,7 +51,7 @@ class World {
   };
 
   struct Args {
-    // Stores the states in lexagraphical order.
+    // Stores the states in lexicographical order.
     absl::btree_map<std::string, StateArg> states;
     absl::btree_map<std::string, HitArg> hits;
 

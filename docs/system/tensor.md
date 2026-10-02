@@ -450,7 +450,7 @@ Shape: [2, 3]
 [[  0,  25, 500],
  [  0,  25, 500]]
 
-> =z:clone():clamp(nill, 255)
+> =z:clone():clamp(nil, 255)
 [tensor.DoubleTensor]
 Shape: [2, 3]
 [[-500,   25,  255],
@@ -1036,7 +1036,7 @@ Accumulate Component Operations work on two tensors (the object and the
 argument) that have the same *number* of elements, but the tensor *shapes* are
 ignored. The respective element-wise binary operation is applied consecutively
 to pairs of tensor elements visited in their respective layout order. The
-accumilation is applied to the result of each binary operation.
+accumulation is applied to the result of each binary operation.
 
 It is an error if the two tensors do not have the same number of elements or the
 same type.

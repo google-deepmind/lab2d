@@ -113,12 +113,12 @@ local tensor = require 'system.tensor'
 local tile = require 'system.tile'
 local set = tile.set{
     names = {
-        'startSentinal',
+        'startSentinel',
         'prefix.N',
         'prefix.E',
         'prefix.S',
         'prefix.W',
-        'endSentinal',
+        'endSentinel',
     },
     shape = {width = 1, height = 1}
 }
@@ -156,11 +156,11 @@ local tensor = require 'system.tensor'
 local tile = require 'system.tile'
 local set = tile.set{
     names = {
-        'startSentinal',
+        'startSentinel',
         'prefix.0',
         'prefix.1',
         'prefix.2',
-        'endSentinal',
+        'endSentinel',
     },
     shape = {width = 1, height = 1}
 }

@@ -410,7 +410,7 @@ Iter2 scaleRowsTransposed(       //
   return target;
 }
 
-// Compute an scaled image by sucessively scaling rows and columns.
+// Compute a scaled image by successively scaling rows and columns.
 // Returns the iterator position past the last computed pixel.
 template <typename Iter1, typename Iter2, typename Magnifier>
 Iter2 scaleImage(                //

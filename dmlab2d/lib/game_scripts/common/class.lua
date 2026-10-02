@@ -15,7 +15,7 @@ limitations under the License.
 
 --[[ Creates a class.
 
-Call the created class to create insances arguments are forwarded to init.
+Call the created class to create instances arguments are forwarded to init.
 
 Arguments:
 

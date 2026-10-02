@@ -135,7 +135,7 @@ end
 
 Arguments:
 
-*   `actions` - An array of doubles matching continous action spec.
+*   `actions` - An array of doubles matching continuous action spec.
 ]]
 function api:discreteActions(actions)
   self._reward = actions[1]
@@ -160,7 +160,7 @@ end
 
 Arguments:
 
-*   `actions` - An array of doubles matching continous action spec.
+*   `actions` - An array of doubles matching continuous action spec.
 ]]
 function api:continuousActions(actions)
   self._observations[3] = tensor.Int32Tensor{range = {3}}:add(actions[1])
@@ -273,7 +273,7 @@ Arguments:
     *   `mode` - String: The read/write/list ability of the property which may
         be any combination of:
         -   'r': Readable.
-        -   'w': Writedable.
+        -   'w': Writable.
         -   'l': Listable.
 
 Returns:

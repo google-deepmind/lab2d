@@ -21,7 +21,7 @@
 
 namespace deepmind::lab2d {
 
-// Handle assoiciated with a layer within the grid_world. To pieces may not
+// Handle associated with a layer within the grid_world. Two pieces may not
 // share the same location and layer.
 struct LayerTag {
   static constexpr char kName[] = "Layer";

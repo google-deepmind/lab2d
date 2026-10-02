@@ -23,7 +23,7 @@
 namespace deepmind::lab2d::math {
 
 // Calls has_hit_func for all points from `p0` to `p1` in a straight line with
-// orthoganal steps until has_hit_func(position) returns true or the `p1` is
+// orthogonal steps until has_hit_func(position) returns true or the `p1` is
 // reached. Returns whether has_hit_func returns true at any point.
 // Note 'p0' is not tested.
 // Based upon a modified Bresenham line-algorithm:
@@ -92,7 +92,7 @@ void VisitRectangleClamped(Position2d corner0, Position2d corner1,
   }
 }
 
-// Visits all points 'p' such that magnintude of `(p - center)` is less than or
+// Visits all points 'p' such that magnitude of `(p - center)` is less than or
 // equal to radius. Modified version of Midpoint circle algorithm. Ensures each
 // point is only visited once.
 // https://en.wikipedia.org/wiki/Midpoint_circle_algorithm Modification is such

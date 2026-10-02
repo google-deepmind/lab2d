@@ -24,7 +24,7 @@
 namespace deepmind::lab2d {
 
 // `Handle<Tag>` is a strongly typed index for collections.
-// `Tag` is used for identifcation purposes only. Handles can be in two states;
+// `Tag` is used for identification purposes only. Handles can be in two states;
 // either a handle is empty, or it represents an index into a collection.
 template <typename Tag>
 class Handle {
@@ -35,7 +35,7 @@ class Handle {
   // Constructs an empty handle.
   constexpr Handle() : value_(kEmptyElement) {}
 
-  // Contructs a handle of a given value. If the value is `kEmptyElement` then
+  // Constructs a handle of a given value. If the value is `kEmptyElement` then
   // the handle will be empty and value may not be read.
   constexpr explicit Handle(ValueType value) : value_(value) {}
 

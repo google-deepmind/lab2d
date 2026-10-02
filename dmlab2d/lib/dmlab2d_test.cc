@@ -301,12 +301,12 @@ TEST_F(DmLab2DTest, FailOnApplyingInvalidSettings) {
   ASSERT_THAT(env_.setting(ctx_, "levelName", "examples/level_api"), Eq(0))
       << env_.error_message(ctx_);
 
-  ASSERT_THAT(env_.setting(ctx_, "unkown", "blah"), Eq(0))
+  ASSERT_THAT(env_.setting(ctx_, "unknown", "blah"), Eq(0))
       << env_.error_message(ctx_);
 
   ASSERT_THAT(env_.init(ctx_), Eq(2));
   EXPECT_THAT(absl::string_view(env_.error_message(ctx_)),
-              HasSubstr("Invalid setting unkown=blah"));
+              HasSubstr("Invalid setting unknown=blah"));
 }
 
 }  // namespace

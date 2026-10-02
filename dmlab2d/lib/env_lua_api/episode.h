@@ -37,7 +37,7 @@ class Episode {
   // seed.
   lua::NResultsOr Start(int episode, int seed);
 
-  // Calls "advance" member function on the script_table_ref_ with currnet step.
+  // Calls "advance" member function on the script_table_ref_ with current step.
   // Advance the episode `number_of_steps`. Calculates the accumulated reward.
   lua::NResultsOr Advance(EnvCApi_EnvironmentStatus* status, double* reward);
 

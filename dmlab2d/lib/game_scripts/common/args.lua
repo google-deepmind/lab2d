@@ -62,7 +62,7 @@ when the value does that is provided does not match all constraints provided.
 *   `args.functionType` - `type(arg) == 'function'`
 *   `args.userdataType` - `type(arg) == 'userdata'`
 *   `args.classIs(cls)` - `arg` must be an instance of `cls`
-*   `args.instance(cls)` - `arg` must ben an instance of `cls` or derrived class
+*   `args.instance(cls)` - `arg` must be an instance of `cls` or derived class
 
 ### Meta:
 
@@ -379,7 +379,7 @@ function args.instance(cls)
         end
         return false
       end,
-      'instance not derrived from class.',
+      'instance not derived from class.',
       'instance(' .. repr(cls) .. ')')
 end
 

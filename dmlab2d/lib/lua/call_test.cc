@@ -93,10 +93,10 @@ TEST_F(CallTest, FunctionErrorsNoStack) {
   EXPECT_EQ(lua_gettop(L), top);
 }
 
-NResultsOr TestCFuntion(lua_State* L) {
+NResultsOr TestCFunction(lua_State* L) {
   bool should_be_success = false;
   if (IsTypeMismatch(Read(L, 1, &should_be_success))) {
-    return "Type missmatch!";
+    return "Type mismatch!";
   }
   Push(L, "What happens?");
   if (should_be_success) {
@@ -108,7 +108,7 @@ NResultsOr TestCFuntion(lua_State* L) {
 TEST_F(CallTest, FunctionBindErrors) {
   int top = lua_gettop(L);
 
-  Push(L, &Bind<TestCFuntion>);
+  Push(L, &Bind<TestCFunction>);
   EXPECT_EQ(lua_gettop(L), top + 1);
   Push(L, false);
 
@@ -121,7 +121,7 @@ TEST_F(CallTest, FunctionBindErrors) {
 TEST_F(CallTest, FunctionBindSuccess) {
   int top = lua_gettop(L);
 
-  Push(L, &Bind<TestCFuntion>);
+  Push(L, &Bind<TestCFunction>);
   EXPECT_EQ(lua_gettop(L), top + 1);
   Push(L, true);
 

@@ -69,7 +69,7 @@ class Vm {
   // advisable for the call to return a single table on the stack.)
   // The upvalues will be available when the module is called.
   //
-  // If the module was registerd with AddLuaModuleToSearchers, the script
+  // If the module was registered with AddLuaModuleToSearchers, the script
   // contained in the string [buf, buf + size) is executed as if it were the
   // body of a single function. (It is advisable for the script to return a
   // single table.) Any errors in the script are propagated to the calling

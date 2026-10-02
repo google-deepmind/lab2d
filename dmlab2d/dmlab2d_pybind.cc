@@ -308,7 +308,7 @@ class PyEnvCApi {
         throw py::key_error(absl::StrCat(name));
     }
     throw std::invalid_argument(
-        absl::StrCat("Error occured while listing: '", name, "'"));
+        absl::StrCat("Error occurred while listing: '", name, "'"));
   }
 
   std::string ReadProperty(const std::string& name) {
@@ -326,7 +326,7 @@ class PyEnvCApi {
         throw py::key_error(absl::StrCat(name));
     }
     throw std::invalid_argument(
-        absl::StrCat("Error occured while reading: '", name, "'"));
+        absl::StrCat("Error occurred while reading: '", name, "'"));
   }
 
   void WriteProperty(const std::string& name, const std::string& value) {
@@ -343,7 +343,7 @@ class PyEnvCApi {
         throw py::key_error(absl::StrCat(name));
     }
     throw std::invalid_argument(
-        absl::StrCat("Error occured while reading: '", name, "'"));
+        absl::StrCat("Error occurred while reading: '", name, "'"));
   }
 
  private:

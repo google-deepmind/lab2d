@@ -14,6 +14,6 @@ limitations under the License.
 ]]
 
 local log = require 'common.log'
-log.warn('Depricated require \'common.tile_set\'! ' ..
+log.warn('Deprecated require \'worlds.common.tile_set\'! ' ..
          'Use: require \'common.tile_set\' instead.')
 return (require 'common.tile_set')

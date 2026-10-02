@@ -51,7 +51,7 @@ end
 
 --[[ Returns value of properties in keyList context.
 
-See implmentation for details.
+See implementation for details.
 
 Arguments:
 
@@ -108,7 +108,7 @@ end
 
 --[[ Write value to writable in keyList context.
 
-See implmentation for details.
+See implementation for details.
 
 Arguments:
 
@@ -202,7 +202,7 @@ end
 --[[ Add property at location keyList with value value.
 
 If keyList is split into key1, key2 ... keyN then
-properties[key1][key2]...[keyN] is assinged to value.
+properties[key1][key2]...[keyN] is assigned to value.
 
 If properties[key1][key2]...[keyN] already exists or any part is not a table
 then the operation is not successful and the value is not assigned. Use

@@ -34,7 +34,7 @@ lua::NResultsOr Generate(lua_State* L) {
   std::uint32_t actions_seed;
 
   lua::TableRef table;
-  if (!IsFound(Read(L, 1, &table))) return "Missing kwags";
+  if (!IsFound(Read(L, 1, &table))) return "Missing kwargs";
 
   if (!IsFound(table.LookUp("seed", &settings.seed))) {
     return "Missing kwarg: 'seed'";

@@ -247,7 +247,7 @@ end
 
 Arguments:
 
-*   'nestedTable' (table) Table to be flattend.
+*   'nestedTable' (table) Table to be flattened.
 
 Returns:
 

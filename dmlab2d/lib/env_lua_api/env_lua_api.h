@@ -47,7 +47,7 @@ class EnvLuaApi {
 
   // If key is 'levelName' then calls SetLevelName with value.
   // If key is 'mixerSeed' then all built-in random number generators will
-  // generate a differnt sequence when given the same seed. Otherwise inserts
+  // generate a different sequence when given the same seed. Otherwise inserts
   // 'key' 'value' into settings_ ready to be processed by init call in Lua.
   // Must be called before Init.
   int AddSetting(absl::string_view key, absl::string_view value);
@@ -126,7 +126,7 @@ class EnvLuaApi {
 
   // Calls Lua script 'init' function with settings dictionary.
   // An optional return value may be returned from the script. This value
-  // is ignored if error_value is 0 or ther is no error.
+  // is ignored if error_value is 0 or there is no error.
   // Must be called with an empty Lua stack.
   lua::NResultsOr ApiInit(int* error_value);
 

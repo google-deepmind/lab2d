@@ -83,7 +83,7 @@ lua::NResultsOr LuaTileSet::SetSprite(lua_State* L) {
         }
         if (!tile_set_.SetSprite(sprite_id, facing)) {
           return absl::StrFormat(
-              "Error occured when setting sprite '%s%s' to %s", name, suffix,
+              "Error occurred when setting sprite '%s%s' to %s", name, suffix,
               absl::FormatStreamed(facing));
         }
         ++sprites_set;

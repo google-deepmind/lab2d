@@ -466,7 +466,7 @@ function tests.canPushPieceConnectedTorus()
   asserts.EQ(tostring(grid), ' 20\n')
 end
 
-function tests.canDisonnectAll()
+function tests.canDisconnectAll()
   local grid = TEST_WORLD.world:createGrid{size = {width = 5, height = 1}}
   local piece0 = grid:createPiece('type0', {pos = {0, 0}, orientation = 'N'})
   local piece1 = grid:createPiece('type0', {pos = {1, 0}, orientation = 'N'})

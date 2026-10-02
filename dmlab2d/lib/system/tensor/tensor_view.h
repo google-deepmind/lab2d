@@ -841,7 +841,7 @@ class TensorView : public Layout {
   // Signatures of callbacks:
   //   Accumulator init(std::size_t first_index, U value);
   //   Accumulator reduce(std::size_t index, Accumulator accumulator, U value);
-  //   T finalise(std::size_t num_elements, Accumulator acumulator);
+  //   T finalise(std::size_t num_elements, Accumulator accumulator);
   //
   // Example:
   //   `this` shape (3, 5), `rhs` shape (3, 4, 5) and `dim` = 1:

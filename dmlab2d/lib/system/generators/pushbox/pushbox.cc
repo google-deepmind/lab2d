@@ -76,8 +76,8 @@ std::optional<Room> ReverseSolveRoom(const Room& base_room,
       // Avoid going beyond the limit of applied actions.
       if (new_room.num_actions() >= max_action_depth) continue;
 
-      // If we havent explore this room configuration yet add it to the
-      // pending and visited room lists.
+      // If we have not explored this room configuration yet,
+      // add it to the pending and visited room lists.
       auto hash = new_room.hash();
       auto iter_insert = visited_rooms.insert(hash);
       if (iter_insert.second) {
@@ -136,7 +136,7 @@ ResultOr GenerateLevel(const Settings& settings) {
     // Generate a new room topology (i.e. walls and floor).
     auto topology_or = room_generator.GenerateRoomTopology();
     if (!topology_or) {
-      return ResultOr::Error("Max iterations when gernerating floor topology");
+      return ResultOr::Error("Max iterations when generating floor topology");
     }
 
     std::mt19937_64 mt_rng(actions_seed);

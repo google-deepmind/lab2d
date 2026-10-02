@@ -121,14 +121,14 @@ class Grid {
 
   // Queues a move of the piece in specified `push_direction`. If `perspective`
   // is `kPieceRelative` then a `push_direction` of kNorth is forward for the
-  // piece otherwise the pespective is `kGridRelative` and the `push_direction`
+  // piece otherwise the perspective is `kGridRelative` and the `push_direction`
   // is relative to the grid orientation.
   void PushPiece(Piece piece, math::Orientation2d push_direction,
                  Perspective perspective) {
     action_queue_.push_back({piece, ActionPush{push_direction, perspective}});
   }
 
-  // Queues settting the piece's position. If the target position is off grid
+  // Queues setting the piece's position. If the target position is off grid
   // then the piece will no longer be visible.
   void TeleportPiece(Piece piece, math::Position2d position,
                      TeleportOrientation orientation) {
@@ -138,7 +138,7 @@ class Grid {
   // Queues a state change for processing during update. If the transition
   // requires a layer change and the layer is occupied the transition remains
   // in the queue until next time. If there is a subsequent transitions that
-  // will take presidence.
+  // will take precedence.
   void SetState(Piece piece, State state) {
     action_queue_.push_back({piece, ActionSetState{state}});
   }
@@ -193,7 +193,7 @@ class Grid {
 
   // Returns first piece on grid in line from `start` to `end` not including
   // `start` if exists, otherwise the result will have an empty piece.
-  // Line follows orthoganal traversal as described by math::RayCastLine.
+  // Line follows orthogonal traversal as described by math::RayCastLine.
   // If the ray leaves the grid then the result will have an empty piece
   // but the position will be the last valid location or start. When topology
   // is torus the position is converted to the nearest.
@@ -202,7 +202,7 @@ class Grid {
 
   // Returns first piece on grid in line from `start` in direction `direction`
   // not including `start` if exists, otherwise the result will have an empty
-  // piece. Line follows orthoganal traversal as described by
+  // piece. Line follows orthogonal traversal as described by
   // math::RayCastLine. If the ray leaves the grid then the result will have an
   // empty piece but the position will be the last valid location or
   // start.
@@ -241,7 +241,7 @@ class Grid {
   // the piece is facing. The width of the beam will be `2 * radius + 1` and the
   // length in the middle of the beam will be `length`.
   //
-  // In the following daigram
+  // In the following diagram
   // the piece '>' is facing east and the `radius` is 2 and the `length` is 7.
   // The '='' represent where the beam will travel.
   //  ======

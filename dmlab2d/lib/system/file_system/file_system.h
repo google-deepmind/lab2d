@@ -26,7 +26,7 @@ namespace deepmind::lab2d {
 
 class FileSystem {
  public:
-  // `file_sytem` must exist for the life time of FileSystem.
+  // `file_system` must exist for the life time of FileSystem.
   explicit FileSystem(std::string runfiles,
                       const DeepMindReadOnlyFileSystem* file_system)
       : runfiles_(std::move(runfiles)), read_only_file_system_(file_system) {}

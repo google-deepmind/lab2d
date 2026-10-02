@@ -85,7 +85,7 @@ contain the pieces created during grid creation if a `layout` is specified. See
 [`grid:createLayout`](#gridcreatelayout-pieces).
 
 ```lua
-local grid, peices = world:createGrid{
+local grid, pieces = world:createGrid{
   -- Either:
   stateMap = stateMap,
   layout = layout,
@@ -225,7 +225,7 @@ kwargs:
  * `piece` optional. The piece handle to read the orientation and position from.
    (If the cell is off grid then the OutOfBounds sprite is rendered everywhere
    instead.)
- * `orientation` optional. Overides player orientation to render from a fixed
+ * `orientation` optional. Overrides player orientation to render from a fixed
    orientation.
 
 If no position or orientation is provided then it is assumed to render from:
@@ -565,12 +565,12 @@ for the previous state and `onAdd(piece)` for the new state. Also triggers
 `onContact.contactName.leave` and `onContact.contactName1.enter` for pieces at
 that location.
 
-#### `grid:teleportToGroup(piece, group, state[, orienationFlag])`
+#### `grid:teleportToGroup(piece, group, state[, orientationFlag])`
 
 Sets the position of a piece to an unoccupied layer and position in group
 `group`. Calls the same callbacks as `grid::setState()`,
 
-`orienationFlag` can be one of the following:
+`orientationFlag` can be one of the following:
 
 *   `grid_world.TELEPORT_ORIENTATION.PICK_RANDOM`: **Default** - Picks a random
     orientation.

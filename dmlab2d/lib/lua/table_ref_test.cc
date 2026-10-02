@@ -56,7 +56,7 @@ class Foo final : public Class<Foo> {
       case ReadResult::kTypeMismatch:
       default:
         return std::string(
-                   "Type missmatch arg1 is not a string when constructing: ") +
+                   "Type mismatch arg1 is not a string when constructing: ") +
                ClassName();
     }
   }

@@ -216,7 +216,7 @@ class LuaTensor : public lua::Class<LuaTensor<T>> {
           return "[Tensor.Create] Named constructor must be 'range' or 'file'";
         }
       } else {
-        return "[Tensor.Create] Must supply only one named contructor.";
+        return "[Tensor.Create] Must supply only one named constructor.";
       }
     } else {
       return CreateFromArgs(L);
@@ -299,7 +299,7 @@ class LuaTensor : public lua::Class<LuaTensor<T>> {
   // - '{lower_bound, upper_bound, stride}'
   // - '{lower_bound, upper_bound}', where the stride is assumed to be 1
   // - '{upper_bound}', where the lower bound is also assumed to be 1
-  // The range bounds and stride are output through the corresponing pointer
+  // The range bounds and stride are output through the corresponding pointer
   // parameters.
   // Returns whether range could be implied from the table.
   static bool ReadTableRange(const lua::TableRef& table, T* lower_bound,
@@ -666,7 +666,7 @@ class LuaTensor : public lua::Class<LuaTensor<T>> {
   }
 
   // Clamps all values to the interval [arg1, arg2]; arg1 must not exceed arg2.
-  // If either argument is not found, then clamping does not occour on that
+  // If either argument is not found, then clamping does not occur on that
   // side.
   lua::NResultsOr Clamp(lua_State* L) {
     T min_value = std::numeric_limits<T>::lowest(),
@@ -709,7 +709,7 @@ class LuaTensor : public lua::Class<LuaTensor<T>> {
         if (result.n_results() > 1) {
           if (IsTypeMismatch(
                   lua::Read(L, -result.n_results() + 1, &keep_going))) {
-            err = absl::StrCat("Invalid return type. Expected bool, recieved '",
+            err = absl::StrCat("Invalid return type. Expected bool, received '",
                                lua::ToString(L, -result.n_results() + 1));
             return false;
           }
@@ -1015,7 +1015,7 @@ class LuaTensor : public lua::Class<LuaTensor<T>> {
   // Retrieves a tensor operand 'rhs' from the top of the stack and computes
   // the matrix product self * rhs, returning the result on to the stack.
   // Fails if any of the operands is not a rank-2 tensor, or their respective
-  // dimensions are not product-compatible (#colums(self) != #rows(rhs)).
+  // dimensions are not product-compatible (#columns(self) != #rows(rhs)).
   lua::NResultsOr MMul(lua_State* L) {
     if (LuaTensor* rhs = LuaTensor::ReadObject(L, 2)) {
       const auto& lhs_shape = tensor_view().shape();

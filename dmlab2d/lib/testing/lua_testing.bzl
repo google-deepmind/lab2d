@@ -1,6 +1,6 @@
 """Build rules for Lua tests using DMLab 2D's built-in libraries.
 
-Example 1 No suplementary data required:
+Example 1 No supplementary data required:
 
 Content: //some/path/to/test/BUILD
 //some/path/to/test/file_test.lua
@@ -47,7 +47,7 @@ def dmlab2d_lua_test(name, main = None, root = None, data = None, **kwargs):
     Args:
       name: Name of test.
       main: Optional relative path of test file including '.lua' suffix.
-      root: Optional absoloute path of this rule used to find relative data.
+      root: Optional absolute path of this rule used to find relative data.
       data: Optional data to include.
       **kwargs: Additional arguments to pass on to cc_test .
     """
@@ -71,7 +71,7 @@ def dmlab2d_lua_level_test(name, main = None, root = None, data = None):
     Args:
       name: Name of level to test.
       main: Optional relative path of level file including '.lua' suffix.
-      root: Optional absoloute path of this rule used to find relative data.
+      root: Optional absolute path of this rule used to find relative data.
       data: Optional data to include.
     """
     extra_data = [] if data == None else data

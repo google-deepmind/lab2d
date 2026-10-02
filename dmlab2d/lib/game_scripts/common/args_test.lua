@@ -410,19 +410,19 @@ function tests.instanceFail()
       function() args.parse({opt = d}, declArgs) end,
       {
           'Error parsing "opt":',
-          'instance not derrived from class.'
+          'instance not derived from class.'
       })
   asserts.shouldFail(
       function() args.parse({opt = 10}, declArgs) end,
       {
           'Error parsing "opt":',
-          'instance not derrived from class.'
+          'instance not derived from class.'
       })
   asserts.shouldFail(
       function() args.parse({opt = {}}, declArgs) end,
       {
           'Error parsing "opt":',
-          'instance not derrived from class.'
+          'instance not derived from class.'
       })
 end
 

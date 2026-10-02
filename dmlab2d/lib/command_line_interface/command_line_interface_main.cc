@@ -90,7 +90,7 @@ ABSL_FLAG(bool, print_observations, false,
 
 ABSL_FLAG(bool, print_events, false, "Prints events generated each frame");
 
-ABSL_FLAG(std::string, runfiles_directory, "", "Overrides runfiles driectory.");
+ABSL_FLAG(std::string, runfiles_directory, "", "Overrides runfiles directory.");
 
 ABSL_FLAG(std::string, print_property, "", "Prints properties after start");
 
@@ -446,7 +446,7 @@ void RunEpisodes(EnvCApiWithContext* env) {
       env->api.act_discrete(env->ctx, action_discrete.data());
       env->api.act_continuous(env->ctx, action_continuous.data());
 
-      // Events are cleared at the begining of advance.
+      // Events are cleared at the beginning of advance.
       if (print_events) {
         PrintEvents(env);
       }

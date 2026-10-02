@@ -192,7 +192,7 @@ local observation = gridView:observation{
 local _ = {0, 0} -- Empty
 local a = {1, 0} -- 0sprite on layer0
 assert(test_world.spriteNames[1 + 1] == '0sprite.N')
-local b = {0, 0} -- Invisble.
+local b = {0, 0} -- Invisible.
 local c = {0, 5} -- 1sprite on layer2
 assert(test_world.spriteNames[5 + 1] == '1sprite.N')
 local expectObservation = tensor.Int32Tensor{
@@ -361,7 +361,7 @@ local gridView = test_world.makeView{layout = layout}
 local grid = test_world.makeGrid(layout)
 local _ = {0, 0} -- Empty
 local a = {1, 0} -- 0sprite on layer0
-local b = {0, 0} -- Invisble.
+local b = {0, 0} -- Invisible.
 local c = {0, 9} -- 2sprite on layer2
 local expectObservation = tensor.Int32Tensor{
     {a, _, a, _, a},

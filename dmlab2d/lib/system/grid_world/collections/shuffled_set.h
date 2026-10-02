@@ -105,7 +105,7 @@ class ShuffledSet {
 
   // Calls predicate on each item in a random order until a call to `predicate`
   // returns true or the sequence is finished. Returns the address of the found
-  // element if predecate returns true otherwise returns nullptr.
+  // element if predicate returns true otherwise returns nullptr.
   template <typename Pred>
   const T* ShuffledElementsFind(std::mt19937_64* rng, Pred predicate) {
     for (auto first = data_.begin(), last = data_.end(); first != last;

@@ -305,7 +305,7 @@ template <typename K, typename T, typename H, typename C, typename A>
 ReadResult Read(lua_State* L, int idx,
                 absl::flat_hash_map<K, T, H, C, A>* result);
 
-// Reads value from the Lua stack. On success, the varant stores the result of
+// Reads value from the Lua stack. On success, the variant stores the result of
 // the value on the stack. The reads are attempted in the order that the types
 // are presented in the variant.
 template <typename... T>

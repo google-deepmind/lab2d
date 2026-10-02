@@ -132,7 +132,7 @@ TEST(ShuffledSetTest, CanShuffleWithProbability) {
   EXPECT_THAT(set.ShuffledElementsWithProbability(&random, 1.0),
               UnorderedElementsAre(1, 2, 3));
   std::array<int, 4> counter_num_elements = {};
-  std::array<int, 3> counter_num_occurances = {};
+  std::array<int, 3> counter_num_occurrences = {};
   constexpr int kNumSamples = 1000;
   constexpr double probability = 0.5;
   for (int i = 0; i < kNumSamples; ++i) {
@@ -156,15 +156,15 @@ TEST(ShuffledSetTest, CanShuffleWithProbability) {
     }
     counter_num_elements[result.size()]++;
     for (int i : result) {
-      counter_num_occurances[i - 1]++;
+      counter_num_occurrences[i - 1]++;
     }
   }
   EXPECT_THAT(counter_num_elements, Each(Gt(0)));
   EXPECT_THAT(counter_num_elements[1], Gt(counter_num_elements[0]));
   EXPECT_THAT(counter_num_elements[2], Gt(counter_num_elements[3]));
   int expected = set.NumElements() * kNumSamples * probability;
-  int actual = std::accumulate(counter_num_occurances.begin(),
-                               counter_num_occurances.end(), 0);
+  int actual = std::accumulate(counter_num_occurrences.begin(),
+                               counter_num_occurrences.end(), 0);
   int error = static_cast<int>(4 * std::sqrt(static_cast<double>(expected)));
   EXPECT_THAT(actual, AllOf(Gt(expected - error), Lt(expected + error)));
 }
