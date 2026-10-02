@@ -52,13 +52,14 @@ end
 function tests.badInputs()
   asserts.shouldFail(
       function()
-        pushbox.Generate{
+        pushbox.generate{
             seed = 10,
             height = 5,
             width = 5,
-            num_boxes = 36
+            numBoxes = 36,
         }
-      end)
+      end,
+      'Maximum room generation retries reached.')
 end
 
 
