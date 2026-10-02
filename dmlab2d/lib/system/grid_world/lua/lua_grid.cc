@@ -1,4 +1,4 @@
-// Copyright (C) 2019 The DMLab2D Authors.
+// Copyright (C) 2019-2026 The DMLab2D Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -167,10 +167,12 @@ class LuaStateCallback : public Grid::StateCallback {
   }
 
  private:
-  struct Callback {
+  class Callback {
    public:
     Callback() = default;
+
     explicit Callback(lua::Ref ref) : func_ref_(std::move(ref)) {}
+
     template <typename... Args>
     void Call(absl::string_view func_name, Args&&... args) {
       if (!func_ref_.is_unbound()) {
@@ -210,22 +212,26 @@ class LuaStateCallback : public Grid::StateCallback {
   class CallbackOrValue {
    public:
     explicit CallbackOrValue() : value_(false) {}
+
     explicit CallbackOrValue(lua::Ref ref)
         : func_ref_(std::move(ref)), value_(false) {}
+
     explicit CallbackOrValue(bool value) : value_(value) {}
+
     template <typename... Args>
     bool Call(absl::string_view func_name, Args&&... args) {
       if (!func_ref_.is_unbound()) {
         lua_State* L = func_ref_.LuaState();
+        lua::StackResetter resetter(L);
         lua::NResultsOr result = func_ref_.Call(args...);
         CHECK(result.ok()) << "Callback error while calling '" << func_name
                            << "': " << result.error();
         bool out_value = value_;
         if (result.n_results() > 0) {
-          CHECK(!IsTypeMismatch(lua::Read(L, -1, &out_value)))
+          CHECK(!IsTypeMismatch(lua::Read(L, -result.n_results(), &out_value)))
               << "Callback error while calling '" << func_name << "': "
-              << "return value type mismatch! " << lua::ToString(L, -1);
-          lua_settop(L, 0);
+              << "return value type mismatch! "
+              << lua::ToString(L, -result.n_results());
         }
         return out_value;
       } else {

@@ -877,7 +877,14 @@ function tests.canCallHitBeam()
               onHit = {
                   hit = function(piece, instigator)
                     playerCount = playerCount + 1
-                    return true
+                    return true,
+                           -- You shouldn't return more than one value,
+                           -- but if you do, we also shouldn't break you.
+                           'extra unused data',
+                           function(a, b)
+                             print('and more')
+                             return 'un', 0, nil, 'used", "values'
+                           end
                   end,
               }
           },
