@@ -116,7 +116,7 @@ local _ERROR_DEPTH = 2
 
 local _isCheck = {
     __call = function(self, val)
-      if self.check(val) then
+      if not self.check(val) then
         fail(self.err(val), _ERROR_DEPTH)
       end
     end,

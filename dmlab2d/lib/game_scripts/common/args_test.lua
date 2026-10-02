@@ -505,4 +505,19 @@ function tests.allFail()
       'Error parsing "opt": 360 is not less-than 360')
 end
 
+function tests.callCheckSuccess()
+  args.numberType(1)
+  args.positive(1)
+  args.stringType('a')
+end
+
+function tests.callCheckFail()
+  asserts.shouldFail(
+      function() args.numberType('a') end,
+      '"a" type expected: "number", actual: "string"')
+  asserts.shouldFail(
+      function() args.positive(-1) end,
+      '-1 is not greater-than 0')
+end
+
 return test_runner.run(tests)
