@@ -250,7 +250,7 @@ class LuaStateCallback : public Grid::StateCallback {
       case LUA_TNIL:
         return def;
       case LUA_TBOOLEAN:
-        return CallbackOrValue(lua_toboolean(L, 1));
+        return CallbackOrValue(lua_toboolean(L, -1));
       case LUA_TTABLE:
       case LUA_TFUNCTION:
       case LUA_TUSERDATA: {

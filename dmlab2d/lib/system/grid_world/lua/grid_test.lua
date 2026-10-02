@@ -924,6 +924,92 @@ function tests.canCallHitBeam()
   asserts.EQ(tostring(grid), expected)
 end
 
+function tests.canCallHitBeamWithBooleanOnHit()
+  local world = grid_world.World{
+      renderOrder = {'dot', 'pieceLayer', 'hitLayer'},
+      types = {
+          player = {
+              layer = 'pieceLayer',
+              sprite = 'Player',
+          },
+          wall = {
+              layer = 'pieceLayer',
+              sprite = 'Wall',
+          },
+          dot = {
+              layer = 'dot',
+              sprite = '.',
+          },
+          floor = {
+              layer = 'dot',
+              sprite = ',',
+          },
+      },
+      hits = {
+          hit = {
+              layer = 'hitLayer',
+              sprite = 'ohitSprite',
+          },
+      },
+  }
+  local layout = '\n' ..
+      '..........\n' ..
+      '..........\n' ..
+      '..........\n' ..
+      '..........\n' ..
+      ',,,,,,,,,,\n'
+
+  local grid = world:createGrid{
+      layout = layout,
+      stateMap = {['.'] = 'dot', [','] = 'floor'},
+      stateCallbacks = {
+          player = {
+              onHit = {
+                  hit = true,
+              },
+          },
+          wall = {
+              onHit = true,
+          },
+          dot = {
+              onHit = {
+                  hit = false,
+              },
+          },
+          floor = {
+              onHit = false,
+          },
+      },
+  }
+  local piece0 = grid:createPiece('player', {pos = {0, 3}, orientation = 'E'})
+  grid:hitBeam(piece0, 'hit', 8, 1)
+  grid:update(random)
+  local expected = '..........\n' ..
+                   '..........\n' ..
+                   'oooooooo..\n' ..
+                   'Poooooooo.\n' ..
+                   'oooooooo,,\n'
+  asserts.EQ(tostring(grid), expected)
+  grid:update(random)
+  expected = '..........\n' ..
+             '..........\n' ..
+             '..........\n' ..
+             'P.........\n' ..
+             ',,,,,,,,,,\n'
+  asserts.EQ(tostring(grid), expected)
+  grid:createPiece('player', {pos = {3, 2}, orientation = 'N'})
+  grid:createPiece('wall', {pos = {3, 4}, orientation = 'N'})
+  grid:hitBeam(piece0, 'hit', 8, 1)
+  grid:update(random)
+  expected = '..........\n' ..
+             '..........\n' ..
+             'oooP......\n' ..
+             'Poooooooo.\n' ..
+             'oooW,,,,,,\n'
+  asserts.EQ(tostring(grid), expected)
+end
+
+
 function tests.canQueryPosition()
   local world = grid_world.World{
       renderOrder = {},
