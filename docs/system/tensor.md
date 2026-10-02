@@ -156,7 +156,7 @@ Creates a rank-0 tensor (a scalar).
 5
 ```
 
-### `tensor.DoubleTensor`(*dim1*, *dim2*, ..., *dimK*)
+### `tensor.DoubleTensor(<var>dim</var><sub>1</sub>, <var>dim</var><sub>2</sub>, ..., <var>dim</var><sub><var>K</var></sub>)`
 
 Creates a rank-K tensor with extents dim1, dim2, ..., dimK. We refer to the
 tuple (dim1, dim2, ..., dimK) as the *shape* of the tensor.
