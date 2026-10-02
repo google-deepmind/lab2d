@@ -642,4 +642,94 @@ TEST_F(LuaImageTest, kSetMaskedPatternInvalidShape2) {
   EXPECT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("same number")));
 }
 
+constexpr absl::string_view kSetMaskedPatternNonContiguousSource = R"(
+local image = require 'system.image'
+local tensor = require 'system.tensor'
+image.setMaskedPattern(
+    tensor.ByteTensor(3, 3, 4):transpose(1, 2),
+    tensor.ByteTensor(3, 3, 1),
+    {0, 0, 0},
+    {0, 0, 0})
+)";
+
+TEST_F(LuaImageTest, kSetMaskedPatternNonContiguousSource) {
+  lua_State* L = lua_vm_.get();
+  ASSERT_THAT(lua::PushScript(L, kSetMaskedPatternNonContiguousSource,
+                              "kSetMaskedPatternNonContiguousSource"),
+              IsOkAndHolds(1));
+  EXPECT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("contiguous")));
+}
+
+constexpr absl::string_view kSetMaskedPatternNonContiguousPattern = R"(
+local image = require 'system.image'
+local tensor = require 'system.tensor'
+image.setMaskedPattern(
+    tensor.ByteTensor(3, 3, 4),
+    tensor.ByteTensor(3, 3, 1):transpose(1, 2),
+    {0, 0, 0},
+    {0, 0, 0})
+)";
+
+TEST_F(LuaImageTest, kSetMaskedPatternNonContiguousPattern) {
+  lua_State* L = lua_vm_.get();
+  ASSERT_THAT(lua::PushScript(L, kSetMaskedPatternNonContiguousPattern,
+                              "kSetMaskedPatternNonContiguousPattern"),
+              IsOkAndHolds(1));
+  EXPECT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("contiguous")));
+}
+
+constexpr absl::string_view kSetMaskedPatternZeroChannels = R"(
+local image = require 'system.image'
+local tensor = require 'system.tensor'
+image.setMaskedPattern(
+    tensor.ByteTensor(3, 3, 4),
+    tensor.ByteTensor(3, 3, 0),
+    {0, 0, 0},
+    {0, 0, 0})
+)";
+
+TEST_F(LuaImageTest, kSetMaskedPatternZeroChannels) {
+  lua_State* L = lua_vm_.get();
+  ASSERT_THAT(lua::PushScript(L, kSetMaskedPatternZeroChannels,
+                              "kSetMaskedPatternZeroChannels"),
+              IsOkAndHolds(1));
+  EXPECT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("channel")));
+}
+
+constexpr absl::string_view kSetMaskedPatternScalarTensors = R"(
+local image = require 'system.image'
+local tensor = require 'system.tensor'
+image.setMaskedPattern(
+    tensor.ByteTensor(),
+    tensor.ByteTensor(),
+    {0, 0, 0},
+    {0, 0, 0})
+)";
+
+TEST_F(LuaImageTest, kSetMaskedPatternScalarTensors) {
+  lua_State* L = lua_vm_.get();
+  ASSERT_THAT(lua::PushScript(L, kSetMaskedPatternScalarTensors,
+                              "kSetMaskedPatternScalarTensors"),
+              IsOkAndHolds(1));
+  EXPECT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("4 channels")));
+}
+
+constexpr absl::string_view kSetMaskedPatternInvalidColor2 = R"(
+local image = require 'system.image'
+local tensor = require 'system.tensor'
+image.setMaskedPattern(
+    tensor.ByteTensor(3, 3, 4),
+    tensor.ByteTensor(3, 3, 1),
+    {0, 0, 0},
+    'bad_color2')
+)";
+
+TEST_F(LuaImageTest, kSetMaskedPatternInvalidColor2) {
+  lua_State* L = lua_vm_.get();
+  ASSERT_THAT(lua::PushScript(L, kSetMaskedPatternInvalidColor2,
+                              "kSetMaskedPatternInvalidColor2"),
+              IsOkAndHolds(1));
+  EXPECT_THAT(lua::Call(L, 0), StatusIs(HasSubstr("bad_color2")));
+}
+
 }  // namespace deepmind::lab2d

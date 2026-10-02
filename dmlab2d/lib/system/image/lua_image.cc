@@ -707,11 +707,18 @@ lua::NResultsOr SetMaskedPattern(lua_State* L) {
   }
   if (!IsFound(lua::Read(L, 4, &color2))) {
     return absl::StrCat("[image.setMaskedPattern] - Arg 4 \"",
-                        lua::ToString(L, 3), "\" - Invalid color2.");
+                        lua::ToString(L, 4), "\" - Invalid color2.");
   }
 
   auto* source_view = source->mutable_tensor_view();
   const auto& pattern_view = pattern->tensor_view();
+
+  if (!source_view->IsContiguous()) {
+    return "[image.setMaskedPattern] Arg1 (source) must be contiguous.";
+  }
+  if (!pattern_view.IsContiguous()) {
+    return "[image.setMaskedPattern] Arg2 (pattern) must be contiguous.";
+  }
 
   if (source_view->shape().size() != pattern_view.shape().size()) {
     return absl::StrCat(
@@ -734,8 +741,13 @@ lua::NResultsOr SetMaskedPattern(lua_State* L) {
     }
   }
 
-  if (source_view->num_elements() == 0 || source_view->shape().back() != 4) {
+  if (source_view->shape().empty() || source_view->num_elements() == 0 ||
+      source_view->shape().back() != 4) {
     return "[image.setMaskedPattern] Arg1 (source) shape must have 4 channels.";
+  }
+  if (pattern_view.shape().back() == 0) {
+    return "[image.setMaskedPattern] Arg2 (pattern) shape must have at least 1 "
+           "channel.";
   }
 
   std::size_t number_pixels = source_view->num_elements() / 4;
