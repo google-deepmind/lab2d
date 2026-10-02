@@ -69,8 +69,17 @@ TEST(RemoveLeadingAndTrailingNewLines, BothWorks) {
   EXPECT_THAT(RemoveLeadingAndTrailingNewLines(before), Eq(after));
 }
 
+TEST(RemoveLeadingAndTrailingNewLines, SingleCharWorks) {
+  EXPECT_THAT(RemoveLeadingAndTrailingNewLines("a"), Eq("a"));
+  EXPECT_THAT(RemoveLeadingAndTrailingNewLines("\na"), Eq("a"));
+  EXPECT_THAT(RemoveLeadingAndTrailingNewLines("a\n"), Eq("a"));
+  EXPECT_THAT(RemoveLeadingAndTrailingNewLines("\n\na\n\n"), Eq("a"));
+}
+
 TEST(RemoveLeadingAndTrailingNewLines, EmptyWorks) {
   EXPECT_THAT(RemoveLeadingAndTrailingNewLines(""), Eq(""));
+  EXPECT_THAT(RemoveLeadingAndTrailingNewLines("\n"), Eq(""));
+  EXPECT_THAT(RemoveLeadingAndTrailingNewLines("\n\n\n"), Eq(""));
 }
 
 constexpr absl::string_view kSquare43 = R"(
@@ -103,8 +112,13 @@ TEST(GetSize2dOfText, EmptyLinesWorks) {
   EXPECT_THAT(GetSize2dOfText(kEmptyLines43), Eq(math::Size2d{4, 3}));
 }
 
+TEST(GetSize2dOfText, SingleCharWorks) {
+  EXPECT_THAT(GetSize2dOfText("\na\n"), Eq(math::Size2d{1, 1}));
+}
+
 TEST(GetSize2dOfText, EmptyWorks) {
   EXPECT_THAT(GetSize2dOfText(""), Eq(math::Size2d{0, 0}));
+  EXPECT_THAT(GetSize2dOfText("\n\n\n"), Eq(math::Size2d{0, 0}));
 }
 
 }  // namespace

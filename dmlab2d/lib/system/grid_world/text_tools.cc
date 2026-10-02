@@ -17,7 +17,6 @@
 #include "dmlab2d/lib/system/grid_world/text_tools.h"
 
 #include <algorithm>
-#include <string>
 #include <vector>
 
 #include "absl/strings/str_split.h"
@@ -27,16 +26,13 @@
 namespace deepmind::lab2d {
 
 absl::string_view RemoveLeadingAndTrailingNewLines(absl::string_view text) {
-  if (const auto prefix = text.find_first_not_of('\n');
-      prefix != std::string::npos && prefix > 0) {
+  if (auto prefix = text.find_first_not_of('\n'); prefix == text.npos) {
+    return text.substr(0, 0);
+  } else {
     text.remove_prefix(prefix);
+    text.remove_suffix(text.size() - text.find_last_not_of('\n') - 1);
+    return text;
   }
-
-  if (const auto suffix = text.find_last_not_of('\n');
-      suffix != std::string::npos && suffix > 0) {
-    text.remove_suffix(text.size() - suffix - 1);
-  }
-  return text;
 }
 
 math::Size2d GetSize2dOfText(absl::string_view layout) {
