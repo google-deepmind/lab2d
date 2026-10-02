@@ -53,6 +53,48 @@ constexpr char kLuaJitModulesPath[] = "/../luajit_archive/src";
 constexpr char kLevelDirectory[] = "levels";
 constexpr char kScriptFromSetting[] = "<script from setting>";
 
+#if LUA_VERSION_NUM >= 503
+extern "C" {
+static int RawIpairsAux(lua_State* L) {
+  luaL_checktype(L, 1, LUA_TTABLE);
+  lua_Integer i = luaL_intop(+, luaL_checkinteger(L, 2), 1);
+  lua_pushinteger(L, i);
+  return lua_rawgeti(L, 1, i) == LUA_TNIL ? 1 : 2;
+}
+static int RawIpairs(lua_State* L) {
+  luaL_checktype(L, 1, LUA_TTABLE);
+  lua_pushcfunction(L, &RawIpairsAux);
+  lua_pushvalue(L, 1);
+  lua_pushinteger(L, 0);
+  return 3;
+}
+}  // extern "C"
+#endif  // LUA_VERSION_NUM >= 503
+
+// A compatibility module to support multiple versions of Lua.
+// This is not otherwise documented, but available for general use.
+//
+//    local compat = require 'system.compat'
+//    local raw_ipairs = compat.raw_ipairs
+//
+// Provides the single member "raw_ipairs", which is the builtin "ipairs" on Lua
+// <= 5.2, and on Lua >= 5.3 it is a replacement function that provides the
+// 5.2-behaviour, namely to fetch array indexes via lua_rawgeti. As of Lua 5.3,
+// "ipairs" respects user-defined __index metatable entries, and sometimes the
+// old, "raw" iteration behaviour is required:
+//
+static lua::NResultsOr CompatModule(lua_State* L) {
+  auto module = lua::TableRef::Create(L);
+#if LUA_VERSION_NUM >= 503
+  lua_pushcfunction(L, &RawIpairs);
+#else
+  lua_getglobal(L, "ipairs");
+#endif  // LUA_VERSION_NUM >= 503
+  module.InsertFromStackTop("raw_ipairs");
+  lua::Push(L, module);
+  return 1;
+}
+
 EnvLuaApi::EnvLuaApi(std::string executable_runfiles)
     : lua_vm_(lua::CreateVm()),
       executable_runfiles_(std::move(executable_runfiles)),
@@ -194,6 +236,8 @@ int EnvLuaApi::Init() {
 
   lua_vm_.AddCModuleToSearchers("system.properties",
                                 &lua::Bind<Properties::Module>);
+
+  lua_vm_.AddCModuleToSearchers("system.compat", &lua::Bind<CompatModule>);
 
   if (auto result = lua::Call(L, 1); StoreError(result)) {
     return 1;

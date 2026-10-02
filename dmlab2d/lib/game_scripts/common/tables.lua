@@ -15,6 +15,10 @@ limitations under the License.
 
 local strings = require 'common.strings'
 
+-- Handle different versions of Lua.
+local compat = require 'system.compat'
+local raw_ipairs = compat.raw_ipairs
+
 local tables = {}
 local _tostring = tostring
 
@@ -157,7 +161,7 @@ local function tostringOneLine(input, skipMetaTostring, limit)
     local count = #input
     local visited = {}
     local res = '{'
-    for i, val in ipairs(input) do
+    for i, val in raw_ipairs(input) do
       visited[i] = true
       if i > 1 then
         res = res .. ', '

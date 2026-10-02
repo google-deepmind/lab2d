@@ -19,6 +19,10 @@ local random = require 'system.random'
 local images = require 'images'
 local maps = require 'maps'
 
+-- Handle different versions of Lua.
+local compat = require 'system.compat'
+local raw_ipairs = compat.raw_ipairs
+
 local Simulation = class.Class()
 
 function Simulation.defaultSettings()
@@ -70,12 +74,12 @@ function Simulation:addSprites(tileSet)
     local colors = {{255, 0, 0}, {255, 255, 0}, {0, 255, 0}}
     local count = #self._settings.appleRespawnProbabilities
     local maxP = 1e-3
-    for i, p in ipairs(self._settings.appleRespawnProbabilities) do
+    for i, p in raw_ipairs(self._settings.appleRespawnProbabilities) do
       if p > maxP then
         maxP = p
       end
     end
-    for i, p in ipairs(self._settings.appleRespawnProbabilities) do
+    for i, p in raw_ipairs(self._settings.appleRespawnProbabilities) do
       local color = interpColor(colors, math.sqrt(p) / math.sqrt(maxP))
       tileSet:addColor('apple.wait.' .. i, color)
     end
@@ -106,7 +110,7 @@ function Simulation:worldConfig()
       }
   }
   local waitNames = {}
-  for i, prob in ipairs(settings.appleRespawnProbabilities) do
+  for i, prob in raw_ipairs(settings.appleRespawnProbabilities) do
     local name = 'apple.wait.' .. i
     local spriteName = settings.showRespawnProbability and name or nil
     waitNames[i] = name
@@ -224,7 +228,7 @@ function Simulation:stateCallbacks(avatars)
 end
 
 function Simulation:start(grid)
-  for i, prob in ipairs(self._settings.appleRespawnProbabilities) do
+  for i, prob in raw_ipairs(self._settings.appleRespawnProbabilities) do
     local name = 'apple.wait.' .. i
     grid:setUpdater{update = name, group = name, probability = prob}
   end
