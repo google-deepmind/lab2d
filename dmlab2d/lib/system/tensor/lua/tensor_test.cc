@@ -756,6 +756,9 @@ local bt = tensor.DoubleTensor{{-2.25, -1.75}, {0.5, 1.0}}
 assert (bt:clone():floor() == tensor.DoubleTensor{{-3.0, -2.0}, {0.0, 1.0}})
 assert (bt:clone():ceil() == tensor.DoubleTensor{{-2.0, -1.0}, {1.0, 1.0}})
 assert (bt:clone():round() == tensor.DoubleTensor{{-2.0, -2.0}, {1.0, 1.0}})
+assert (bt:clone():floor('unused') == tensor.DoubleTensor{{-3.0, -2.0}, {0.0, 1.0}})
+assert (bt:clone():ceil('unused') == tensor.DoubleTensor{{-2.0, -1.0}, {1.0, 1.0}})
+assert (bt:clone():round('unused') == tensor.DoubleTensor{{-2.0, -2.0}, {1.0, 1.0}})
 )";
 
 TEST_F(LuaTensorTest, kRoundingOps) {

@@ -954,6 +954,7 @@ class LuaTensor : public lua::Class<LuaTensor<T>> {
   template <void (View::*Op)()>
   lua::NResultsOr UnaryOp(lua_State* L) {
     (tensor_view_.*Op)();
+    lua_settop(L, 1);
     return 1;
   }
 
