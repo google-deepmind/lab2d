@@ -231,6 +231,11 @@ class PyEnvCApi {
     if (state_ == State::kPreStart) {
       throw std::runtime_error("Environment not started!");
     }
+    if (text_actions.size() != action_text_names_.size()) {
+      throw std::invalid_argument(
+          absl::StrCat("Invalid action shape, expected array with shape (",
+                       action_text_names_.size(), ",)"));
+    }
     std::vector<EnvCApi_TextAction> actions;
     actions.reserve(text_actions.size());
     for (const auto& action : text_actions) {
