@@ -28,6 +28,7 @@
 #include "dmlab2d/lib/lua/n_results_or.h"
 #include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
+#include "dmlab2d/lib/lua/stack_resetter.h"
 #include "dmlab2d/lib/lua/table_ref.h"
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
 #include "dmlab2d/lib/system/tensor/tensor_view.h"
@@ -37,10 +38,10 @@ namespace deepmind::lab2d {
 
 lua::NResultsOr Observations::BindApi(lua::TableRef script_table_ref) {
   script_table_ref_ = std::move(script_table_ref);
-  script_table_ref_.PushMemberFunction("observationSpec");
   lua_State* L = script_table_ref_.LuaState();
+  lua::StackResetter stack_resetter(L);
+  script_table_ref_.PushMemberFunction("observationSpec");
   if (lua_isnil(L, -2)) {
-    lua_pop(L, 2);
     return 0;
   }
   auto result = lua::Call(L, 1);
@@ -87,7 +88,6 @@ lua::NResultsOr Observations::BindApi(lua::TableRef script_table_ref) {
     }
     infos_.push_back(std::move(spec_info));
   }
-  lua_pop(L, result.n_results());
   return 0;
 }
 

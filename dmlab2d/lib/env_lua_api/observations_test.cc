@@ -39,7 +39,9 @@ namespace deepmind::lab2d {
 namespace {
 
 using ::deepmind::lab2d::lua::testing::IsOkAndHolds;
+using ::deepmind::lab2d::lua::testing::StatusIs;
 using ::testing::Eq;
+using ::testing::HasSubstr;
 using ::testing::StrEq;
 
 class ObservationsTest : public lua::testing::TestWithVm {
@@ -321,6 +323,57 @@ TEST_F(ObservationsTest, ReadGeneralSpec) {
     ASSERT_THAT(obs_spec_shape, testing::IsEmpty());
     auto obs_payload = absl::MakeConstSpan(obs.payload.int64s, 1);
     ASSERT_THAT(obs_payload, testing::ElementsAre(37));
+  }
+}
+
+TEST_F(ObservationsTest, InvalidSpecs) {
+  struct TestCase {
+    const char* script;
+    const char* expected_error;
+  };
+  const TestCase kTestCases[] = {
+      {
+          "return { observationSpec = function(_) return 'not_a_table' end }",
+          "Must be a table",
+      },
+      {
+          "return { observationSpec = function(_) return { 'not_a_table' } "
+          "end }",
+          "Missing table",
+      },
+      {
+          "return { observationSpec = function(_) return {{ type = 'String' }} "
+          "end }",
+          "Missing 'name = <string>'",
+      },
+      {
+          "return { observationSpec = function(_) return {{ name = 'OBS' }} "
+          "end }",
+          "Missing 'type = <string>'",
+      },
+      {
+          "return { observationSpec = function(_) return {{ name = 'OBS', "
+          "type = 'Invalid' }} end }",
+          "Bytes'|'Doubles'|'String'|'Int32s'|'Int64s'",
+      },
+      {
+          "return { observationSpec = function(_) return {{ name = 'OBS', "
+          "type = 'Doubles' }} end }",
+          "Missing 'shape = {<int>, ...}'",
+      },
+  };
+
+  for (const auto& test_case : kTestCases) {
+    ASSERT_THAT(lua::PushScript(L, test_case.script, "kInvalidSpec"),
+                IsOkAndHolds(1));
+    ASSERT_THAT(lua::Call(L, 0), IsOkAndHolds(1));
+    lua::TableRef table;
+    ASSERT_TRUE(IsFound(Read(L, 1, &table)));
+    lua_settop(L, 0);
+    Observations observations;
+    EXPECT_THAT(observations.BindApi(table),
+                StatusIs(HasSubstr(test_case.expected_error)));
+    EXPECT_EQ(lua_gettop(L), 0);
   }
 }
 

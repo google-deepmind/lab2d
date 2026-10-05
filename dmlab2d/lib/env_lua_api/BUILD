@@ -175,6 +175,7 @@ cc_library(
         "//dmlab2d/lib/lua:n_results_or",
         "//dmlab2d/lib/lua:push",
         "//dmlab2d/lib/lua:read",
+        "//dmlab2d/lib/lua:stack_resetter",
         "//dmlab2d/lib/lua:table_ref",
         "//dmlab2d/lib/system/tensor:tensor_view",
         "//dmlab2d/lib/system/tensor/lua:tensor",
