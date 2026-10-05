@@ -109,7 +109,7 @@ typedef struct EnvCApi_Observation_s EnvCApi_Observation;
 // observations.)
 typedef struct EnvCApi_Event_s EnvCApi_Event;
 
-// A text action. Contains a string and its length.
+// A text action. Contains a zero-terminated string and its length.
 typedef struct EnvCApi_TextAction_s EnvCApi_TextAction;
 
 // The status of an environment. This status changes as the environment evolves.
@@ -180,7 +180,8 @@ struct EnvCApi_Event_s {
   const EnvCApi_Observation* observations;
 };
 
-// A text action consists of a string and its length.
+// A text action consists of a string and its length. The string is required to
+// be zero-terminated, i.e. data[len] is valid and zero.
 struct EnvCApi_TextAction_s {
   const char* data;
   uint64_t len;
@@ -238,9 +239,11 @@ typedef enum EnvCApi_PropertyResult_enum EnvCApi_PropertyResult;
 // was created successfully and has not been passed to release_context. (This
 // API does not specify how contexts are created.)
 //
-// All functions that take pointer parameters shall be called with corresponding
-// valid and non-null arguments. Functions that return pointers to const char
-// shall not return null.
+// All functions that take pointer parameters which are pointers to single
+// objects shall be called with corresponding valid and non-null arguments. For
+// a pointer parameter "a" that is specified as "an array of size N", [a, a + N)
+// shall be a valid range (this allows "a" to be null). Functions that return
+// pointers to const char shall return a non-null value.
 //
 // Returned pointers never convey ownership; the implementation manages the
 // resources of all exposed objects.
