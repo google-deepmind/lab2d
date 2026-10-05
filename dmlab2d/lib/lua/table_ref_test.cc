@@ -37,6 +37,7 @@ namespace {
 using ::deepmind::lab2d::lua::testing::IsOkAndHolds;
 using ::testing::Contains;
 using ::testing::ElementsAre;
+using ::testing::IsEmpty;
 
 // Simple demo class to test and demonstrate the functionality of Class.
 class Foo final : public Class<Foo> {
@@ -251,6 +252,20 @@ TEST_F(TableRefTest, TestInsertAndReadSpan) {
   int result[10] = {};
   ASSERT_TRUE(IsFound(table.LookUp("array", absl::MakeSpan(result))));
   EXPECT_EQ(absl::MakeConstSpan(data), absl::MakeConstSpan(result));
+}
+
+TEST_F(TableRefTest, TestUserdataWithoutMetatable) {
+  lua_newuserdata(L, 1);
+  TableRef table;
+  ASSERT_TRUE(IsFound(Read(L, -1, &table)));
+  lua_pop(L, 1);
+  ASSERT_EQ(lua_gettop(L), 0);
+
+  EXPECT_EQ(table.KeyCount(), 0);
+  EXPECT_EQ(lua_gettop(L), 0);
+
+  EXPECT_THAT(table.Keys<std::string>(), IsEmpty());
+  EXPECT_EQ(lua_gettop(L), 0);
 }
 
 }  // namespace

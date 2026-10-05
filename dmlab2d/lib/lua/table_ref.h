@@ -112,6 +112,7 @@ class TableRef final {
     }
 
     if (lua_type(lua_state_, -1) != LUA_TTABLE) {
+      lua_pop(lua_state_, 1);
       return result;
     }
 
