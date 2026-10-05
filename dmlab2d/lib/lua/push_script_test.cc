@@ -45,6 +45,7 @@ return "Success"
 TEST_F(PushScriptTest, GoodScript) {
   EXPECT_THAT(PushScript(L, kTestGoodScript, "kTestGoodScript"),
               IsOkAndHolds(1));
+  EXPECT_EQ(lua_gettop(L), 1);
 }
 
 constexpr char kTestBadScript[] = R"(
@@ -60,11 +61,13 @@ TEST_F(PushScriptTest, BadScript) {
   EXPECT_THAT(PushScript(L, kTestBadScript, "kTestBadScript"),
               StatusIs(AllOf(HasSubstr("')' expected (to close '('"),
                              HasSubstr("kTestBadScript"))));
+  EXPECT_EQ(lua_gettop(L), 0);
 }
 
 TEST_F(PushScriptTest, FileMissing) {
   const std::string filename = "Error";
   EXPECT_THAT(PushScriptFile(L, filename), StatusIs(HasSubstr("open")));
+  EXPECT_EQ(lua_gettop(L), 0);
 }
 }  // namespace
 }  // namespace deepmind::lab2d::lua

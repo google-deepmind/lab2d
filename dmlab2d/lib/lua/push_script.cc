@@ -31,6 +31,7 @@ NResultsOr PushScript(lua_State* L, absl::string_view script,
   if (luaL_loadbuffer(L, script.data(), script.size(), script_name)) {
     std::string error;
     if (!IsFound(Read(L, -1, &error))) error = "Failed to retrieve error!";
+    lua_pop(L, 1);
     return std::move(error);
   }
   return 1;
@@ -39,10 +40,12 @@ NResultsOr PushScript(lua_State* L, absl::string_view script,
 NResultsOr PushScriptFile(lua_State* L, const char* filename) {
   int error = luaL_loadfile(L, filename);
   if (error == LUA_ERRFILE) {
+    lua_pop(L, 1);
     return absl::StrCat("Failed to open file '", filename, "'");
   } else if (error != 0) {
     std::string error;
     if (!IsFound(Read(L, -1, &error))) error = "Failed to retrieve error!";
+    lua_pop(L, 1);
     return std::move(error);
   }
   return 1;
