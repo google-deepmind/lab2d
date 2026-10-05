@@ -131,11 +131,9 @@ lua::NResultsOr LuaWorld::Create(lua_State* L) {
   if (IsTypeMismatch(update_order_read) ||
       (IsFound(update_order_read) &&
        IsTypeMismatch(ReadOrders(order, &args.update_order)))) {
-    lua_pop(L, 1);
     return "'updateOrder' must be an array of strings or {name = name, "
            "func = function}";
   }
-  lua_pop(L, 1);
 
   if (IsTypeMismatch(table.LookUp("customSprites", &args.custom_sprites))) {
     return "'customSprites' must be an array of strings";

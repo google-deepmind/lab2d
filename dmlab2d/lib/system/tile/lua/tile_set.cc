@@ -122,7 +122,6 @@ lua::NResultsOr LuaTileSet::Create(lua_State* L) {
   if (!IsFound(table.LookUp("shape", &sprite_shape))) {
     return "[tile.set] - 'shape' must be a table containing height and width.";
   }
-  lua_pop(L, 1);
   CreateObject(L, std::move(sprite_names),
                TileSet(sprite_names.size(), sprite_shape));
   return 1;
