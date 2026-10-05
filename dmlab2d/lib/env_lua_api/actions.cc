@@ -184,6 +184,9 @@ void Actions::ContinuousBounds(int idx, double* min_value_out,
 }
 
 void Actions::TextApply(const EnvCApi_TextAction* actions) {
+  if (text_actions_.empty()) {
+    return;
+  }
   lua_State* L = script_table_ref_.LuaState();
   lua::StackResetter stack_resetter(L);
   script_table_ref_.PushMemberFunction(kTextActions);
