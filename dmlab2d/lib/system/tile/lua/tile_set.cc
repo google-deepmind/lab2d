@@ -14,19 +14,23 @@
 
 #include "dmlab2d/lib/system/tile/lua/tile_set.h"
 
-#include <memory>
+#include <cstddef>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "absl/strings/match.h"
-#include "absl/strings/str_cat.h"
 #include "absl/strings/str_format.h"
 #include "absl/strings/string_view.h"
+#include "dmlab2d/lib/lua/class.h"
+#include "dmlab2d/lib/lua/n_results_or.h"
+#include "dmlab2d/lib/lua/push.h"
 #include "dmlab2d/lib/lua/read.h"
-#include "dmlab2d/lib/lua/ref.h"
 #include "dmlab2d/lib/lua/table_ref.h"
 #include "dmlab2d/lib/system/math/lua/math2d.h"
 #include "dmlab2d/lib/system/math/math2d.h"
 #include "dmlab2d/lib/system/tensor/lua/tensor.h"
+#include "dmlab2d/lib/system/tensor/tensor_view.h"
 #include "dmlab2d/lib/system/tile/tile_set.h"
 
 namespace deepmind::lab2d {
@@ -56,13 +60,18 @@ lua::NResultsOr LuaTileSet::SetSprite(lua_State* L) {
     return "Arg 1 must be a kwarg table!";
   }
 
+  // See IMPLEMENTATION NOTE in grid_world/lua/lua_grid.cc regarding
+  // the use of string_views to hold values from the Lua stack.
+
   absl::string_view name;
-  if (!IsFound(table.LookUp("name", &name))) {
+  table.LookUpToStack("name");
+  if (!IsFound(lua::Read(L, -1, &name))) {
     return "'name' must be a string";
   }
 
   tensor::LuaTensor<unsigned char>* image;
-  if (!IsFound(table.LookUp("image", &image))) {
+  table.LookUpToStack("image");
+  if (!IsFound(Read(L, -1, &image))) {
     return "'image' - Must supply ByteTensor(h, w, 3 or 4) or "
            " ByteTensor(count, h, w, 3 or 4)!";
   }

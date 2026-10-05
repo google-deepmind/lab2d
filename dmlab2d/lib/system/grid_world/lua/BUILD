@@ -37,6 +37,7 @@ cc_test(
         "//dmlab2d/lib/lua:call",
         "//dmlab2d/lib/lua:n_results_or_test_util",
         "//dmlab2d/lib/lua:push_script",
+        "//dmlab2d/lib/lua:read",
         "//dmlab2d/lib/lua:vm",
         "//dmlab2d/lib/lua:vm_test_util",
         "@googletest//:gtest_main",

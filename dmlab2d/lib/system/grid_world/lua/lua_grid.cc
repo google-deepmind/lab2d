@@ -310,13 +310,40 @@ void LuaGrid::SubModule(lua::TableRef module) {
 
 lua::NResultsOr LuaGrid::CreateGrid(lua_State* L, const World& world,
                                     lua::Ref world_ref) {
+  // IMPLEMENTATION NOTE on string_views: In this function, we use string_views,
+  // both directly and as keys and values for various maps, which are referring
+  // to strings in the incoming function arguments. Conceptually this is
+  // justified since the arguments outlive the call.
+  //
+  // However, there is a curious subtlety: When a string results from lookup
+  // in a table, then for a "normal" table its storage is indeed kept alive by
+  // the table itself. However, it is possible for a table to have an "__index"
+  // metafunction, which can return values "on the fly", and in order for a
+  // string_view to such a value to not dangle, the value really needs to be
+  // retained on the stack. For this reason, we do not use TableRef::LookUp in
+  // several places below, but instead use TableRef::LookUpToStack first and
+  // retain the value on the stack as long as we have string_views that refer
+  // to it. (This may require popping those values explicitly later.)
+  //
+  // To complicate the situation further, note that a "Lua string that has
+  // already been popped from the stack" does not immediately constitute a
+  // use-after-free access, since the backing storage is only freed during
+  // a garbage collection (or, more generally, during some Lua API call).
+  // It is therefore possible to have a valid (in C++) reference to a Lua
+  // string that has already been popped, although conceptually we should
+  // not exploit that. On the flipside, it means that code that could be
+  // detected by, say, ASAN, requires some careful crafting involving
+  // metafunctions. But as a punchline, consider that TableRef::LookUp may
+  // deallocate popped values.
+
   lua::TableRef table;
   if (!IsFound(lua::Read(L, 2, &table))) {
     return "Must supply a table as first argument to grid construction!";
   }
 
   absl::string_view layout;
-  if (IsTypeMismatch(table.LookUp("layout", &layout))) {
+  table.LookUpToStack("layout");
+  if (IsTypeMismatch(lua::Read(L, -1, &layout))) {
     return "layout must be a string.";
   }
 
@@ -336,14 +363,18 @@ lua::NResultsOr LuaGrid::CreateGrid(lua_State* L, const World& world,
            "`size` {width = <positive>, height = <positive>}!";
   }
 
+  // See IMPLEMENTATION NOTE at the top of the function.
   absl::flat_hash_map<absl::string_view, lua::TableRef> state_callbacks;
-  if (IsTypeMismatch(table.LookUp("stateCallbacks", &state_callbacks))) {
+  table.LookUpToStack("stateCallbacks");
+  if (IsTypeMismatch(lua::Read(L, -1, &state_callbacks))) {
     return "Must supply state map value for 'stateCallbacks'!";
   }
 
-  if (state_callbacks.empty() &&
-      IsTypeMismatch(table.LookUp("typeCallbacks", &state_callbacks))) {
-    return "Must supply state map value for 'stateCallbacks'!";
+  if (state_callbacks.empty()) {
+    table.LookUpToStack("typeCallbacks");
+    if (IsTypeMismatch(lua::Read(L, -1, &state_callbacks))) {
+      return "Must supply state map value for 'stateCallbacks'!";
+    }
   }
 
   int topology_int = static_cast<int>(GridShape::Topology::kBounded);
@@ -379,15 +410,24 @@ lua::NResultsOr LuaGrid::CreateGrid(lua_State* L, const World& world,
   }
 
   if (!layout.empty()) {
+    // See IMPLEMENTATION NOTE at the top of the function.
     absl::flat_hash_map<absl::string_view, absl::string_view>
         character_to_state_name;
-    if (!IsFound(table.LookUp("stateMap", &character_to_state_name)) &&
-        !IsFound(table.LookUp("typeMap", &character_to_state_name))) {
-      return "When specifying `layout` you must also supply state map value "
-             "for "
-             "'stateMap'!";
+    table.LookUpToStack("stateMap");
+    if (!IsFound(lua::Read(L, -1, &character_to_state_name))) {
+      // Pop the unused, bad lookup.
+      lua_pop(L, 1);
+
+      // Try again with a legacy name.
+      table.LookUpToStack("typeMap");
+      if (!IsFound(lua::Read(L, -1, &character_to_state_name))) {
+        return "When specifying `layout` you must also supply state map value "
+               "for 'stateMap'!";
+      }
     }
+
     CharMap character_to_state = {};
+
     for (const auto& [key, state_name] : character_to_state_name) {
       if (key.size() != 1) {
         return absl::StrCat("Key must be a single character found: '", key,
@@ -399,6 +439,9 @@ lua::NResultsOr LuaGrid::CreateGrid(lua_State* L, const World& world,
       }
       character_to_state[key[0]] = state;
     }
+
+    // Pop the "stateMap" table, so [..., grid, pieces] is at the top.
+    lua_pop(L, 1);
 
     auto pieces = PlaceGrid(character_to_state, layout, {0, 0},
                             lua_grid->GetMutableGrid());
@@ -476,15 +519,20 @@ lua::NResultsOr LuaGrid::CreateLayout(lua_State* L) {
   }
 
   absl::string_view layout;
-  if (!IsFound(table.LookUp("layout", &layout))) {
+  table.LookUpToStack("layout");
+  if (!IsFound(lua::Read(L, -1, &layout))) {
     return "Must supply string value for 'layout'!";
   }
 
+  // See IMPLEMENTATION NOTE at the top of CreateGrid.
   absl::flat_hash_map<absl::string_view, absl::string_view>
       character_to_state_name;
-  if (!IsFound(table.LookUp("stateMap", &character_to_state_name)) &&
-      !IsFound(table.LookUp("typeMap", &character_to_state_name))) {
-    return "You must also supply state map value for 'stateMap'!";
+  table.LookUpToStack("stateMap");
+  if (!IsFound(lua::Read(L, -1, &character_to_state_name))) {
+    table.LookUpToStack("typeMap");
+    if (!IsFound(lua::Read(L, -1, &character_to_state_name))) {
+      return "You must also supply state map value for 'stateMap'!";
+    }
   }
   CharMap character_to_state = {};
   for (const auto& [key, state_name] : character_to_state_name) {
@@ -1118,7 +1166,8 @@ lua::NResultsOr LuaGrid::SetUpdater(lua_State* L) {
   }
 
   absl::string_view update_name;
-  if (!IsFound(table.LookUp("update", &update_name))) {
+  table.LookUpToStack("update");
+  if (!IsFound(lua::Read(L, -1, &update_name))) {
     return "'update' must be a string";
   }
 
@@ -1128,7 +1177,8 @@ lua::NResultsOr LuaGrid::SetUpdater(lua_State* L) {
   }
 
   absl::string_view group_name;
-  if (!IsFound(table.LookUp("group", &group_name))) {
+  table.LookUpToStack("group");
+  if (!IsFound(lua::Read(L, -1, &group_name))) {
     return "'group' must be a string";
   }
 

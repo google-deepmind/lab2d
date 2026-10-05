@@ -20,6 +20,7 @@
 #include "dmlab2d/lib/lua/bind.h"
 #include "dmlab2d/lib/lua/n_results_or_test_util.h"
 #include "dmlab2d/lib/lua/push_script.h"
+#include "dmlab2d/lib/lua/read.h"
 #include "dmlab2d/lib/lua/vm_test_util.h"
 #include "dmlab2d/lib/system/math/lua/math2d.h"
 #include "dmlab2d/lib/system/math/math2d.h"
@@ -190,6 +191,43 @@ TEST_F(LuaTileSetTest, SetMultSim) {
               ElementsAre(MakePixel(4, 5, 6)));
   EXPECT_THAT(lua_tile_set->tile_set().GetSpriteRgbData(3),
               ElementsAre(MakePixel(7, 8, 9)));
+}
+
+constexpr absl::string_view kSetSpriteGcSafety = R"(
+local tensor = require 'system.tensor'
+local tile = require 'system.tile'
+local set = tile.set{
+    names = {('sprite0_'):rep(10)},
+    shape = {width = 1, height = 1},
+}
+collectgarbage()
+
+local count = set:setSprite(setmetatable({}, {
+    __index = function(_, k)
+      collectgarbage()
+      if k == 'name' then
+        return ('sprite0_'):rep(10)
+      elseif k == 'image' then
+        return tensor.ByteTensor{{{10, 20, 30}}}
+      end
+    end,
+}))
+return set, count
+)";
+
+TEST_F(LuaTileSetTest, SetSpriteGcSafety) {
+  // See LuaWorldTest::CreateGridGcSafety in grid_world/lua/lua_world_test.cc
+  // for details.
+  ASSERT_THAT(lua::PushScript(L, kSetSpriteGcSafety, "kSetSpriteGcSafety"),
+              IsOkAndHolds(1));
+  ASSERT_THAT(lua::Call(L, 0), IsOkAndHolds(2));
+  LuaTileSet* lua_tile_set;
+  ASSERT_TRUE(IsFound(Read(L, 1, &lua_tile_set))) << lua::ToString(L, 1);
+  int count;
+  ASSERT_TRUE(IsFound(lua::Read(L, 2, &count)));
+  EXPECT_THAT(count, Eq(1));
+  EXPECT_THAT(lua_tile_set->tile_set().GetSpriteRgbData(0),
+              ElementsAre(MakePixel(10, 20, 30)));
 }
 
 }  // namespace

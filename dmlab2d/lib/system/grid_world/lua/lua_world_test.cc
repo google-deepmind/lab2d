@@ -13,12 +13,14 @@
 // limitations under the License.
 //
 ////////////////////////////////////////////////////////////////////////////////
+
 #include "dmlab2d/lib/system/grid_world/lua/lua_world.h"
 
 #include "dmlab2d/lib/lua/call.h"
 #include "dmlab2d/lib/lua/lua.h"
 #include "dmlab2d/lib/lua/n_results_or_test_util.h"
 #include "dmlab2d/lib/lua/push_script.h"
+#include "dmlab2d/lib/lua/read.h"
 #include "dmlab2d/lib/lua/vm.h"
 #include "dmlab2d/lib/lua/vm_test_util.h"
 #include "dmlab2d/lib/system/grid_world/lua/lua_grid.h"
@@ -311,6 +313,89 @@ TEST_F(LuaWorldTest, CreateGrid) {
   ASSERT_TRUE(IsFound(Read(L, 1, &lua_grid)));
   ASSERT_THAT(lua_grid->GetGrid().GetWorld().layers().Names(),
               ElementsAre("layer0", "layer1", "layer2"));
+}
+
+constexpr char kCreateGridGcSafety[] = R"(
+local grid_world = require 'system.grid_world'
+local state_name = ('state0_'):rep(10)
+local group_name = ('group0_'):rep(10)
+local update_name = ('update0_'):rep(10)
+local world = grid_world.World{
+    renderOrder = {'layer0'},
+    updateOrder = {update_name},
+    states = {
+        [state_name] = {
+            layer = 'layer0',
+            sprite = 'sprite0',
+            groups = {group_name},
+        },
+    },
+}
+state_name = nil
+group_name = nil
+update_name = nil
+collectgarbage()
+
+local added = 0
+local grid = world:createGrid(setmetatable({}, {
+    __index = function(_, k)
+      collectgarbage()
+      if k == 'layout' then
+        return '0' .. (' '):rep(60)
+      elseif k == 'stateCallbacks' then
+        return {
+            [('state0_'):rep(10)] = {
+                onAdd = function() added = added + 1 end,
+            },
+        }
+      elseif k == 'stateMap' then
+        return {['0'] = ('state0_'):rep(10)}
+      end
+    end,
+}))
+grid:createLayout(setmetatable({}, {
+    __index = function(_, k)
+      collectgarbage()
+      if k == 'layout' then
+        return '0' .. (' '):rep(60)
+      elseif k == 'stateMap' then
+        return {['0'] = ('state0_'):rep(10)}
+      elseif k == 'offset' then
+        return {1, 0}
+      end
+    end,
+}))
+grid:setUpdater(setmetatable({}, {
+    __index = function(_, k)
+      collectgarbage()
+      if k == 'update' then
+        return ('update0_'):rep(10)
+      elseif k == 'group' then
+        return ('group0_'):rep(10)
+      end
+    end,
+}))
+return grid, added
+)";
+
+TEST_F(LuaWorldTest, CreateGridGcSafety) {
+  // This test stress-tests the use of string_views to view strings in existing
+  // tables by providing tables with __index metafunctions that cause garbage
+  // collection. If string_views were to refer to Lua strings that were already
+  // popped off the stack, this could cause use-after-free reads. The
+  // implementation must ensure that Lua strings are retained on the stack as
+  // long as any string_views refer to them.
+  //
+  // This test requires special care to set up since garbage collection would
+  // not typically run in common situations, and the "dangling view of a popped
+  // string" could accidentally appear to "work".
+
+  ASSERT_THAT(lua::PushScript(L, kCreateGridGcSafety, "kCreateGridGcSafety"),
+              IsOkAndHolds(1));
+  ASSERT_THAT(lua::Call(L, 0), IsOkAndHolds(2));
+  int added;
+  ASSERT_TRUE(IsFound(lua::Read(L, 2, &added)));
+  EXPECT_THAT(added, Eq(2));
 }
 
 constexpr char kUpdateOrderWorks[] = R"(
