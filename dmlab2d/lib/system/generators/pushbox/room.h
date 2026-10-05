@@ -90,13 +90,6 @@ class Player : public Entity {
 class Box : public Entity {
  public:
   explicit Box(const math::Vector2d& position) : Entity(position) {}
-
-  // Store a move applied to the box.
-  void AddMove() { ++moves_count_; }
-
- private:
-  // The number of moves this box has been subject to.
-  int moves_count_;
 };
 
 // Possible tile types for the room.

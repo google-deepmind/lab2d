@@ -199,7 +199,6 @@ void Room::MoveBox(const math::Vector2d& origin,
   CHECK(it != boxes_.end());
 
   it->set_position(target);
-  it->AddMove();
   int box_idx = std::distance(boxes_.begin(), it);
 
   if (last_box_index_ != box_idx) {
