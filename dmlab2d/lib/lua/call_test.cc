@@ -78,6 +78,26 @@ TEST_F(CallTest, FunctionErrors) {
   EXPECT_EQ(lua_gettop(L), top);
 }
 
+TEST_F(CallTest, CallsFunctionNoTraceback) {
+  // Values below the function must not be counted as results.
+  Push(L, "unrelated1");
+  Push(L, "unrelated2");
+  int top = lua_gettop(L);
+
+  NResultsOr n_or = PushScript(L, kTestAssert, "kTestAssert");
+  ASSERT_THAT(n_or, IsOkAndHolds(lua_gettop(L) - top));
+
+  Push(L, true);
+
+  n_or = Call(L, 1, /*with_traceback=*/false);
+  ASSERT_THAT(n_or, IsOkAndHolds(1));
+  EXPECT_EQ(lua_gettop(L), top + 1);
+
+  std::string result;
+  ASSERT_TRUE(IsFound(Read(L, -1, &result)));
+  EXPECT_EQ(result, "Success");
+}
+
 TEST_F(CallTest, FunctionErrorsNoStack) {
   int top = lua_gettop(L);
 

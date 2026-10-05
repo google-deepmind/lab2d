@@ -48,9 +48,10 @@ static int traceback(lua_State* L) {
 
 NResultsOr Call(lua_State* L, int nargs, bool with_traceback) {
   CHECK_GE(nargs, 0) << "Invalid number of arguments: " << nargs;
+  const int func_stackpos = lua_gettop(L) - nargs;
   int err_stackpos = 0;
   if (with_traceback) {
-    err_stackpos = lua_gettop(L) - nargs;
+    err_stackpos = func_stackpos;
     Push(L, traceback);
     lua_insert(L, err_stackpos);
   }
@@ -68,7 +69,7 @@ NResultsOr Call(lua_State* L, int nargs, bool with_traceback) {
     if (with_traceback) {
       lua_remove(L, err_stackpos);
     }
-    return lua_gettop(L) - err_stackpos + 1;
+    return lua_gettop(L) - func_stackpos + 1;
   }
 }
 
